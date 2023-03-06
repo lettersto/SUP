@@ -17,3 +17,7 @@ class AppColors {
 
   const AppColors();
 }
+
+class TextStyles{
+  final splashTitle = const TextStyle(fontFamily: "NotoSans", fontSize: 150);
+}

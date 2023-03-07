@@ -1,7 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:sup/utils/styles.dart';
+import 'package:sup/ui/map_search/map_search_page.dart';
+import 'package:sup/ui/review_form/review_form_page.dart';
+
+import './ui/map/map_page.dart';
+import './ui/review/review_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +21,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        body: Center(child: Text("data", style: const TextStyle(color: AppColors.pinkAccent).merge(TextStyles.bold20)),),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MapPage(),
+        '/reviews': (context) => const ReviewPage(),
+        '/review-form': (context) => const ReviewFormPage(),
+        '/map-search': (context) => const MapSearchPage(),
+      },
     );
   }
 }

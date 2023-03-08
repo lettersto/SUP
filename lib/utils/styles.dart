@@ -9,6 +9,7 @@ class AppColors {
 
   // ============== pink ==============
   static const pink10 = Color.fromRGBO(255, 245, 245, 1);
+  static const pink15 = Color.fromRGBO(255, 221, 234, .6);
   static const pink20 = Color.fromRGBO(255, 210, 227, 1);
   static const pink30 = Color.fromRGBO(250, 173, 202, 1);
   static const pink40 = Color.fromRGBO(255, 133, 188, 1);

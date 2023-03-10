@@ -27,6 +27,13 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(context, double shrinkOffset, bool overlapsContent) {
+    void navigateToReviewForm() {
+      Navigator.pushNamed(
+        context,
+        '/review-form',
+      );
+    }
+
     return Column(
       children: [
         Container(
@@ -41,7 +48,10 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
                   count: 220,
                 ),
                 ReviewTextButton(
-                    text: '나도 참여', tapHandler: () {}, icon: Icons.create),
+                  text: '나도 참여',
+                  tapHandler: navigateToReviewForm,
+                  icon: Icons.create,
+                ),
               ],
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
 
@@ -6,7 +7,7 @@ import './ui/map/map_page.dart';
 import './ui/review/review_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,18 +15,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final newStyle = const TextStyle(color: AppColors.pinkAccent).merge(TextStyles.appBarTitle);
     return MaterialApp(
       title: 'SUP',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        fontFamily: 'NotoSans',
       ),
-      initialRoute: '/',
+      initialRoute: '/reviews',
       routes: {
         '/': (context) => const MapPage(),
         '/reviews': (context) => const ReviewPage(),
-        '/review-form': (context) => const ReviewFormPage(),
+        ReviewFormPage.routName: (context) => const ReviewFormPage(),
         '/map-search': (context) => const MapSearchPage(),
       },
     );

@@ -24,4 +24,45 @@ class ReviewFilterNotifier extends Notifier<int> {
   }
 }
 
-final selectedReviewFilterProvider = NotifierProvider<ReviewFilterNotifier, int>(() => ReviewFilterNotifier());
+final selectedReviewFilterProvider =
+    NotifierProvider<ReviewFilterNotifier, int>(() => ReviewFilterNotifier());
+
+// ====== review form ======
+class ReviewFormFieldNotifier extends Notifier<ReviewFormField> {
+  @override
+  ReviewFormField build() {
+    return ReviewFormField();
+  }
+
+  void setStarRate(int newRate) {
+    state.star = newRate;
+  }
+
+  void setContent(String newContent) {
+    state.content = newContent;
+  }
+
+  void _addTags(ReviewTag tag) {
+    state.tag = [...state.tag, tag.tagNo];
+  }
+
+  void _removeTags(ReviewTag tag) {
+    state.tag = state.tag.where((tagNo) => tagNo != tag.tagNo).toList();
+  }
+
+  void setTag(ReviewTag selectedTag) {
+    if (!state.tag.contains(selectedTag.tagNo) && state.tag.length < 5) {
+      _addTags(selectedTag);
+    } else {
+      _removeTags(selectedTag);
+    }
+  }
+}
+
+
+final reviewFormFieldProvider =
+    NotifierProvider<ReviewFormFieldNotifier, ReviewFormField>(
+        ReviewFormFieldNotifier.new);
+
+final reviewTagsProvider = Provider((ref) => ReviewTags.fromJson(tagData));
+

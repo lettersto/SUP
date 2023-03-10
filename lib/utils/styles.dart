@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class AppColors {
   // ============ grayscale ===========
   static const white = Color.fromRGBO(255, 255, 255, 1);
-  static const grayTransparent = Color.fromRGBO(176, 176, 176, .1);
   static const gray = Color.fromRGBO(139, 139, 139, 1);
+  static const grayTransparent = Color.fromRGBO(176, 176, 176, .1);
+  static const grayTransparent30 = Color.fromRGBO(139, 139, 139, .3);
   static const black = Color.fromRGBO(0, 0, 0, 1);
 
   // ============== pink ==============
@@ -22,25 +23,45 @@ class AppColors {
   const AppColors();
 }
 
-class TextStyles{
+class TextStyles {
   // example
   // Text("data", style: const TextStyle(color: AppColors.pinkAccent).merge(TextStyles.bold20))
 
-  static const splashTitle = TextStyle(fontFamily: "JustMeAgainDownHere", fontSize: 150, color: AppColors.pink60);
-  static const appBarTitle = TextStyle(fontFamily: "JustMeAgainDownHere", fontSize: 48, color: AppColors.black);
+  static const splashTitle = TextStyle(
+      fontFamily: "JustMeAgainDownHere",
+      fontSize: 150,
+      color: AppColors.pink60);
+  static const appBarTitle = TextStyle(
+      fontFamily: "JustMeAgainDownHere", fontSize: 48, color: AppColors.black);
 
-  static const medium24 = TextStyle(fontFamily: "NotoSans", fontSize: 24, fontWeight: FontWeight.w500); //review form
-  static const bold24 = TextStyle(fontFamily: "NotoSans", fontSize: 24, fontWeight: FontWeight.w900);
-  static const medium20 = TextStyle(fontFamily: "NotoSans", fontSize: 20, fontWeight: FontWeight.w500);
-  static const bold20 = TextStyle(fontFamily: "NotoSans", fontSize: 20, fontWeight: FontWeight.w900); //타이틀, 강서구 마곡동
-  static const medium18 = TextStyle(fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w500);
-  static const bold18 = TextStyle(fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w900);
-  static const medium16 = TextStyle(fontFamily: "NotoSans", fontSize: 16, fontWeight: FontWeight.w500);
-  static const bold16 = TextStyle(fontFamily: "NotoSans", fontSize: 16, fontWeight: FontWeight.w900);
-  static const medium14 = TextStyle(fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w500);
-  static const bold14 = TextStyle(fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w900);
-  static const medium12 = TextStyle(fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w500);
-  static const bold12 = TextStyle(fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w900);
+  static const medium24 = TextStyle(
+      fontFamily: "NotoSans",
+      fontSize: 24,
+      fontWeight: FontWeight.w500); //review form
+  static const bold24 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 24, fontWeight: FontWeight.w900);
+  static const medium20 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 20, fontWeight: FontWeight.w500);
+  static const bold20 = TextStyle(
+      fontFamily: "NotoSans",
+      fontSize: 20,
+      fontWeight: FontWeight.w900); //타이틀, 강서구 마곡동
+  static const medium18 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w500);
+  static const bold18 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w900);
+  static const medium16 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 16, fontWeight: FontWeight.w500);
+  static const bold16 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 16, fontWeight: FontWeight.w900);
+  static const medium14 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w500);
+  static const bold14 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w900);
+  static const medium12 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w500);
+  static const bold12 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w900);
 
   const TextStyles();
 }

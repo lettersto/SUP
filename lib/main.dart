@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
-
 import './ui/map/map_page.dart';
 import './ui/review/review_page.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfig.loadEnvVariables();
   runApp(const ProviderScope(child: MyApp()));
 }
 

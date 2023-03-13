@@ -70,12 +70,18 @@ class TextStyles {
       fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w400);
   static const medium14 = TextStyle(
       fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w500);
+  static const semiBold14 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w700);
   static const bold14 = TextStyle(
       fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w900);
   static const medium12 = TextStyle(
       fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w500);
   static const bold12 = TextStyle(
       fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w900);
+
+  static TextStyle orderSelected = TextStyles.semiBold14;
+  static TextStyle orderUnselected =
+      TextStyles.regular14.merge(const TextStyle(color: AppColors.gray));
 
   const TextStyles();
 }

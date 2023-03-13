@@ -3,7 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/ui/map/bottom_sheet/bottom_sheet_result.dart';
+import 'package:sup/ui/map_result/bottom_sheet_result.dart';
+import 'package:sup/ui/map_result/appbar_search_bar.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
@@ -84,19 +85,7 @@ class MapResultPageState extends State<MapResultPage> {
                 Navigator.pop(context);
               }),
         ),
-        flexibleSpace: Container(
-            margin: const EdgeInsets.fromLTRB(56, 0, 18, 8),
-            alignment: Alignment.bottomCenter,
-            child: TextField(
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              decoration: InputDecoration(
-                  hintText: widget.keyword,
-                  border: InputBorder.none,
-                  hintStyle: TextStyles.regular16
-                      .merge(const TextStyle(color: Colors.black))),
-            )),
+        flexibleSpace: ResultSearchBar(widget.keyword),
         actions: [
           IconButton(
               onPressed: () {

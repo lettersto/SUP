@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
-import 'package:sup/ui/map_result/tag_result.dart';
-import '../../models/store.dart';
-import '../../utils/styles.dart';
+import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
+import '../../../models/store.dart';
+import '../../../utils/styles.dart';
 
 class ResultBottomSheet extends StatefulWidget {
   final ScrollController sc;
@@ -15,15 +15,6 @@ class ResultBottomSheet extends StatefulWidget {
 }
 
 class _ResultBottomSheet extends State<ResultBottomSheet> {
-  final List<Store> _stores = [
-    Store("name", 0, 0, "3.33", 0, false),
-    Store("맘스터치", 37.563063, 126.831237, "4.37", 1218, false),
-    Store("산청숯불가든", 37.561036, 126.836975, "3.3", 344, true),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-  ];
-
   String order = "별점순";
 
   @override
@@ -32,7 +23,7 @@ class _ResultBottomSheet extends State<ResultBottomSheet> {
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: _stores.length,
+            itemCount: stores.length,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -104,7 +95,7 @@ class _ResultBottomSheet extends State<ResultBottomSheet> {
                   ],
                 );
               }
-              return StoreItem(_stores[position]);
+              return StoreItem(stores[position]);
             })
         : Container();
   }

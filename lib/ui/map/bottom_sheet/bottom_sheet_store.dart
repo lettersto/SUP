@@ -5,10 +5,10 @@ import '../../../utils/styles.dart';
 import '../../review/review_page.dart';
 
 class MapBottomSheet extends StatefulWidget {
-  final Store store;
+  final int storeNo;
   final bool visibility;
 
-  const MapBottomSheet(this.store, this.visibility, {super.key});
+  const MapBottomSheet(this.storeNo, this.visibility, {super.key});
 
   @override
   State<MapBottomSheet> createState() => _MapBottomSheet();
@@ -23,6 +23,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     double imageWidth = (MediaQuery.of(context).size.width - 36) / 3;
+    Store store = stores[widget.storeNo - 1];
 
     return widget.visibility
         ? Positioned(
@@ -105,7 +106,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      widget.store.name,
+                                      store.name,
                                       style:
                                           const TextStyle(color: AppColors.blue)
                                               .merge(TextStyles.semiBold16),
@@ -118,7 +119,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                           size: 15,
                                         ),
                                         Text(
-                                          " ${widget.store.rate}  ",
+                                          " ${store.rate}  ",
                                           style: const TextStyle(
                                                   color: Colors.grey)
                                               .merge(TextStyles.regular14),
@@ -129,7 +130,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                           color: AppColors.whiteGrey,
                                         ),
                                         Text(
-                                          "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
+                                          "  방문자리뷰 ${Format.currency.format(store.reviewCnt)} ",
                                           style: const TextStyle(
                                                   color: Colors.grey)
                                               .merge(TextStyles.regular14),
@@ -145,7 +146,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       padding:
                                           const EdgeInsets.fromLTRB(4, 0, 4, 0),
                                       icon: Container(
-                                        child: widget.store.like == true
+                                        child: store.like == true
                                             ? const Icon(
                                                 Icons.star_rounded,
                                                 color: AppColors.pink60,
@@ -157,8 +158,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       ),
                                       onPressed: () {
                                         setState(() {
-                                          widget.store.like =
-                                              !widget.store.like;
+                                          store.like = !store.like;
                                         });
                                       },
                                     ),
@@ -180,7 +180,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            ...widget.store.urls
+                            ...store.urls
                                 .map(
                                   (url) => Image.network(
                                     url,

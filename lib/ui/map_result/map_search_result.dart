@@ -7,11 +7,8 @@ import 'package:sup/ui/map/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
-
 import '../../main.dart';
 import '../../models/store.dart';
-import '../../utils/strings.dart';
-import '../common/tag_filter_item.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
 class MapResultPage extends StatefulWidget {
@@ -63,10 +60,10 @@ class MapResultPageState extends State<MapResultPage> {
           draggable: false,
           icon: star,
           onTap: () => setState(() {
-            store = s;
-            resultVisibility = false;
-            storeVisibility = true;
-          }),
+                store = s;
+                resultVisibility = false;
+                storeVisibility = true;
+              }),
           position: LatLng(s.latitude, s.longitude)));
     }
   }
@@ -120,25 +117,25 @@ class MapResultPageState extends State<MapResultPage> {
                 child: _isLoading
                     ? const Center(child: CircularProgressIndicator())
                     : GoogleMap(
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                        _initPosition.latitude, _initPosition.longitude),
-                    zoom: 14.4746,
-                  ),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                  myLocationEnabled: true,
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  mapToolbarEnabled: false,
-                  markers: Set.from(_markers),
-                  onTap: (LatLng) => setState(() {
-                    storeVisibility = false;
-                    resultVisibility = true;
-                  }),
-                )),
+                        mapType: MapType.normal,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(
+                              _initPosition.latitude, _initPosition.longitude),
+                          zoom: 14.4746,
+                        ),
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        mapToolbarEnabled: false,
+                        markers: Set.from(_markers),
+                        onTap: (LatLng) => setState(() {
+                          storeVisibility = false;
+                          resultVisibility = true;
+                        }),
+                      )),
           ],
         ),
         Column(
@@ -179,7 +176,7 @@ class MapResultPageState extends State<MapResultPage> {
     setState(() {
       _initPosition = LatLng(position.latitude, position.longitude);
       getAddressByGeo(_initPosition.latitude.toString(),
-          _initPosition.longitude.toString())
+              _initPosition.longitude.toString())
           .then((String res) {
         setState(() {
           address = res;

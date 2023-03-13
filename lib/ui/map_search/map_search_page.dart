@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/ui/map_search/map_search_result.dart';
-import 'package:sup/ui/map_search/recents.dart';
+import 'package:sup/ui/map_result/map_search_result.dart';
+import 'package:sup/ui/map_search/recent_list.dart';
 import '../../utils/styles.dart';
 
 class MapSearchPage extends StatefulWidget {
@@ -108,8 +108,14 @@ class MapSearchState extends State<MapSearchPage> {
       List<String>? recents = prefs.getStringList('recents');
       if (!recents!.contains(text)) {
         recents?.add(text);
-        prefs.setStringList('recents', recents!);
+        if (recents.length == 20) {
+          recents.removeAt(0);
+        }
+      } else {
+        recents.remove(text);
+        recents.add(text);
       }
+      prefs.setStringList('recents', recents);
     }
   }
 

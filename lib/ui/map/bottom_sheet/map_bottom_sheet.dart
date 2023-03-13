@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../../models/store.dart';
-import '../../utils/styles.dart';
-import '../review/review_page.dart';
+import '../../../models/store.dart';
+import '../../../utils/styles.dart';
+import '../../review/review_page.dart';
 
 class MapBottomSheet extends StatefulWidget {
   final Store store;

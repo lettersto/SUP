@@ -77,17 +77,19 @@ class MapSearchState extends State<MapSearchPage> {
                   keyword = text;
                 },
                 onSubmitted: (text) {
-                  updateRecents(text);
-                  setRecents();
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation1, animation2) =>
-                          MapResultPage(text),
-                      transitionDuration: Duration.zero,
-                      reverseTransitionDuration: Duration.zero,
-                    ),
-                  );
+                  if (text.isNotEmpty) {
+                    updateRecents(text);
+                    setRecents();
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation1, animation2) =>
+                            MapResultPage(text),
+                        transitionDuration: Duration.zero,
+                        reverseTransitionDuration: Duration.zero,
+                      ),
+                    );
+                  }
                 },
                 decoration: InputDecoration(
                     hintText: "장소, 가게명 검색",

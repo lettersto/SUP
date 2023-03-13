@@ -23,7 +23,7 @@ class _StoreItem extends State<StoreItem> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 16, bottom: 16),
+            margin: const EdgeInsets.only(top: 8, bottom: 16),
             height: 1,
             color: AppColors.grayTransparent2,
           ),
@@ -119,7 +119,6 @@ class _StoreItem extends State<StoreItem> {
               ],
             ),
           ),
-
           Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(6)),

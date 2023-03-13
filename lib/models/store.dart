@@ -17,8 +17,8 @@ class Store {
     "메가커피는 어디라도 좋아요~! 근데 점심시간에 잠깐 앉았다 가려고 테이크아웃잔에 시켰더니 후이이이이기깅 ㅑㄴㅁ냐먀냐먄ㅁㅁㅁㅁㅁㅁ"
   ];
 
-  Store(this.storeNo, this.name, this.latitude, this.longitude, this.rate, this.reviewCnt,
-      this.like);
+  Store(this.storeNo, this.name, this.latitude, this.longitude, this.rate,
+      this.reviewCnt, this.like);
 }
 
 class Location {

@@ -7,7 +7,6 @@ import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
-
 import '../../models/store.dart';
 import '../../utils/strings.dart';
 import '../common/tag_filter_item.dart';

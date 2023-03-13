@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../providers/dummy_providers.dart';
-import '../../../../models/dummy.dart';
+import '../../../../models/tag.dart';
 import '../../../../utils/styles.dart';
 
 class TagSelectionItem extends ConsumerStatefulWidget {
@@ -24,7 +24,8 @@ class _TagSelectionItemState extends ConsumerState<TagSelectionItem> {
   Widget build(BuildContext context) {
     void tapHandler() {
       setState(() {
-        _isSelected = ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo);
+        _isSelected =
+            ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo);
       });
       ref.read(reviewFormFieldProvider.notifier).setTag(widget.tag);
     }
@@ -35,7 +36,10 @@ class _TagSelectionItemState extends ConsumerState<TagSelectionItem> {
         padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         margin: const EdgeInsets.only(bottom: 8.0),
         decoration: BoxDecoration(
-          color: ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo) ? AppColors.pink40 : AppColors.white,
+          color:
+              ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo)
+                  ? AppColors.pink40
+                  : AppColors.white,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(

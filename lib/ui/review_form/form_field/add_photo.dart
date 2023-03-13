@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 
 import '../../../utils/styles.dart';
@@ -10,13 +11,24 @@ class AddPhoto extends StatefulWidget {
 }
 
 class _AddPhotoState extends State<AddPhoto> {
-  // TODO implement image picker
-  void _showImagePicker() {
-    print('open image picker!!');
-  }
+  final ImagePicker _picker = ImagePicker();
+  final _imageCntLimit = 10;
+  List<XFile> _pickedImgs = [];
 
   @override
   Widget build(BuildContext context) {
+    Future<void> pickImg() async {
+      List<XFile> images = await _picker.pickMultiImage();
+
+      if (images.length > _imageCntLimit) {
+        images = images.sublist(0, _imageCntLimit);
+      }
+
+      setState(() {
+        _pickedImgs = images;
+      });
+    }
+
     return Column(
       children: [
         const Text(
@@ -27,7 +39,7 @@ class _AddPhotoState extends State<AddPhoto> {
           height: 32.0,
         ),
         GestureDetector(
-          onTap: _showImagePicker,
+          onTap: pickImg,
           child: Container(
             padding: const EdgeInsets.all(24.0),
             decoration: BoxDecoration(

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sup/ui/common/tag_filter_item_selected.dart';
 
-import '../../models/tag_map.dart';
-import '../../utils/styles.dart';
-import '../common/tag_filter_item.dart';
+import '../../../models/tag_map.dart';
+import '../../../utils/styles.dart';
+import '../../common/tag_filter_item.dart';
 
 class TagResultList extends StatefulWidget {
   const TagResultList({super.key});
@@ -24,6 +24,7 @@ class TagResultListState extends State<TagResultList> {
           scrollDirection: Axis.horizontal,
           itemCount: tags.length,
           itemBuilder: (BuildContext context, int position) {
+            MapTag tag = tags[position];
             return Container(
                 margin: position == 0
                     ? const EdgeInsets.only(left: 16, top: 4, right: 6)
@@ -36,12 +37,12 @@ class TagResultListState extends State<TagResultList> {
                     },
                     child: (selectedIdx == position)
                         ? TagFilterItemSelected(
-                            tag: tags[position].tagName,
+                            tag: tag.getEmojiTagName(),
                             shadow: false,
                             background: AppColors.pink15,
                           )
                         : TagFilterItem(
-                            tag: tags[position].tagName,
+                            tag: tag.getEmojiTagName(),
                             shadow: false,
                             background: AppColors.pink15)));
           },

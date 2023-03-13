@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sup/ui/map_result/bottom_sheet/review_page_view.dart';
 
 import '../../../models/store.dart';
 import '../../../utils/styles.dart';
@@ -119,21 +120,7 @@ class _StoreItem extends State<StoreItem> {
               ],
             ),
           ),
-          Container(
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(6)),
-              color: AppColors.blueGrey,
-            ),
-            padding: const EdgeInsets.all(12),
-            margin: const EdgeInsets.only(left: 16, right: 16, top: 6),
-            child: const Text(
-              "❝"
-              "그리고 아인슈페너, 플랫슈페너 크림이 엄청 쫀쫀하고 달달하고 커피도 맛있어요... 휘낭시에도 맛있어요 냠냠냠ㄴ먀먄먀얌냐",
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyles.regular14,
-            ),
-          )
+          ReviewPageView(widget.store.reviews)
         ],
       ),
     );

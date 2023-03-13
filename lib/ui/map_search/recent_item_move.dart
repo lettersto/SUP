@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 import '../common/line_divider.dart';
 import '../map_result/map_search_result.dart';
@@ -31,6 +32,11 @@ class _RecentItemMove extends State<RecentItemMove> {
                     height: 48,
                     child: GestureDetector(
                       onTap: () {
+                        setState(() {
+                          widget.filteredRecent.remove(filter);
+                          widget.filteredRecent.add(filter);
+                        });
+                        updateRecents(filter);
                         openResultPage(filter);
                       },
                       child: Row(

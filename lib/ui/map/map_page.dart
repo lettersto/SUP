@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/main.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/ui/map/tag_map.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../models/store.dart';
-import '../../models/tag_map.dart';
-import '../../utils/strings.dart';
-import '../common/tag_filter_item.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
@@ -28,12 +24,14 @@ class MapPageState extends State<MapPage> {
   late LatLng _initPosition;
   bool _isLoading = true;
   List<Marker> _markers = [];
-  final List<Store> _stores = [
-    Store("맘스터치", 37.563063, 126.831237, "4.37", 1218, false),
-    Store("산청숯불가든", 37.561036, 126.836975, "3.3", 344, true),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false)
+
+  final List<LikeStore> likes = [
+    LikeStore(1, Location(37.563063, 126.831237)),
+    LikeStore(2, Location(37.561036, 126.836975)),
+    LikeStore(3, Location(37.561036, 126.839975)),
   ];
-  Store store = Store("", 0.0, 0.0, "", 0, false);
+
+  int storeNo = 1;
   bool todayVisibility = true;
   bool storeVisibility = false;
   String address = "";
@@ -55,18 +53,18 @@ class MapPageState extends State<MapPage> {
           const ImageConfiguration(), "assets/icons/marker_ios.png");
     }
 
-    for (int i = 0; i < _stores.length; i++) {
-      Store s = _stores[i];
+    for (int i = 0; i < likes.length; i++) {
+      LikeStore s = likes[i];
       _markers.add(Marker(
           markerId: MarkerId(i.toString()),
           draggable: false,
           icon: star,
           onTap: () => setState(() {
-                store = s;
+                storeNo = s.storeNo;
                 todayVisibility = false;
                 storeVisibility = true;
               }),
-          position: LatLng(s.latitude, s.longitude)));
+          position: LatLng(s.location.latitude, s.location.longitude)));
     }
   }
 
@@ -132,7 +130,7 @@ class MapPageState extends State<MapPage> {
                   : TodayBottomSheet(
                       scrollController, todayVisibility, address));
             }),
-        MapBottomSheet(store, storeVisibility)
+        MapBottomSheet(storeNo, storeVisibility)
       ]),
     );
   }

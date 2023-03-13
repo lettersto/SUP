@@ -16,22 +16,13 @@ class TodayBottomSheet extends StatefulWidget {
 }
 
 class _TodayBottomSheet extends State<TodayBottomSheet> {
-  final List<Store> _stores = [
-    Store("name", 0, 0, "3.33", 0, false),
-    Store("맘스터치", 37.563063, 126.831237, "4.37", 1218, false),
-    Store("산청숯불가든", 37.561036, 126.836975, "3.3", 344, true),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-    Store("유나식당", 37.561036, 126.839975, "4.66", 13, false),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return widget.visibility
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: _stores.length,
+            itemCount: stores.length,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -111,7 +102,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                   ],
                 );
               }
-              return TodayPickItem(_stores[position]);
+              return TodayPickItem(stores[position]);
             })
         : Container();
   }

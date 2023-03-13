@@ -3,6 +3,8 @@ import 'package:sup/main.dart';
 import 'package:sup/utils/styles.dart';
 
 class MapSearchBar extends StatelessWidget {
+  const MapSearchBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(

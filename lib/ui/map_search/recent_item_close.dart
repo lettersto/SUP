@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sup/ui/map_search/map_search_page.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 import '../common/line_divider.dart';
 import '../map_result/map_search_result.dart';
@@ -43,6 +45,11 @@ class _RecentItemClose extends State<RecentItemClose> {
                           flex: 8,
                           child: GestureDetector(
                               onTap: () {
+                                setState(() {
+                                  widget.filteredRecent.remove(recent);
+                                  widget.filteredRecent.add(recent);
+                                });
+                                updateRecents(recent);
                                 openResultPage(recent);
                               },
                               child: Text(

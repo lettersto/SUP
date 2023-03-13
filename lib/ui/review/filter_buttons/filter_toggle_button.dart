@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/dummy.dart';
-import '../../../providers/dummy_providers.dart';
+import '../../../providers/providers.dart';
+import '../../../models/review_filter.dart';
 import '../../../utils/styles.dart';
+import '../../../utils/enums.dart';
 
 class FilterToggleButton extends ConsumerStatefulWidget {
   final List<Widget> titles;
@@ -28,8 +29,10 @@ class FilterToggleButton extends ConsumerStatefulWidget {
 class _FilterToggleButtonState extends ConsumerState<FilterToggleButton> {
   @override
   Widget build(BuildContext context) {
-    final int starRatingIdx = ReviewFilters.reviewFilterTypeMap['starRating'];
-    final int latestIdx = ReviewFilters.reviewFilterTypeMap['latest'];
+    final int starRatingIdx =
+        ReviewFilters.reviewFilterTypeMap[ReviewFilterType.starRating];
+    final int latestIdx =
+        ReviewFilters.reviewFilterTypeMap[ReviewFilterType.latest];
 
     var selectedIdx = ref.watch(selectedReviewFilterProvider);
     var isStarRatingSelected = starRatingIdx == selectedIdx;
@@ -43,7 +46,9 @@ class _FilterToggleButtonState extends ConsumerState<FilterToggleButton> {
       ref.read(selectedReviewFilterProvider.notifier).resetFilter();
 
       if (selectedIdx == 0 && !isStarRatingSelected) {
-        ref.read(selectedReviewFilterProvider.notifier).selectFilter(starRatingIdx);
+        ref
+            .read(selectedReviewFilterProvider.notifier)
+            .selectFilter(starRatingIdx);
       }
 
       if (selectedIdx == 1 && !isLatestSelected) {

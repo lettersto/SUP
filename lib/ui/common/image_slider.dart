@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../utils/enums.dart';
 
-enum SizeType {
-  extraLarge,
-  large,
-  medium,
-  small,
-  // extraSmall,
-}
-
-// TODO snap image to cetner
 class ImageSlider extends StatelessWidget {
   final List<String> images;
   final SizeType size;

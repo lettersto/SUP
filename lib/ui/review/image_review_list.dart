@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/utils/styles.dart';
 
-import '../../ui/common/headline.dart';
+import '../../utils/styles.dart';
 import '../../models/dummy.dart';
 import '../../providers/dummy_providers.dart';
+
+import '../../ui/photo_detail/photo_detail_page.dart';
+import '../../ui/common/headline.dart';
 
 class ImageReviewList extends ConsumerWidget {
   const ImageReviewList({super.key});
@@ -53,9 +55,15 @@ class ImageReviewList extends ConsumerWidget {
                           (index == data.length - 1 ? 16.0 : 4.0), 0),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8.0),
-                        child: Image.network(
-                          data[index].imageUrl,
-                          fit: BoxFit.cover,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, PhotoDetailPage.routeName);
+                          },
+                          child: Image.network(
+                            data[index].imageUrl,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ),
                     );

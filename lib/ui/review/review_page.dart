@@ -9,7 +9,7 @@ import './review_list/review_list.dart';
 import './review_dummy.dart';
 
 class ReviewPage extends StatelessWidget {
-  const ReviewPage({Key? key}) : super(key: key);
+  const ReviewPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class ReviewPage extends StatelessWidget {
             const ReviewAppBar(storeName: '가게 이름'),
             const ReviewHeader(),
             const SliverToBoxAdapter(child: ImageReviewList()),
-            TagChart(),
+            const TagChart(),
             ReviewList(reviews: reviewDummy),
           ],
         ),

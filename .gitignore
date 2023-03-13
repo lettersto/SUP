@@ -46,3 +46,4 @@ app.*.map.json
 # API keys
 ios/Runner/Keys.plist
 .env*
+android/local.properties

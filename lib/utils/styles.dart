@@ -6,11 +6,11 @@ class AppColors {
   // ============ grayscale ===========
   static const white = Color.fromRGBO(255, 255, 255, 1);
   static const grayTransparent = Color.fromRGBO(176, 176, 176, .1);
+  static const grayTransparent2 = Color.fromRGBO(176, 176, 176, .2);
   static const gray = Color.fromRGBO(139, 139, 139, 1);
-  static const grayTransparent30 = Color.fromRGBO(139, 139, 139, .3);
-  static const grayTransparent20 = Color.fromRGBO(176, 176, 176, .2);
+  static const blueGrey = Color(0xfff2f4f6);
   static const whiteGrey = Color.fromRGBO(210, 210, 210, 1.0);
-
+  static const grayTransparent30 = Color.fromRGBO(139, 139, 139, .3);
   static const black = Color.fromRGBO(0, 0, 0, 1);
   static const blackTransparent = Color.fromRGBO(0, 0, 0, .5);
 

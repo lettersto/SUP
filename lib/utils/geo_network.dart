@@ -2,11 +2,12 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:sup/utils/styles.dart';
 
 Future<String> getAddressByGeo(String latitude, String longitude) async {
-  String googleApiKey = FlutterConfig.get('geoApiKey');
+  String? googleApiKey = dotenv.env['geoApiKey'];
   String geoAPI =
       'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$googleApiKey&language=ko';
 

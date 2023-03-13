@@ -15,10 +15,7 @@ class TodayPickItem extends StatefulWidget {
 class _TodayPickItem extends State<TodayPickItem> {
   @override
   Widget build(BuildContext context) {
-    double imageWidth = (MediaQuery
-        .of(context)
-        .size
-        .width - 32);
+    double imageWidth = (MediaQuery.of(context).size.width - 32);
 
     return Container(
         color: Colors.white,
@@ -33,8 +30,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                     children: [
                       Container(
                           height: 220,
-                          margin: const EdgeInsets.fromLTRB(
-                              16, 16, 16, 0),
+                          margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: Image.network(
@@ -47,26 +43,22 @@ class _TodayPickItem extends State<TodayPickItem> {
                           right: 24,
                           top: 24,
                           child: Container(
-                              padding: const EdgeInsets.fromLTRB(
-                                  8, 0, 8, 2),
+                              padding: const EdgeInsets.fromLTRB(8, 0, 8, 2),
                               decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10)),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
                                 color: AppColors.blackTransparent,
                               ),
                               child: Row(children: [
                                 Text(
                                   (pagePosition + 1).toString(),
                                   style: TextStyles.regular14.merge(
-                                      const TextStyle(
-                                          color: Colors.white)),
+                                      const TextStyle(color: Colors.white)),
                                 ),
                                 Text(
                                   "/${widget.store.urls.length.toString()}",
-                                  style: TextStyles.regular14.merge(
-                                      TextStyle(
-                                          color: Colors.white
-                                              .withOpacity(0.6))),
+                                  style: TextStyles.regular14.merge(TextStyle(
+                                      color: Colors.white.withOpacity(0.6))),
                                 ),
                               ])))
                     ],
@@ -75,10 +67,7 @@ class _TodayPickItem extends State<TodayPickItem> {
           ),
           Container(
             margin: const EdgeInsets.fromLTRB(16, 6, 16, 8),
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -90,8 +79,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                       children: [
                         Text(
                           widget.store.name,
-                          style:
-                          const TextStyle(color: AppColors.black)
+                          style: const TextStyle(color: AppColors.black)
                               .merge(TextStyles.bold18),
                         ),
                         Row(
@@ -103,8 +91,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                             ),
                             Text(
                               " ${widget.store.rate}  ",
-                              style:
-                              const TextStyle(color: Colors.grey)
+                              style: const TextStyle(color: Colors.grey)
                                   .merge(TextStyles.regular14),
                             ),
                             const Icon(
@@ -113,10 +100,8 @@ class _TodayPickItem extends State<TodayPickItem> {
                               color: AppColors.whiteGrey,
                             ),
                             Text(
-                              "  방문자리뷰 ${Format.currency.format(
-                                  widget.store.reviewCnt)} ",
-                              style:
-                              const TextStyle(color: Colors.grey)
+                              "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
+                              style: const TextStyle(color: Colors.grey)
                                   .merge(TextStyles.regular14),
                             ),
                           ],
@@ -127,18 +112,17 @@ class _TodayPickItem extends State<TodayPickItem> {
                       children: [
                         IconButton(
                           iconSize: 24,
-                          padding:
-                          const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                          padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                           icon: Container(
                             child: widget.store.like == true
                                 ? const Icon(
-                              Icons.star_rounded,
-                              color: AppColors.pink60,
-                            )
+                                    Icons.star_rounded,
+                                    color: AppColors.pink60,
+                                  )
                                 : const Icon(
-                              Icons.star_border_rounded,
-                              color: AppColors.pink60,
-                            ),
+                                    Icons.star_border_rounded,
+                                    color: AppColors.pink60,
+                                  ),
                           ),
                           onPressed: () {
                             setState(() {
@@ -161,7 +145,7 @@ class _TodayPickItem extends State<TodayPickItem> {
           Container(
             margin: const EdgeInsets.fromLTRB(18, 10, 18, 0),
             height: 1,
-            color: AppColors.grayTransparent20,
+            color: AppColors.grayTransparent2,
           )
         ]));
   }

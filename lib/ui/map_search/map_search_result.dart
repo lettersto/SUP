@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/main.dart';
-import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
+import 'package:sup/ui/map/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 
+import '../../main.dart';
 import '../../models/store.dart';
 import '../../utils/strings.dart';
 import '../common/tag_filter_item.dart';
-import 'bottom_sheet/bottom_sheet_store.dart';
+import '../map/bottom_sheet/bottom_sheet_store.dart';
 
-class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+class MapResultPage extends StatefulWidget {
+  const MapResultPage(this.keyword, {super.key});
+
+  final String keyword;
 
   @override
-  State<MapPage> createState() => MapPageState();
+  State<MapResultPage> createState() => MapResultPageState();
 }
 
-class MapPageState extends State<MapPage> {
+class MapResultPageState extends State<MapResultPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
@@ -32,7 +35,7 @@ class MapPageState extends State<MapPage> {
     Store("유나식당", 37.561036, 126.839975, "4.66", 13, false)
   ];
   Store store = Store("", 0.0, 0.0, "", 0, false);
-  bool todayVisibility = true;
+  bool resultVisibility = true;
   bool storeVisibility = false;
   String address = "";
 
@@ -61,7 +64,7 @@ class MapPageState extends State<MapPage> {
           icon: star,
           onTap: () => setState(() {
             store = s;
-            todayVisibility = false;
+            resultVisibility = false;
             storeVisibility = true;
           }),
           position: LatLng(s.latitude, s.longitude)));
@@ -71,6 +74,43 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 60,
+        backgroundColor: Colors.white,
+        elevation: 1,
+        leading: Transform.scale(
+          scale: 0.7,
+          child: IconButton(
+              icon: SvgPicture.asset("assets/icons/back.svg"),
+              color: AppColors.black,
+              onPressed: () {
+                Navigator.pop(context);
+              }),
+        ),
+        flexibleSpace: Container(
+            margin: const EdgeInsets.fromLTRB(56, 0, 18, 8),
+            alignment: Alignment.bottomCenter,
+            child: TextField(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              decoration: InputDecoration(
+                  hintText: widget.keyword,
+                  border: InputBorder.none,
+                  hintStyle: TextStyles.regular16
+                      .merge(const TextStyle(color: Colors.black))),
+            )),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(routeMap);
+              },
+              icon: const Icon(
+                Icons.close_sharp,
+                color: Colors.grey,
+              ))
+        ],
+      ),
       extendBodyBehindAppBar: false,
       body: Stack(fit: StackFit.expand, children: [
         Column(
@@ -96,65 +136,13 @@ class MapPageState extends State<MapPage> {
                   markers: Set.from(_markers),
                   onTap: (LatLng) => setState(() {
                     storeVisibility = false;
-                    todayVisibility = true;
+                    resultVisibility = true;
                   }),
                 )),
           ],
         ),
         Column(
           children: [
-            Container(
-                margin: const EdgeInsets.only(top: 50, left: 12, right: 12),
-                padding: const EdgeInsets.only(left: 18, right: 18),
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  color: AppColors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: GestureDetector(
-                  child: Stack(
-                    alignment: Alignment.centerLeft,
-                    children: [
-                      Container(
-                        color: Colors.white,
-                        height: 50,
-                      ),
-                      Text("장소, 가게명 검색",
-                          style: TextStyles.medium16
-                              .merge(TextStyle(color: Colors.grey.shade400))),
-                    ],
-                  ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(routeSearch);
-                  },
-                )),
-            Container(
-              margin: const EdgeInsets.only(left: 9),
-              height: 54,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: tags.length,
-                itemBuilder: (BuildContext context, int position) {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 4),
-                    child: GestureDetector(
-                        onTap: () {},
-                        child: TagFilterItem(
-                          tag: tags[position],
-                          shadow: true,
-                          background: Colors.white,
-                        )),
-                  );
-                },
-              ),
-            ),
             Container(
               alignment: AlignmentDirectional.topEnd,
               margin: const EdgeInsets.fromLTRB(0, 12, 12, 0),
@@ -177,8 +165,7 @@ class MapPageState extends State<MapPage> {
             builder: (BuildContext context, ScrollController scrollController) {
               return (_isLoading
                   ? Container()
-                  : TodayBottomSheet(
-                  scrollController, todayVisibility, address));
+                  : ResultBottomSheet(scrollController, resultVisibility));
             }),
         MapBottomSheet(store, storeVisibility)
       ]),

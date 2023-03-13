@@ -38,9 +38,16 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                   children: [
                     Container(
                       height: 15,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                offset: const Offset(0, -0.05),
+                                blurRadius: 0.7,
+                                spreadRadius: 0.7,
+                                color: Colors.grey.withOpacity(0.7))
+                          ],
                           color: Colors.white,
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20))),
                     ),

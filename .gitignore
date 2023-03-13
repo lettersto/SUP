@@ -44,14 +44,5 @@ app.*.map.json
 /android/app/release
 
 # API keys
-<<<<<<< HEAD
-<<<<<<< HEAD
 ios/Runner/Keys.plist
 .env*
-=======
-ios/Runner/Keys.plist
->>>>>>> 9196acf ([SETTING] #5 : GoogleMap init)
-=======
-ios/Runner/Keys.plist
-.env*
->>>>>>> 8141120 ([FEAT] #7 : Today Pick Bottom Sheet UI - 구, 동 표시)

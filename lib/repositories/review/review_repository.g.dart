@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'signup_service.dart';
+part of 'review_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'signup_service.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _SignupService implements SignupService {
-  _SignupService(
+class _ReviewRepository implements ReviewRepository {
+  _ReviewRepository(
     this._dio, {
     this.baseUrl,
   });
@@ -19,26 +19,31 @@ class _SignupService implements SignupService {
   String? baseUrl;
 
   @override
-  Future<User> signup(userRequest) async {
+  Future<CursorPagination<ReviewDetailWithPhotos>> paginate(
+      {paginationParams = const PaginationParams()}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(paginationParams?.toJson() ?? <String, dynamic>{});
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(userRequest.toJson());
-    final _result =
-        await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(Options(
-      method: 'POST',
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CursorPagination<ReviewDetailWithPhotos>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/user',
+              '/',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = User.fromJson(_result.data!);
+    final value = CursorPagination<ReviewDetailWithPhotos>.fromJson(
+      _result.data!,
+      (json) => ReviewDetailWithPhotos.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 

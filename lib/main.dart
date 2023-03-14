@@ -8,6 +8,7 @@ import 'package:sup/ui/photo_detail/photo_detail_page.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/review/review_page.dart';
 import 'package:sup/ui/signup/signup_page.dart';
+import 'package:sup/utils/dio_client.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
 const routeSignup = '/';
@@ -22,6 +23,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await SharedPreferenceUtil().init();
+  DioClient().init();
 
   runApp(const ProviderScope(child: MyApp()));
 }

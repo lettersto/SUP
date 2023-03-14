@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/dummy_providers.dart';
+import '../../../../providers/dummy/dummy_providers.dart';
 import '../../../../utils/styles.dart';
 
 class StarRating extends ConsumerStatefulWidget {

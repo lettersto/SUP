@@ -1,13 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../repositories/review_repository.dart';
 import '../models/review_filter.dart';
-import '../notifiers/review_notifier.dart';
+import '../models/review/review_filter_notifier.dart';
 import '../../../utils/enums.dart';
-
-// reviews
-final reviewRepositoryProvider =
-    Provider<ReviewRepository>((ref) => ReviewRepository());
 
 // review filters
 final selectedReviewFilterProvider =

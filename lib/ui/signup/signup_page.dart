@@ -1,11 +1,9 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sup/main.dart';
-import 'package:sup/repositories/signup_repository.dart';
+import 'package:sup/ui/signup/user_controller.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
-
 import '../../models/signup/signup_response.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -16,15 +14,7 @@ class SignUpPage extends StatefulWidget {
 }
 
 class SignUpPageState extends State<SignUpPage> {
-  late UserRepository client;
-
-  @override
-  void initState() {
-    Dio dio = Dio();
-    client = UserRepository(dio);
-
-    super.initState();
-  }
+  final UserController _userController = UserController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +40,7 @@ class SignUpPageState extends State<SignUpPage> {
   }
 
   void updateUserName(String nickname) async {
-    User? user = await client.postUser(UserRequest(nickname: nickname));
-
+    User user = await _userController.signup(UserRequest(nickname: nickname));
     SharedPreferenceUtil().nickname = user.nickname;
     SharedPreferenceUtil().userNo = user.userNo;
   }

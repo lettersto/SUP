@@ -41,5 +41,6 @@ void updateRecents(String text) async {
     recents.remove(text);
     recents.add(text);
   }
+
   SharedPreferenceUtil().recents = recents;
 }

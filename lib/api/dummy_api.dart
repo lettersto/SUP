@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../models/dummy.dart';
+import '../models/dummy/dummy.dart';
 
 class DummyApi {
   String userImageUrl = 'https://reqres.in/api/users?page=1';

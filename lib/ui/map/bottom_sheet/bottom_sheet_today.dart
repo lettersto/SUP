@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 

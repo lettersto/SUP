@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/ui/map/tag_map.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
-import '../../main.dart';
 import '../../models/store.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
@@ -26,7 +24,6 @@ class MapPageState extends State<MapPage> {
   late LatLng _initPosition;
   bool _isLoading = true;
   List<Marker> _markers = [];
-  late String user;
 
   final List<LikeStore> likes = [
     LikeStore(1, Location(37.563063, 126.831237)),
@@ -42,7 +39,6 @@ class MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
-    getUserName();
     addCustomIcon();
     getCurrentLocation();
     setState(() {});
@@ -164,10 +160,5 @@ class MapPageState extends State<MapPage> {
 
     controller.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));
-  }
-
-  void getUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    user = prefs.getString('nickname')!;
   }
 }

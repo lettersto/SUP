@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/utils/app_utils.dart';
 
-import '../../../providers/providers.dart';
-import '../../../models/dummy_review.dart';
+import '../../../providers/providers_exporter.dart';
+import '../../../models/review/review.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/enums.dart';
 
@@ -14,7 +15,7 @@ import './review_text.dart';
 final tagOpenProvider = StateProvider<bool>((ref) => false);
 
 class ReviewListItem extends ConsumerWidget {
-  final Review review;
+  final ReviewDetailWithPhotos review;
   final ReviewMode mode;
 
   const ReviewListItem({
@@ -42,10 +43,15 @@ class ReviewListItem extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          ReviewListTop(mode: mode),
-          if (mode != ReviewMode.detail)
+          ReviewListTop(
+            mode: mode,
+            nickname: review.nickname,
+            starAvg: review.starAvg,
+            reviewCnt: review.reviewCnt,
+          ),
+          if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
             ImageSlider(
-              images: review.images,
+              images: review.imgs,
               size: sliderSize,
             ),
           if (mode != ReviewMode.detail)
@@ -62,7 +68,7 @@ class ReviewListItem extends ConsumerWidget {
             Container(
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Text(review.createdDate.toString(),
+              child: Text(AppUtils.dateFormatter(review.regDtm),
                   style: TextStyles.medium12
                       .merge(const TextStyle(color: AppColors.gray))),
             ),

@@ -103,7 +103,7 @@ class MapPageState extends State<MapPage> {
         ),
         Column(
           children: [
-            MapSearchBar(),
+            const MapSearchBar(),
             const TagMapList(),
             Container(
               alignment: AlignmentDirectional.topEnd,

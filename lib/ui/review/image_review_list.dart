@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../utils/styles.dart';
-import '../../models/dummy.dart';
-import '../../providers/dummy_providers.dart';
+import '../../models/dummy/dummy.dart';
+import '../../providers/dummy/dummy_providers.dart';
 
 import '../../ui/photo_detail/photo_detail_page.dart';
 import '../../ui/common/headline.dart';

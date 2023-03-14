@@ -7,11 +7,17 @@ import '../../common/headline.dart';
 import '../filter_buttons/review_text_button.dart';
 
 class ReviewListTop extends StatelessWidget {
+  final String nickname;
+  final double starAvg;
+  final int reviewCnt;
   final ReviewMode mode;
 
   const ReviewListTop({
     Key? key,
     required this.mode,
+    required this.nickname,
+    required this.starAvg,
+    required this.reviewCnt,
   }) : super(key: key);
 
   @override
@@ -30,11 +36,11 @@ class ReviewListTop extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Headline(
-                title: '배고파서 슬픈 고라니',
+                title: nickname,
                 textColor: textColor,
               ),
               Text(
-                '리뷰 10 사진 25',
+                '리뷰 $reviewCnt / 평균 별점 $starAvg',
                 style: TextStyles.medium12.merge(
                   TextStyle(
                     color: textColor,

@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../api/dummy_api.dart';
-import '../models/tag.dart';
-import '../models/dummy.dart';
+import '../../api/dummy_api.dart';
+import '../../models/dummy/tag.dart';
+import '../../models/dummy/dummy.dart';
 
 // ===== image review =====
 final apiProvider = Provider<DummyApi>((ref) => DummyApi());

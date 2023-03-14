@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sup/models/dummy_review.dart';
+import 'package:sup/models/dummy/dummy_review.dart';
 
 import '../../../utils/enums.dart';
 import '../../../utils/styles.dart';
@@ -22,7 +22,8 @@ class ReviewText extends StatefulWidget {
     var replacedText = text.replaceAll(RegExp(r'(\n)+?'), ' ');
     return ReviewText(
       text: text,
-      newText: '${replacedText.substring(0, 90)}...',
+      newText:
+          '${replacedText.length >= 90 ? replacedText.substring(0, 90) : replacedText}...',
       isCollapsible: replacedText.length >= 90,
       mode: ReviewMode.main,
     );

@@ -1,4 +1,5 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sup/utils/styles.dart';
 
 late SharedPreferences prefs;
 
@@ -18,16 +19,4 @@ void updateRecents(String text) async {
     }
     prefs.setStringList('recents', recents);
   }
-}
-
-void getPrefs() {
-  SharedPreferences.getInstance().then((SharedPreferences sp) => prefs = sp);
-}
-
-String? getUserName() {
-  String? nickname;
-  SharedPreferences.getInstance()
-      .then((sp) => {nickname = sp.getString('nickname')});
-
-  return nickname;
 }

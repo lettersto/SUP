@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
+import 'package:sup/utils/styles.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -12,22 +13,41 @@ class SignUpPage extends StatefulWidget {
 }
 
 class SignUpPageState extends State<SignUpPage> {
+  String? user;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserName();
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: getUserName() == null
+        body: user == null
             ? Center(
                 child: TextField(
                   maxLines: 1,
                   autofocus: true,
                   onSubmitted: (text) {
-                    setState(() {
-                      SharedPreferences.getInstance()
-                          .then((sp) => sp.setString('nickname', text));
-                    });
+                    updateUserName(text);
+                    getUserName();
+                    setState(() {});
                   },
                 ),
               )
-            : MapPage());
+            : Center(child: Text(user!)));
+  }
+
+  void getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    user = prefs.getString('nickname');
+  }
+
+  void updateUserName(String user) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('nickname', user);
   }
 }

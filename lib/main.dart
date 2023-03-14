@@ -6,8 +6,11 @@ import 'package:sup/ui/review_form/review_form_page.dart';
 import 'package:sup/ui/photo_detail/photo_detail_page.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/review/review_page.dart';
+import 'package:sup/ui/signup/signup_page.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
-const routeMap = '/';
+const routeSignup = '/';
+const routeMap = '/map';
 const routeReview = '/reviews';
 const routeReviewForm = '/review-form';
 const photoDetail = '/photo-detail';
@@ -31,7 +34,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
-      initialRoute: '/',
+      initialRoute: routeSignup,
       onGenerateRoute: (settings) {
         late Widget page;
 
@@ -45,6 +48,8 @@ class MyApp extends StatelessWidget {
           page = const MapSearchPage();
         } else if (settings.name == photoDetail) {
           page = const PhotoDetailPage();
+        } else if (settings.name == routeSignup) {
+          page = const SignUpPage();
         } else {
           throw Exception('Unknown route: ${settings.name}');
         }

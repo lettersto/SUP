@@ -1,8 +1,8 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-void updateRecents(String text) async {
-  final prefs = await SharedPreferences.getInstance();
+late SharedPreferences prefs;
 
+void updateRecents(String text) async {
   if (prefs.getStringList('recents') == null) {
     prefs.setStringList('recents', <String>[text]);
   } else {
@@ -18,4 +18,16 @@ void updateRecents(String text) async {
     }
     prefs.setStringList('recents', recents);
   }
+}
+
+void getPrefs() {
+  SharedPreferences.getInstance().then((SharedPreferences sp) => prefs = sp);
+}
+
+String? getUserName() {
+  String? nickname;
+  SharedPreferences.getInstance()
+      .then((sp) => {nickname = sp.getString('nickname')});
+
+  return nickname;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
 import 'package:sup/ui/photo_detail/photo_detail_page.dart';
@@ -20,8 +21,12 @@ const routeSearchResult = '/map-result';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await SharedPreferenceUtil().init();
+
   runApp(const ProviderScope(child: MyApp()));
 }
+
+String? user;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,7 +39,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
-      initialRoute: routeSignup,
+      initialRoute:
+          SharedPreferenceUtil().nickname == "" ? routeSignup : routeMap,
       onGenerateRoute: (settings) {
         late Widget page;
 

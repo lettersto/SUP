@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/ui/map/map_page.dart';
+import 'package:sup/main.dart';
+import 'package:sup/repositories/signup_repository.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
+
+import '../../models/signup/signup_response.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -13,41 +16,43 @@ class SignUpPage extends StatefulWidget {
 }
 
 class SignUpPageState extends State<SignUpPage> {
-  String? user;
+  late UserRepository client;
 
   @override
   void initState() {
-    super.initState();
-    getUserName();
+    Dio dio = Dio();
+    client = UserRepository(dio);
 
-    setState(() {});
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: user == null
-            ? Center(
-                child: TextField(
-                  maxLines: 1,
-                  autofocus: true,
-                  onSubmitted: (text) {
-                    updateUserName(text);
-                    getUserName();
-                    setState(() {});
-                  },
-                ),
-              )
-            : Center(child: Text(user!)));
+      body: Container(
+          padding: const EdgeInsets.all(16),
+          child: TextField(
+            maxLines: 1,
+            autofocus: true,
+            onSubmitted: (text) {
+              updateUserName(text);
+              Navigator.pushReplacementNamed(context, routeMap);
+            },
+            decoration: InputDecoration(
+                hintText: "닉네임을 입력하세요!",
+                enabledBorder: const OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    borderSide: BorderSide(color: AppColors.pinkAccent)),
+                hintStyle: TextStyles.regular16
+                    .merge(const TextStyle(color: Colors.black))),
+          )),
+    );
   }
 
-  void getUserName() async {
-    final prefs = await SharedPreferences.getInstance();
-    user = prefs.getString('nickname');
-  }
+  void updateUserName(String nickname) async {
+    User? user = await client.postUser(UserRequest(nickname: nickname));
 
-  void updateUserName(String user) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('nickname', user);
+    SharedPreferenceUtil().nickname = user.nickname;
+    SharedPreferenceUtil().userNo = user.userNo;
   }
 }

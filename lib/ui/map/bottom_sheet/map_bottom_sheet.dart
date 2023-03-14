@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../models/store.dart';
+import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 import '../../review/review_page.dart';
 
@@ -66,7 +67,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                   ],
                   color: Colors.white,
                   borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12))),
+                      const BorderRadius.vertical(top: Radius.circular(12))),
               width: MediaQuery.of(context).size.width,
               height: _bodyHeight,
               child: Column(
@@ -80,7 +81,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                     decoration: BoxDecoration(
                         color: Colors.grey.withOpacity(0.7),
                         borderRadius:
-                        const BorderRadius.all(Radius.circular(10))),
+                            const BorderRadius.all(Radius.circular(10))),
                   ),
                   Container(
                     margin: const EdgeInsets.fromLTRB(16, 6, 16, 8),
@@ -130,17 +131,17 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                 IconButton(
                                   iconSize: 24,
                                   padding:
-                                  const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                                      const EdgeInsets.fromLTRB(4, 0, 4, 0),
                                   icon: Container(
                                     child: widget.store.like == true
                                         ? const Icon(
-                                      Icons.star_rounded,
-                                      color: AppColors.pink60,
-                                    )
+                                            Icons.star_rounded,
+                                            color: AppColors.pink60,
+                                          )
                                         : const Icon(
-                                      Icons.star_border_rounded,
-                                      color: AppColors.pink60,
-                                    ),
+                                            Icons.star_border_rounded,
+                                            color: AppColors.pink60,
+                                          ),
                                   ),
                                   onPressed: () {
                                     setState(() {
@@ -169,12 +170,12 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                         ...widget.store.urls
                             .map(
                               (url) => Image.network(
-                            url,
-                            width: imageWidth,
-                            height: 94,
-                            fit: BoxFit.cover,
-                          ),
-                        )
+                                url,
+                                width: imageWidth,
+                                height: 94,
+                                fit: BoxFit.cover,
+                              ),
+                            )
                             .toList(),
                       ],
                     ),

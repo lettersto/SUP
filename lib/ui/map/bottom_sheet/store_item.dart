@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sup/ui/map_result/bottom_sheet/review_page_view.dart';
 
 import '../../../models/store.dart';
+import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 
 class StoreItem extends StatefulWidget {

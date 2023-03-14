@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
 import '../../../models/store.dart';
 import '../../../utils/styles.dart';
@@ -16,6 +18,11 @@ class TodayBottomSheet extends StatefulWidget {
 }
 
 class _TodayBottomSheet extends State<TodayBottomSheet> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return widget.visibility
@@ -70,7 +77,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "송유나",
+                                          SharedPreferenceUtil().nickname,
                                           style: const TextStyle(
                                                   color: Colors.pinkAccent)
                                               .merge(TextStyles.medium20),

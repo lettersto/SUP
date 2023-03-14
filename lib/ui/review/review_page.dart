@@ -32,10 +32,17 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
     );
   }
 
+  Future<void> _refreshHandler() async {
+    PaginationUtils.pullToRefresh(
+        controller: _controller,
+        provider: ref.read(
+          reviewProvider(params).notifier,
+        ));
+  }
+
   @override
   void initState() {
     super.initState();
-
     _controller.addListener(listener);
   }
 
@@ -50,22 +57,25 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: CustomScrollView(
-          controller: _controller,
-          slivers: [
-            const ReviewAppBar(storeName: '가게 이름'),
-            const ReviewHeader(),
-            const SliverToBoxAdapter(child: ImageReviewList()),
-            const TagChart(),
-            PaginationSliverListView(
-              provider: reviewProvider(params),
-              itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {
-                return ReviewListItem(
-                  review: model,
-                );
-              },
-            ),
-          ],
+        child: RefreshIndicator(
+          onRefresh: _refreshHandler,
+          child: CustomScrollView(
+            controller: _controller,
+            slivers: [
+              const ReviewAppBar(storeName: '가게 이름'),
+              const ReviewHeader(),
+              const SliverToBoxAdapter(child: ImageReviewList()),
+              const TagChart(),
+              PaginationSliverListView(
+                provider: reviewProvider(params),
+                itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {
+                  return ReviewListItem(
+                    review: model,
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

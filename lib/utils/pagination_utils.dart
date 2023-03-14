@@ -13,4 +13,13 @@ class PaginationUtils {
       );
     }
   }
+
+  static void pullToRefresh({
+    required ScrollController controller,
+    required PaginationProvider provider,
+  }) {
+    provider.paginate(
+      forceRefetch: true,
+    );
+  }
 }

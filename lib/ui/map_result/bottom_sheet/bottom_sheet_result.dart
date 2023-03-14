@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
-import '../../../models/store.dart';
+import '../../../models/map/store.dart';
 import '../../../utils/styles.dart';
 
 class ResultBottomSheet extends StatefulWidget {

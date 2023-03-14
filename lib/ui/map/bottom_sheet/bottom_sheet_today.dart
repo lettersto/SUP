@@ -1,28 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sup/repositories/map_repository.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 
-import '../../../models/store.dart';
+import '../../../models/map/store.dart';
+import '../../../models/map/today_model.dart';
 import '../../../utils/styles.dart';
 
 class TodayBottomSheet extends StatefulWidget {
   final ScrollController sc;
   final bool visibility;
   final String address;
+  final MyLatLng userLocation;
 
-  const TodayBottomSheet(this.sc, this.visibility, this.address, {super.key});
+  const TodayBottomSheet(
+      this.sc, this.visibility, this.address, this.userLocation,
+      {super.key});
 
   @override
   State<TodayBottomSheet> createState() => _TodayBottomSheet();
 }
 
 class _TodayBottomSheet extends State<TodayBottomSheet> {
+  TodayRepository todayRepository = TodayRepository();
+
   @override
   Widget build(BuildContext context) {
+    List<Today> todays =
+        todayRepository.fetchToday(widget.userLocation) as List<Today>;
+
     return widget.visibility
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: stores.length,
+            itemCount: todays.length,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -102,7 +113,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                   ],
                 );
               }
-              return TodayPickItem(stores[position]);
+              return TodayPickItem(todays[position]);
             })
         : Container();
   }

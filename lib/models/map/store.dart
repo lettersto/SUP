@@ -21,16 +21,16 @@ class Store {
       this.reviewCnt, this.like);
 }
 
-class Location {
+class MyLatLng {
   double latitude;
   double longitude;
 
-  Location(this.latitude, this.longitude);
+  MyLatLng(this.latitude, this.longitude);
 }
 
 class LikeStore {
   int storeNo;
-  Location location;
+  MyLatLng location;
 
   LikeStore(this.storeNo, this.location);
 }

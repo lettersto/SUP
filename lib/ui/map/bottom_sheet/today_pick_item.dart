@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/store.dart';
+import '../../../models/map/today_model.dart';
 import '../../../utils/styles.dart';
 
 class TodayPickItem extends StatefulWidget {
-  final Store store;
+  final Today store;
 
   const TodayPickItem(this.store, {super.key});
 
@@ -23,7 +23,7 @@ class _TodayPickItem extends State<TodayPickItem> {
           SizedBox(
             height: 220,
             child: PageView.builder(
-                itemCount: widget.store.urls.length,
+                itemCount: widget.store.imgs.length,
                 pageSnapping: true,
                 itemBuilder: (context, pagePosition) {
                   return Stack(
@@ -34,7 +34,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: Image.network(
-                                widget.store.urls[pagePosition],
+                                widget.store.imgs[pagePosition],
                                 fit: BoxFit.cover,
                                 width: imageWidth,
                                 height: 220,
@@ -56,7 +56,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                                       const TextStyle(color: Colors.white)),
                                 ),
                                 Text(
-                                  "/${widget.store.urls.length.toString()}",
+                                  "/${widget.store.imgs.length.toString()}",
                                   style: TextStyles.regular14.merge(TextStyle(
                                       color: Colors.white.withOpacity(0.6))),
                                 ),
@@ -78,7 +78,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.store.name,
+                          widget.store.storeName,
                           style: const TextStyle(color: AppColors.black)
                               .merge(TextStyles.bold18),
                         ),
@@ -90,7 +90,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                               size: 14,
                             ),
                             Text(
-                              " ${widget.store.rate}  ",
+                              " ${widget.store.starAvg}  ",
                               style: const TextStyle(color: Colors.grey)
                                   .merge(TextStyles.regular14),
                             ),

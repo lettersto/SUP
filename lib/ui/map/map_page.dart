@@ -7,7 +7,7 @@ import 'package:sup/ui/map/tag_map.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
-import '../../models/store.dart';
+import '../../models/map/store.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
@@ -22,13 +22,14 @@ class MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
+  late MyLatLng userLocation;
   bool _isLoading = true;
   List<Marker> _markers = [];
 
   final List<LikeStore> likes = [
-    LikeStore(1, Location(37.563063, 126.831237)),
-    LikeStore(2, Location(37.561036, 126.836975)),
-    LikeStore(3, Location(37.561036, 126.839975)),
+    LikeStore(1, MyLatLng(37.563063, 126.831237)),
+    LikeStore(2, MyLatLng(37.561036, 126.836975)),
+    LikeStore(3, MyLatLng(37.561036, 126.839975)),
   ];
 
   int storeNo = 1;
@@ -103,7 +104,7 @@ class MapPageState extends State<MapPage> {
         ),
         Column(
           children: [
-            MapSearchBar(),
+            const MapSearchBar(),
             const TagMapList(),
             Container(
               alignment: AlignmentDirectional.topEnd,
@@ -127,8 +128,8 @@ class MapPageState extends State<MapPage> {
             builder: (BuildContext context, ScrollController scrollController) {
               return (_isLoading
                   ? Container()
-                  : TodayBottomSheet(
-                      scrollController, todayVisibility, address));
+                  : TodayBottomSheet(scrollController, todayVisibility, address,
+                      userLocation));
             }),
         MapBottomSheet(storeNo, storeVisibility)
       ]),
@@ -141,6 +142,7 @@ class MapPageState extends State<MapPage> {
 
     setState(() {
       _initPosition = LatLng(position.latitude, position.longitude);
+      userLocation = MyLatLng(position.latitude, position.latitude);
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

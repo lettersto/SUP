@@ -27,6 +27,7 @@ dependencies:
   shared_preferences: ^2.0.18
   envied: ^0.3.0
   flutter_dotenv: ^5.0.2
+  dio: ^5.0.2
 
 dev_dependencies:
   flutter_test:

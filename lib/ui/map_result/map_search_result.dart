@@ -9,7 +9,7 @@ import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../main.dart';
-import '../../models/store.dart';
+import '../../models/map/store.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
 class MapResultPage extends StatefulWidget {

@@ -59,10 +59,11 @@ class _PhotoReviewContentState extends State<PhotoReviewContent> {
             offset: _offset,
             duration: const Duration(microseconds: 350),
             curve: Curves.easeInOut,
-            child: ReviewListItem(
-              review: reviewDummy[0],
-              mode: ReviewMode.detail,
-            ),
+            child: Text('dddd'),
+            // child: ReviewListItem(
+            //   review: reviewDummy[0],
+            //   mode: ReviewMode.detail,
+            // ),
           ),
         ),
       ),

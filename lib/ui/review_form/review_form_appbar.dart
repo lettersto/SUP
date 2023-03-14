@@ -49,7 +49,7 @@ class ReviewFormAppBar extends StatelessWidget {
                   height: 2,
                 ),
                 Text(
-                  AppUtils.dateFormatter(),
+                  AppUtils.dateFormatter(DateTime.now().toString()),
                   style: TextStyles.medium14.merge(
                     const TextStyle(color: AppColors.gray),
                   ),

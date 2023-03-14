@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../utils/styles.dart';
 
 class TagItem extends StatelessWidget {
-  final Map<String, String> tag;
+  final String tag;
   final Color tagColor;
   final Color tagTextColor;
 
@@ -21,7 +21,7 @@ class TagItem extends StatelessWidget {
           color: tagColor, borderRadius: BorderRadius.circular(4.0)),
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Text(
-        '${tag['emoji']} ${tag['title']}',
+        tag,
         style: TextStyles.medium14.merge(
           TextStyle(color: tagTextColor),
         ),

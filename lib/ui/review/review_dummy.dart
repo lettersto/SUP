@@ -1,5 +1,5 @@
-import '../../models/dumy_tag.dart';
-import '../../models/dummy_review.dart';
+import '../../models/dummy/dumy_tag.dart';
+import '../../models/dummy/dummy_review.dart';
 
 final List<Review> reviewDummy = [
   Review(

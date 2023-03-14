@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/dummy_providers.dart';
-import '../../../../models/tag.dart';
+import '../../../../providers/dummy/dummy_providers.dart';
+import '../../../../models/dummy/tag.dart';
 import '../../../../utils/styles.dart';
 
 class TagSelectionItem extends ConsumerStatefulWidget {

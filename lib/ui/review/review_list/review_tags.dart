@@ -5,7 +5,7 @@ import '../../../utils/enums.dart';
 import '../../common/tag_item.dart';
 
 class ReviewTags extends StatefulWidget {
-  final List<Map<String, String>> tags;
+  final List<String> tags;
   final Color tagColor;
   final Color tagTextColor;
   final ReviewMode mode;
@@ -61,7 +61,7 @@ class _ReviewTagsState extends State<ReviewTags>
                     });
                   },
                   child: TagItem(
-                    tag: const {'emoji': '+', 'title': ''},
+                    tag: '+${widget.tags.length - 1}',
                     tagColor: widget.tagColor,
                     tagTextColor: widget.tagTextColor,
                   ),

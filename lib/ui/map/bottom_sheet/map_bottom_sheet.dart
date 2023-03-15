@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
-
-import '../../../models/map/map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/store/store_detail_provider.dart';
 import '../../../models/map/store.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 import '../../review/review_page.dart';
 
-class MapBottomSheet extends StatefulWidget {
-  final Store store;
-
-  const MapBottomSheet(this.store, {super.key});
+class MapBottomSheet extends ConsumerStatefulWidget {
+  const MapBottomSheet({super.key});
 
   @override
-  State<MapBottomSheet> createState() => _MapBottomSheet();
+  ConsumerState<MapBottomSheet> createState() => _MapBottomSheet();
 }
 
-class _MapBottomSheet extends State<MapBottomSheet> {
+class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
   double _bodyHeight = 200;
   final String defaultImage =
       'https://user-images.githubusercontent.com/33195517/223589375-44917834-d98c-4078-bb52-568b265d195d.png';
@@ -23,7 +21,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    Image image;
+    StoreDetail storeDetail = ref.watch(storeDetailProvider);
     double imageWidth = (MediaQuery.of(context).size.width - 36) / 3;
 
     return Positioned(
@@ -97,7 +95,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.store.storeName,
+                                  storeDetail.storeName,
                                   style: const TextStyle(color: AppColors.blue)
                                       .merge(TextStyles.medium16),
                                 ),
@@ -109,7 +107,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       size: 14,
                                     ),
                                     Text(
-                                      " ${widget.store.starAvg}  ",
+                                      " ${storeDetail.starAvg}  ",
                                       style: const TextStyle(color: Colors.grey)
                                           .merge(TextStyles.regular14),
                                     ),
@@ -119,7 +117,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       color: AppColors.whiteGrey,
                                     ),
                                     Text(
-                                      "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
+                                      "  방문자리뷰 ${Format.currency.format(storeDetail.reviewCnt)} ",
                                       style: const TextStyle(color: Colors.grey)
                                           .merge(TextStyles.regular14),
                                     ),
@@ -129,12 +127,12 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                             ),
                             Row(
                               children: [
-                                /*IconButton(
+                                IconButton(
                                   iconSize: 24,
                                   padding:
                                       const EdgeInsets.fromLTRB(4, 0, 4, 0),
                                   icon: Container(
-                                    child: widget.store.like == true
+                                    child: storeDetail.isWish == true
                                         ? const Icon(
                                             Icons.star_rounded,
                                             color: AppColors.pink60,
@@ -146,10 +144,10 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                   ),
                                   onPressed: () {
                                     setState(() {
-                                      widget.store.like = !widget.store.like;
+                                      //storeDetail.isWish = !storeDetail.isWish;
                                     });
                                   },
-                                ),*/
+                                ),
                                 const Icon(
                                   size: 20,
                                   Icons.share,
@@ -168,7 +166,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ...widget.store.imgs
+                        ...storeDetail.imgs
                             .map(
                               (url) => Image.network(
                                 url,

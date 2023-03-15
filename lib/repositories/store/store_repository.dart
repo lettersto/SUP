@@ -26,6 +26,11 @@ abstract class StoreRepository implements IStoreRepository {
       @Query('category') int category,
       @Query('keyword') String keyword,
       @Query('sort') String sort);
+
+  @override
+  @GET('/store/{storeNo}/{userNo}')
+  Future<StoreDetail> getStoreDetail(
+      @Path('storeNo') int storeNo, @Path('userNo') int userNo);
 }
 
 final storeRepositoryProvider = Provider<StoreRepository>((ref) {

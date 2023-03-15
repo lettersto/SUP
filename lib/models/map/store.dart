@@ -3,6 +3,36 @@ import 'package:json_annotation/json_annotation.dart';
 part 'store.g.dart';
 
 @JsonSerializable()
+class StoreDetail {
+  final int storeNo;
+  final String storeName;
+  final double starAvg;
+  final int reviewCnt;
+  final List<String> imgs;
+  final String address;
+  final int category;
+  final bool isWish;
+
+  StoreDetail(this.storeNo, this.storeName, this.starAvg, this.reviewCnt,
+      this.imgs, this.address, this.category, this.isWish);
+
+  StoreDetail.init()
+      : storeNo = 0,
+        storeName = "",
+        starAvg = 0.0,
+        reviewCnt = 0,
+        imgs = [],
+        address = "",
+        category = 0,
+        isWish = false;
+
+  factory StoreDetail.fromJson(Map<String, dynamic> json) =>
+      _$StoreDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StoreDetailToJson(this);
+}
+
+@JsonSerializable()
 class Store {
   final int storeNo;
   final String storeName;

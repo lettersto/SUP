@@ -6,6 +6,29 @@ part of 'store.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+StoreDetail _$StoreDetailFromJson(Map<String, dynamic> json) => StoreDetail(
+      json['storeNo'] as int,
+      json['storeName'] as String,
+      (json['starAvg'] as num).toDouble(),
+      json['reviewCnt'] as int,
+      (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
+      json['address'] as String,
+      json['category'] as int,
+      json['isWish'] as bool,
+    );
+
+Map<String, dynamic> _$StoreDetailToJson(StoreDetail instance) =>
+    <String, dynamic>{
+      'storeNo': instance.storeNo,
+      'storeName': instance.storeName,
+      'starAvg': instance.starAvg,
+      'reviewCnt': instance.reviewCnt,
+      'imgs': instance.imgs,
+      'address': instance.address,
+      'category': instance.category,
+      'isWish': instance.isWish,
+    };
+
 Store _$StoreFromJson(Map<String, dynamic> json) => Store(
       json['storeNo'] as int,
       json['storeName'] as String,

@@ -42,55 +42,22 @@ class MapPageState extends ConsumerState<MapPage> {
   bool todayVisibility = true;
   bool storeVisibility = false;
   String address = "";
+  List<Marker> _markers = [];
   List<Store> stores = [];
+
   @override
   void initState() {
     super.initState();
-    //addCustomIcon();
     getCurrentLocation();
     setState(() {});
   }
 
-  /*void addCustomIcon() async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_ios.png");
-    }
-
-    for (int i = 0; i < likes.length; i++) {
-      LikeStore s = likes[i];
-      _markers.add(Marker(
-          markerId: MarkerId(i.toString()),
-          draggable: false,
-          icon: star,
-          onTap: () => setState(() {
-                storeNo = s.storeNo;
-                todayVisibility = false;
-                storeVisibility = true;
-              }),
-          position: LatLng(s.location.latitude, s.location.longitude)));
-    }
-  }*/
-
-  void setMapPage(int storeNo) {
-    setState(() {
-      storeNo = storeNo;
-      todayVisibility = false;
-      storeVisibility = true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final markers = ref.watch(markerProvider);
-
     Future<void> onMapCreated(GoogleMapController controller) async {
       stores = ref.read(storeProvider).list;
       ref.read(mapControllerProvider.notifier).setController(controller);
-      ref.read(markerProvider.notifier).addCustomIcon(stores);
+      addCustomIcon(stores);
     }
 
     return Scaffold(
@@ -114,9 +81,8 @@ class MapPageState extends ConsumerState<MapPage> {
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
-                        markers: markers,
+                        markers: Set.from(_markers),
                         onTap: (LatLng) => setState(() {
-                          //showToast(SharedPreferenceUtil().userNo.toString());
                           storeVisibility = false;
                           todayVisibility = true;
                         }),
@@ -152,9 +118,34 @@ class MapPageState extends ConsumerState<MapPage> {
                   : TodayBottomSheet(scrollController, todayVisibility, address,
                       userLocation));
             }),
-        MapBottomSheet(storeNo, storeVisibility)
+        MapBottomSheet(storeVisibility)
       ]),
     );
+  }
+
+  void addCustomIcon(List<Store> stores) async {
+    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/icons/marker_store.png");
+
+    if (Platform.isIOS) {
+      star = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(), "assets/icons/marker_store.png");
+    }
+
+    for (int i = 0; i < stores.length; i++) {
+      Store s = stores[i];
+      _markers.add(Marker(
+          markerId: MarkerId(s.storeNo.toString()),
+          draggable: false,
+          icon: star,
+          onTap: () => setState(() {
+                storeNo = s.storeNo;
+                showToast(storeNo.toString());
+                todayVisibility = false;
+                storeVisibility = true;
+              }),
+          position: LatLng(s.lat, s.lng)));
+    }
   }
 
   Future<Position> getCurrentLocation() async {

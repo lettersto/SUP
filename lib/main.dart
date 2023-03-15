@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
 import 'package:sup/ui/photo_detail/photo_detail_page.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/review/review_page.dart';
 import 'package:sup/ui/signup/signup_page.dart';
-import 'package:sup/utils/dio_client.dart';
+import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
+import 'package:sup/utils/styles.dart';
 
 const routeSignup = '/';
 const routeMap = '/map';
@@ -23,12 +23,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   await SharedPreferenceUtil().init();
-  DioClient().init();
 
   runApp(const ProviderScope(child: MyApp()));
 }
-
-String? user;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -38,11 +35,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SUP',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: 'NotoSans',
-      ),
+      theme: ThemeData(),
       initialRoute:
           SharedPreferenceUtil().nickname == "" ? routeSignup : routeMap,
+      navigatorKey: navigatorKey,
       onGenerateRoute: (settings) {
         late Widget page;
 

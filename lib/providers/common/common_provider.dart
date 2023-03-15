@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final baseUrlProvider = Provider<String>((ref) =>
-    'http://ec2-54-180-46-145.ap-northeast-2.compute.amazonaws.com:8080/api');
+final baseUrl = dotenv.env['baseUrl']!;
 
 final dioProvider = Provider<Dio>((ref) {
-  final dio = Dio();
+  final dio = Dio()..options = BaseOptions(baseUrl: baseUrl);
   return dio;
 });

@@ -26,3 +26,5 @@ void showToast(String msg) {
 class Format {
   static NumberFormat currency = NumberFormat('###,###,###,###');
 }
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();

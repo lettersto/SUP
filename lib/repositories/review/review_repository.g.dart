@@ -60,3 +60,90 @@ class _PaginatedReviewRepository implements PaginatedReviewRepository {
     return requestOptions;
   }
 }
+
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
+
+class _ReviewClient implements ReviewClient {
+  _ReviewClient(
+    this._dio, {
+    this.baseUrl,
+  });
+
+  final Dio _dio;
+
+  String? baseUrl;
+
+  @override
+  Future<void> createReview({
+    required storeNo,
+    required userNo,
+    required content,
+    required star,
+    required tags,
+    imgs,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'storeNo',
+      storeNo.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'userNo',
+      userNo.toString(),
+    ));
+    _data.fields.add(MapEntry(
+      'content',
+      content,
+    ));
+    _data.fields.add(MapEntry(
+      'star',
+      star.toString(),
+    ));
+    _data.files.add(MapEntry(
+        'tags',
+        MultipartFile.fromBytes(
+          tags,
+          filename: null,
+          contentType: MediaType.parse('multipart/form-data'),
+        )));
+    if (imgs != null) {
+      _data.files.addAll(imgs.map((i) => MapEntry(
+          'imgs',
+          MultipartFile.fromFileSync(
+            i.path,
+            filename: i.path.split(Platform.pathSeparator).last,
+            contentType: MediaType.parse('multipart/form-data'),
+          ))));
+    }
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+        .compose(
+          _dio.options,
+          '/review',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+  }
+
+  RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
+    if (T != dynamic &&
+        !(requestOptions.responseType == ResponseType.bytes ||
+            requestOptions.responseType == ResponseType.stream)) {
+      if (T == String) {
+        requestOptions.responseType = ResponseType.plain;
+      } else {
+        requestOptions.responseType = ResponseType.json;
+      }
+    }
+    return requestOptions;
+  }
+}

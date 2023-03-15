@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../utils/styles.dart';
 
-import 'star_rating.dart';
+import './star_rating.dart';
 
 class StarRatingArea extends StatelessWidget {
   const StarRatingArea({super.key});

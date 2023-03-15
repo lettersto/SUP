@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../providers/dummy/dummy_providers.dart';
 import '../../../../utils/styles.dart';
+
 import '../tag_selection/tag_selection_column.dart';
 
 class TagSelectionArea extends ConsumerWidget {
@@ -48,8 +49,7 @@ class TagSelectionArea extends ConsumerWidget {
                     .map((ct) => TagSelectionColumn(
                           category: ct,
                         ))
-                    .toList()
-                ),
+                    .toList()),
           ),
         ],
       ),

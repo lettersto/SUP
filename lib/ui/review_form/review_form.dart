@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/utils/app_utils.dart';
 
-import '../../providers/dummy/dummy_providers.dart';
+import '../../providers/review/review_form_provider.dart';
+import '../../providers/review/review_provider.dart';
 import '../../utils/styles.dart';
 
 import './form_field/star_rating/star_rating_area.dart';
 import './form_field/tag_selection/tag_selection_area.dart';
-import './form_field/comment_text_field.dart';
-import './form_field/add_photo.dart';
+import 'form_field/comment/comment_text_field.dart';
+import 'form_field/add_photo/add_photo.dart';
 
 class ReviewForm extends ConsumerStatefulWidget {
   const ReviewForm({super.key});
@@ -17,13 +19,53 @@ class ReviewForm extends ConsumerStatefulWidget {
 }
 
 class _ReviewFormState extends ConsumerState<ReviewForm> {
+  bool _isFormValid = false;
   final _formKey = GlobalKey<FormState>();
+  final _starRatingKey = GlobalKey();
+  final _tagsKey = GlobalKey();
   final _commentController = TextEditingController();
 
   void _setComment() {
     ref
-        .read(reviewFormFieldProvider.notifier)
-        .setContent(_commentController.text);
+        .read(reviewFormProvider.notifier)
+        .setContent(_commentController.text.trim());
+  }
+
+  Future scrollToWidget(GlobalKey key) async {
+    final context = key.currentContext;
+    await Scrollable.ensureVisible(context!,
+        duration: const Duration(milliseconds: 800));
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (!ref.read(reviewFormProvider.notifier).isStarValidate) {
+      scrollToWidget(_starRatingKey);
+      showToast('별점을 1개 이상 주세요!');
+      return;
+    }
+
+    if (!ref.read(reviewFormProvider.notifier).isTagsValidate) {
+      scrollToWidget(_tagsKey);
+      showToast('어떤 점이 좋았는지 최소 하나를 선택해 주세요!');
+      return;
+    }
+
+    try {
+      await ref.watch(reviewClientProvider).createReview(
+          storeNo: 1,
+          userNo: 1,
+          content: ref.watch(reviewFormProvider).content,
+          star: ref.read(reviewFormProvider).star,
+          tags: ref.read(reviewFormProvider).tags,
+          imgs: ref.read(reviewFormProvider).imgs);
+    } catch (err, st) {
+      print(err);
+      print(st);
+    }
+
+    _isFormValid = true;
   }
 
   @override
@@ -45,8 +87,12 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
         key: _formKey,
         child: Column(
           children: [
-            const StarRatingArea(),
-            const TagSelectionArea(),
+            StarRatingArea(
+              key: _starRatingKey,
+            ),
+            TagSelectionArea(
+              key: _tagsKey,
+            ),
             const SizedBox(
               height: 80,
             ),
@@ -69,7 +115,11 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    print('invalidate!');
+                    _submit();
+
+                    if (_isFormValid) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 child: Text(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/dummy/dummy_providers.dart';
+import '../../../../providers/review/review_form_provider.dart';
 import '../../../../utils/styles.dart';
 
 class StarRating extends ConsumerStatefulWidget {
@@ -16,14 +16,12 @@ class _StarRatingState extends ConsumerState<StarRating> {
 
   @override
   Widget build(BuildContext context) {
-    var selectedStarIdx = ref.watch(reviewFormFieldProvider).star;
-
     void pressHandler(int newStarIdx) {
       setState(() {
         _selection.fillRange(0, 5, false);
         _selection.fillRange(0, newStarIdx + 1, true);
       });
-      ref.read(reviewFormFieldProvider.notifier).setStarRate(newStarIdx + 1);
+      ref.read(reviewFormProvider.notifier).setStar(newStarIdx + 1);
     }
 
     return ToggleButtons(

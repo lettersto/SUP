@@ -3,11 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/providers/store/marker_provider.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/ui/map/tag_map.dart';
-import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
@@ -15,6 +13,7 @@ import 'dart:io' show Platform;
 import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../providers/store/map_controller_provider.dart';
+import '../../providers/store/store_detail_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
@@ -29,16 +28,8 @@ class MapPageState extends ConsumerState<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
-  late MyLatLng userLocation;
+  MyLatLng userLocation = MyLatLng(0, 0);
   bool _isLoading = true;
-
-  final List<LikeStore> likes = [
-    LikeStore(1, MyLatLng(37.563063, 126.831237)),
-    LikeStore(2, MyLatLng(37.561036, 126.836975)),
-    LikeStore(3, MyLatLng(37.561036, 126.839975)),
-  ];
-
-  int storeNo = 0;
   bool todayVisibility = true;
   bool storeVisibility = false;
   String address = "";
@@ -47,8 +38,8 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   void initState() {
-    super.initState();
     getCurrentLocation();
+    super.initState();
     setState(() {});
   }
 
@@ -139,8 +130,9 @@ class MapPageState extends ConsumerState<MapPage> {
           draggable: false,
           icon: star,
           onTap: () => setState(() {
-                storeNo = s.storeNo;
-                showToast(storeNo.toString());
+                ref
+                    .read(storeDetailProvider.notifier)
+                    .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
                 todayVisibility = false;
                 storeVisibility = true;
               }),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/dummy_providers.dart';
+import '../../providers/dummy/dummy_providers.dart';
 import '../../utils/styles.dart';
 
 import './form_field/star_rating/star_rating_area.dart';

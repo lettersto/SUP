@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/repositories/map_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/map/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
 import '../../../models/map/store.dart';
-import '../../../models/map/today_model.dart';
+import '../../../models/map/today.dart';
 import '../../../utils/styles.dart';
 
-class TodayBottomSheet extends StatefulWidget {
+class TodayBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   final bool visibility;
   final String address;
@@ -18,22 +19,27 @@ class TodayBottomSheet extends StatefulWidget {
       {super.key});
 
   @override
-  State<TodayBottomSheet> createState() => _TodayBottomSheet();
+  ConsumerState<TodayBottomSheet> createState() => _TodayBottomSheet();
 }
 
-class _TodayBottomSheet extends State<TodayBottomSheet> {
-  TodayRepository todayRepository = TodayRepository();
+class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
+  @override
+  void initState() {
+    ref.read(storeProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
+        widget.userLocation.latitude, widget.userLocation.longitude);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<Today> todays =
-        todayRepository.fetchToday(widget.userLocation) as List<Today>;
+    TodayResponse todays = ref.watch(storeProvider);
 
     return widget.visibility
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: todays.length,
+            itemCount: todays.list.length + 1,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -81,7 +87,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "송유나",
+                                          SharedPreferenceUtil().nickname,
                                           style: const TextStyle(
                                                   color: Colors.pinkAccent)
                                               .merge(TextStyles.medium20),
@@ -113,7 +119,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                   ],
                 );
               }
-              return TodayPickItem(todays[position]);
+              return TodayPickItem(todays.list[position - 1]);
             })
         : Container();
   }

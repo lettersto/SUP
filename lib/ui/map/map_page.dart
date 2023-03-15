@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/ui/map/tag_map.dart';
+import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/geo_network.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../models/map/store.dart';
@@ -96,6 +99,7 @@ class MapPageState extends State<MapPage> {
                         mapToolbarEnabled: false,
                         markers: Set.from(_markers),
                         onTap: (LatLng) => setState(() {
+                          showToast(SharedPreferenceUtil().userNo.toString());
                           storeVisibility = false;
                           todayVisibility = true;
                         }),
@@ -142,7 +146,7 @@ class MapPageState extends State<MapPage> {
 
     setState(() {
       _initPosition = LatLng(position.latitude, position.longitude);
-      userLocation = MyLatLng(position.latitude, position.latitude);
+      userLocation = MyLatLng(position.latitude, position.longitude);
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/map/today_model.dart';
+import '../../../models/map/today.dart';
+import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 
 class TodayPickItem extends StatefulWidget {
@@ -99,10 +100,12 @@ class _TodayPickItem extends State<TodayPickItem> {
                               size: 4,
                               color: AppColors.whiteGrey,
                             ),
-                            Text(
-                              "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
-                              style: const TextStyle(color: Colors.grey)
-                                  .merge(TextStyles.regular14),
+                            Center(
+                              child: Text(
+                                "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
+                                style: const TextStyle(color: Colors.grey)
+                                    .merge(TextStyles.regular14),
+                              ),
                             ),
                           ],
                         ),
@@ -114,7 +117,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           iconSize: 24,
                           padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                           icon: Container(
-                            child: widget.store.like == true
+                            child: widget.store.isWish == true
                                 ? const Icon(
                                     Icons.star_rounded,
                                     color: AppColors.pink60,
@@ -126,7 +129,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           ),
                           onPressed: () {
                             setState(() {
-                              widget.store.like = !widget.store.like;
+                              widget.store.isWish = !widget.store.isWish;
                             });
                           },
                         ),

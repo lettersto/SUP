@@ -9,11 +9,11 @@ Future<String> getAddressByGeo(String latitude, String longitude) async {
 
   GeoNetwork geoNetwork = GeoNetwork(geoAPI);
 
-  var doroData = await geoNetwork.getDoro();
-  var si = doroData['results'][0]['address_components'][2]['short_name'];
-  var addr = doroData['results'][0]['address_components'][1]['short_name'];
+  var addrData = await geoNetwork.getAddr();
+  var gu = addrData['results'][0]['address_components'][2]['short_name'];
+  var dong = addrData['results'][0]['address_components'][1]['short_name'];
 
-  return si + " " + addr;
+  return gu + " " + dong;
 }
 
 class GeoNetwork {
@@ -21,7 +21,7 @@ class GeoNetwork {
 
   GeoNetwork(this.url);
 
-  Future<dynamic> getDoro() async {
+  Future<dynamic> getAddr() async {
     http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       String jsonData = response.body;

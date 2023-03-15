@@ -5,12 +5,16 @@ part 'signup_response.g.dart';
 @JsonSerializable()
 class User {
   @JsonKey(name: "userNo")
-  final int userNo;
+  int userNo;
 
   @JsonKey(name: "nickname")
-  final String nickname;
+  String nickname;
 
   User({required this.userNo, required this.nickname});
+
+  User.init()
+      : userNo = 0,
+        nickname = "";
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

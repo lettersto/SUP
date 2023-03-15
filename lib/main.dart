@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
 import 'package:sup/ui/photo_detail/photo_detail_page.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/review/review_page.dart';
+import 'package:sup/ui/signup/signup_page.dart';
+import 'package:sup/utils/dio_client.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
-const routeMap = '/';
+const routeSignup = '/';
+const routeMap = '/map';
 const routeReview = '/reviews';
 const routeReviewForm = '/review-form';
 const photoDetail = '/photo-detail';
@@ -17,8 +22,13 @@ const routeSearchResult = '/map-result';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await SharedPreferenceUtil().init();
+  DioClient().init();
+
   runApp(const ProviderScope(child: MyApp()));
 }
+
+String? user;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -31,7 +41,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
-      initialRoute: '/',
+      initialRoute:
+          SharedPreferenceUtil().nickname == "" ? routeSignup : routeMap,
       onGenerateRoute: (settings) {
         late Widget page;
 
@@ -45,6 +56,8 @@ class MyApp extends StatelessWidget {
           page = const MapSearchPage();
         } else if (settings.name == photoDetail) {
           page = const PhotoDetailPage();
+        } else if (settings.name == routeSignup) {
+          page = const SignUpPage();
         } else {
           throw Exception('Unknown route: ${settings.name}');
         }

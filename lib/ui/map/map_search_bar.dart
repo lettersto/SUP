@@ -8,7 +8,7 @@ class MapSearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.only(top: 50, left: 12, right: 12),
+        margin: const EdgeInsets.only(top: 60, left: 12, right: 12),
         padding: const EdgeInsets.only(left: 18, right: 18),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(10)),

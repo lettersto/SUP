@@ -11,9 +11,10 @@ import '../common/base_pagination_repository.dart';
 part 'review_repository.g.dart';
 
 @RestApi()
-abstract class ReviewRepository
+abstract class PaginatedReviewRepository
     implements IBasePaginationRepository<ReviewDetailWithPhotos> {
-  factory ReviewRepository(Dio dio, {String baseUrl}) = _ReviewRepository;
+  factory PaginatedReviewRepository(Dio dio, {String baseUrl}) =
+      _PaginatedReviewRepository;
 
   @override
   @GET('/')
@@ -23,10 +24,10 @@ abstract class ReviewRepository
 }
 
 final reviewRepositoryProvider =
-    Provider.family<ReviewRepository, ReviewDetailParams>(
+    Provider.family<PaginatedReviewRepository, ReviewDetailParams>(
         (ref, ReviewDetailParams params) {
   final dio = ref.watch(dioProvider);
-  final repository = ReviewRepository(dio,
+  final repository = PaginatedReviewRepository(dio,
       baseUrl:
           'http://ec2-54-180-46-145.ap-northeast-2.compute.amazonaws.com:8080/api/review/${params.storeNo}/${params.userNo}');
   return repository;

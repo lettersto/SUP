@@ -6,15 +6,17 @@ import '../../models/review/review.dart';
 import '../../repositories/review/review_repository.dart';
 import '../common/pagination_provider.dart';
 
-class ReviewStateNotifier
-    extends PaginationProvider<ReviewDetailWithPhotos, ReviewRepository> {
-  ReviewStateNotifier({required super.repository});
+class PaginatedReviewStateNotifier extends PaginationProvider<
+    ReviewDetailWithPhotos, PaginatedReviewRepository> {
+  PaginatedReviewStateNotifier({required super.repository});
 }
 
-final reviewProvider = StateNotifierProvider.family<ReviewStateNotifier,
-    CursorPaginationBase, ReviewDetailParams>((ref, ReviewDetailParams params) {
+final paginatedReviewProvider = StateNotifierProvider.family<
+    PaginatedReviewStateNotifier,
+    CursorPaginationBase,
+    ReviewDetailParams>((ref, ReviewDetailParams params) {
   final repository = ref.watch(reviewRepositoryProvider(params));
-  final notifier = ReviewStateNotifier(repository: repository);
+  final notifier = PaginatedReviewStateNotifier(repository: repository);
 
   return notifier;
 });

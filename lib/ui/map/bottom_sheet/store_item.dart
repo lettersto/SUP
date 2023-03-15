@@ -37,7 +37,7 @@ class _StoreItem extends State<StoreItem> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.store.name,
+                      widget.store.storeName,
                       style: const TextStyle(color: AppColors.blue)
                           .merge(TextStyles.semiBold16),
                     ),
@@ -49,7 +49,7 @@ class _StoreItem extends State<StoreItem> {
                           size: 15,
                         ),
                         Text(
-                          " ${widget.store.rate}  ",
+                          " ${widget.store.starAvg}  ",
                           style: const TextStyle(color: Colors.grey)
                               .merge(TextStyles.regular14),
                         ),
@@ -69,7 +69,7 @@ class _StoreItem extends State<StoreItem> {
                 ),
                 Row(
                   children: [
-                    IconButton(
+                    /*IconButton(
                       iconSize: 28,
                       padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                       icon: Container(
@@ -88,7 +88,7 @@ class _StoreItem extends State<StoreItem> {
                           widget.store.like = !widget.store.like;
                         });
                       },
-                    ),
+                    ),*/
                     const Icon(
                       size: 24,
                       Icons.share,
@@ -105,7 +105,7 @@ class _StoreItem extends State<StoreItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ...widget.store.urls
+                ...widget.store.imgs
                     .map(
                       (url) => ClipRRect(
                           borderRadius: BorderRadius.circular(6),

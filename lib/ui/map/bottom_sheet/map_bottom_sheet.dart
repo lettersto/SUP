@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/map/map.dart';
 import '../../../models/map/store.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
@@ -96,7 +97,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.store.name,
+                                  widget.store.storeName,
                                   style: const TextStyle(color: AppColors.blue)
                                       .merge(TextStyles.medium16),
                                 ),
@@ -108,7 +109,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       size: 14,
                                     ),
                                     Text(
-                                      " ${widget.store.rate}  ",
+                                      " ${widget.store.starAvg}  ",
                                       style: const TextStyle(color: Colors.grey)
                                           .merge(TextStyles.regular14),
                                     ),
@@ -128,7 +129,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                             ),
                             Row(
                               children: [
-                                IconButton(
+                                /*IconButton(
                                   iconSize: 24,
                                   padding:
                                       const EdgeInsets.fromLTRB(4, 0, 4, 0),
@@ -148,7 +149,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                                       widget.store.like = !widget.store.like;
                                     });
                                   },
-                                ),
+                                ),*/
                                 const Icon(
                                   size: 20,
                                   Icons.share,
@@ -167,7 +168,7 @@ class _MapBottomSheet extends State<MapBottomSheet> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ...widget.store.urls
+                        ...widget.store.imgs
                             .map(
                               (url) => Image.network(
                                 url,

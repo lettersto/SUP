@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
 import '../../../models/map/store.dart';
 import '../../../utils/styles.dart';
 
-class ResultBottomSheet extends StatefulWidget {
+class ResultBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   final bool visibility;
 
   const ResultBottomSheet(this.sc, this.visibility, {super.key});
 
   @override
-  State<ResultBottomSheet> createState() => _ResultBottomSheet();
+  ConsumerState<ResultBottomSheet> createState() => _ResultBottomSheet();
 }
 
-class _ResultBottomSheet extends State<ResultBottomSheet> {
+class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
 
   @override
   Widget build(BuildContext context) {
+    List<Store> stores = ref.watch(storeProvider).list;
+
     return widget.visibility
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),

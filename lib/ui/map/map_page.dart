@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sup/providers/store/marker_provider.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
 import 'package:sup/ui/map/tag_map.dart';
 import 'package:sup/utils/app_utils.dart';
@@ -10,24 +12,25 @@ import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
+import '../../models/map/map.dart';
 import '../../models/map/store.dart';
+import '../../providers/store/map_controller_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
-class MapPage extends StatefulWidget {
+class MapPage extends ConsumerStatefulWidget {
   const MapPage({super.key});
 
   @override
-  State<MapPage> createState() => MapPageState();
+  ConsumerState<MapPage> createState() => MapPageState();
 }
 
-class MapPageState extends State<MapPage> {
+class MapPageState extends ConsumerState<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
   late MyLatLng userLocation;
   bool _isLoading = true;
-  List<Marker> _markers = [];
 
   final List<LikeStore> likes = [
     LikeStore(1, MyLatLng(37.563063, 126.831237)),
@@ -35,20 +38,20 @@ class MapPageState extends State<MapPage> {
     LikeStore(3, MyLatLng(37.561036, 126.839975)),
   ];
 
-  int storeNo = 1;
+  int storeNo = 0;
   bool todayVisibility = true;
   bool storeVisibility = false;
   String address = "";
-
+  List<Store> stores = [];
   @override
   void initState() {
     super.initState();
-    addCustomIcon();
+    //addCustomIcon();
     getCurrentLocation();
     setState(() {});
   }
 
-  void addCustomIcon() async {
+  /*void addCustomIcon() async {
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
 
@@ -70,10 +73,26 @@ class MapPageState extends State<MapPage> {
               }),
           position: LatLng(s.location.latitude, s.location.longitude)));
     }
+  }*/
+
+  void setMapPage(int storeNo) {
+    setState(() {
+      storeNo = storeNo;
+      todayVisibility = false;
+      storeVisibility = true;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final markers = ref.watch(markerProvider);
+
+    Future<void> onMapCreated(GoogleMapController controller) async {
+      stores = ref.read(storeProvider).list;
+      ref.read(mapControllerProvider.notifier).setController(controller);
+      ref.read(markerProvider.notifier).addCustomIcon(stores);
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: Stack(fit: StackFit.expand, children: [
@@ -90,16 +109,14 @@ class MapPageState extends State<MapPage> {
                               _initPosition.latitude, _initPosition.longitude),
                           zoom: 14.4746,
                         ),
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
+                        onMapCreated: onMapCreated,
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
-                        markers: Set.from(_markers),
+                        markers: markers,
                         onTap: (LatLng) => setState(() {
-                          showToast(SharedPreferenceUtil().userNo.toString());
+                          //showToast(SharedPreferenceUtil().userNo.toString());
                           storeVisibility = false;
                           todayVisibility = true;
                         }),
@@ -109,7 +126,7 @@ class MapPageState extends State<MapPage> {
         Column(
           children: [
             const MapSearchBar(),
-            const TagMapList(),
+            TagMapList(userLocation),
             Container(
               alignment: AlignmentDirectional.topEnd,
               margin: const EdgeInsets.fromLTRB(0, 12, 12, 0),

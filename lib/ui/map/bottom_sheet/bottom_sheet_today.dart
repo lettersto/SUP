@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/providers/map/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
-import '../../../models/map/store.dart';
+import '../../../models/map/map.dart';
 import '../../../models/map/today.dart';
+import '../../../providers/store/today_provider.dart';
 import '../../../utils/styles.dart';
 
 class TodayBottomSheet extends ConsumerStatefulWidget {
@@ -25,7 +25,7 @@ class TodayBottomSheet extends ConsumerStatefulWidget {
 class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
   @override
   void initState() {
-    ref.read(storeProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
+    ref.read(todayProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
         widget.userLocation.latitude, widget.userLocation.longitude);
 
     super.initState();
@@ -33,7 +33,7 @@ class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    TodayResponse todays = ref.watch(storeProvider);
+    TodayResponse todays = ref.watch(todayProvider);
 
     return widget.visibility
         ? ListView.builder(

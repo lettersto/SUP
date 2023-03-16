@@ -11,7 +11,7 @@ class StoreDetail {
   final List<String> imgs;
   final String address;
   final String category;
-  final bool isWish;
+  bool isWish;
 
   StoreDetail(this.storeNo, this.storeName, this.starAvg, this.reviewCnt,
       this.imgs, this.address, this.category, this.isWish);

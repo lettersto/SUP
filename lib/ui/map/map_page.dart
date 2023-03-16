@@ -13,7 +13,6 @@ import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../models/map/map.dart';
-import '../../models/map/store.dart';
 import '../../providers/store/map_controller_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';

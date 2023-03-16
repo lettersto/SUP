@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/utils/app_utils.dart';
 
 import '../../models/common/pagination_params.dart';
 import '../../providers/review/review_provider.dart';
@@ -13,7 +14,9 @@ import './image_review_list.dart';
 import './tag_chart/tag_chart.dart';
 
 class ReviewPage extends ConsumerStatefulWidget {
-  const ReviewPage({super.key});
+  const ReviewPage(this.storeNo, {super.key});
+
+  final int storeNo;
 
   @override
   ConsumerState<ReviewPage> createState() => _ReviewPageState();
@@ -21,6 +24,7 @@ class ReviewPage extends ConsumerStatefulWidget {
 
 class _ReviewPageState extends ConsumerState<ReviewPage> {
   final ScrollController _controller = ScrollController();
+
   // TODO 어떤 식당과 유저에게서 넘겨오는 지에 따라 아래 storeNo 변경
   final params =
       ReviewDetailParams(storeNo: 3839, userNo: SharedPreferenceUtil().userNo);
@@ -57,6 +61,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
 
   @override
   Widget build(BuildContext context) {
+    showToast(widget.storeNo.toString());
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(

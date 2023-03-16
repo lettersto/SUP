@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/map/map.dart';
+import 'package:sup/providers/store/store_detail_provider.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 import '../../../models/map/store.dart';
 import '../../../utils/styles.dart';
+import '../map_search_result.dart';
 
 class ResultBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
-  final bool visibility;
+  bool visibility;
   final int categoryNo;
 
-  const ResultBottomSheet(this.sc, this.visibility, this.categoryNo,
-      {super.key});
+  ResultBottomSheet(this.sc, this.visibility, this.categoryNo, {super.key});
 
   @override
   ConsumerState<ResultBottomSheet> createState() => _ResultBottomSheet();
@@ -25,6 +27,20 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
+
+    Future.delayed(Duration.zero, () {
+      if (stores.length == 1) {
+        context
+            .findAncestorStateOfType<MapResultPageState>()
+            ?.showStoreDetailBottomSheet();
+
+        ref
+            .read(storeDetailProvider.notifier)
+            .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
+
+        return Container();
+      }
+    });
 
     return widget.visibility
         ? ListView.builder(

@@ -34,7 +34,8 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                 if (_bodyHeight >= 800) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ReviewPage()),
+                    MaterialPageRoute(
+                        builder: (context) => ReviewPage(storeDetail.storeNo)),
                   );
                 }
               });
@@ -45,7 +46,8 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                 if (_bodyHeight >= 600) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ReviewPage()),
+                    MaterialPageRoute(
+                        builder: (context) => ReviewPage(storeDetail.storeNo)),
                   );
                   setState(() {
                     _bodyHeight = 0;

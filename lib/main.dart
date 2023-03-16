@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
         if (settings.name == routeMap) {
           page = const MapPage();
         } else if (settings.name == routeReview) {
-          page = const ReviewPage();
+          page = const ReviewPage(0);
         } else if (settings.name == routeReviewForm) {
           page = const ReviewFormPage();
         } else if (settings.name == routeSearch) {

@@ -68,28 +68,8 @@ class _StoreItem extends State<StoreItem> {
                   ],
                 ),
                 Row(
-                  children: [
-                    /*IconButton(
-                      iconSize: 28,
-                      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                      icon: Container(
-                        child: widget.store.like == true
-                            ? const Icon(
-                                Icons.star_rounded,
-                                color: AppColors.pink60,
-                              )
-                            : const Icon(
-                                Icons.star_border_rounded,
-                                color: AppColors.pink60,
-                              ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          widget.store.like = !widget.store.like;
-                        });
-                      },
-                    ),*/
-                    const Icon(
+                  children: const [
+                    Icon(
                       size: 24,
                       Icons.share,
                       color: Colors.black54,

@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
-import 'package:sup/models/signup/signup_response.dart';
+import 'package:sup/models/signup/signup.dart';
 import 'package:sup/repositories/common/base_repository.dart';
 
 import '../../providers/common/common_provider.dart';

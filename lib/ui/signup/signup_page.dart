@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/signup/signup_response.dart';
+import 'package:sup/models/signup/signup.dart';
 import 'package:sup/providers/user/user_provider.dart';
 import 'package:sup/utils/styles.dart';
 

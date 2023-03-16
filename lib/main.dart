@@ -9,7 +9,6 @@ import 'package:sup/ui/review/review_page.dart';
 import 'package:sup/ui/signup/signup_page.dart';
 import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
-import 'package:sup/utils/styles.dart';
 
 const routeSignup = '/';
 const routeMap = '/map';

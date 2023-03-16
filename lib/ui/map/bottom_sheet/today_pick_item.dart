@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../../models/store.dart';
+import '../../../models/map/today.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 
 class TodayPickItem extends StatefulWidget {
-  final Store store;
+  final Today store;
 
   const TodayPickItem(this.store, {super.key});
 
@@ -24,7 +24,7 @@ class _TodayPickItem extends State<TodayPickItem> {
           SizedBox(
             height: 220,
             child: PageView.builder(
-                itemCount: widget.store.urls.length,
+                itemCount: widget.store.imgs.length,
                 pageSnapping: true,
                 itemBuilder: (context, pagePosition) {
                   return Stack(
@@ -35,7 +35,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(4),
                               child: Image.network(
-                                widget.store.urls[pagePosition],
+                                widget.store.imgs[pagePosition],
                                 fit: BoxFit.cover,
                                 width: imageWidth,
                                 height: 220,
@@ -57,7 +57,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                                       const TextStyle(color: Colors.white)),
                                 ),
                                 Text(
-                                  "/${widget.store.urls.length.toString()}",
+                                  "/${widget.store.imgs.length.toString()}",
                                   style: TextStyles.regular14.merge(TextStyle(
                                       color: Colors.white.withOpacity(0.6))),
                                 ),
@@ -79,7 +79,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.store.name,
+                          widget.store.storeName,
                           style: const TextStyle(color: AppColors.black)
                               .merge(TextStyles.bold18),
                         ),
@@ -91,7 +91,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                               size: 14,
                             ),
                             Text(
-                              " ${widget.store.rate}  ",
+                              " ${widget.store.starAvg}  ",
                               style: const TextStyle(color: Colors.grey)
                                   .merge(TextStyles.regular14),
                             ),
@@ -100,10 +100,12 @@ class _TodayPickItem extends State<TodayPickItem> {
                               size: 4,
                               color: AppColors.whiteGrey,
                             ),
-                            Text(
-                              "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
-                              style: const TextStyle(color: Colors.grey)
-                                  .merge(TextStyles.regular14),
+                            Center(
+                              child: Text(
+                                "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
+                                style: const TextStyle(color: Colors.grey)
+                                    .merge(TextStyles.regular14),
+                              ),
                             ),
                           ],
                         ),
@@ -115,7 +117,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           iconSize: 24,
                           padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                           icon: Container(
-                            child: widget.store.like == true
+                            child: widget.store.isWish == true
                                 ? const Icon(
                                     Icons.star_rounded,
                                     color: AppColors.pink60,
@@ -127,7 +129,7 @@ class _TodayPickItem extends State<TodayPickItem> {
                           ),
                           onPressed: () {
                             setState(() {
-                              widget.store.like = !widget.store.like;
+                              widget.store.isWish = !widget.store.isWish;
                             });
                           },
                         ),

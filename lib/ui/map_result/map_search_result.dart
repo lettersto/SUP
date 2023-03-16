@@ -1,33 +1,41 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sup/providers/store/store_detail_provider.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/ui/map_result/appbar_search_bar.dart';
 import 'package:sup/utils/geo_network.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
-import 'dart:io' show Platform;
 import '../../main.dart';
-import '../../models/store.dart';
+import '../../models/map/store.dart';
+import '../../providers/store/map_controller_provider.dart';
+import '../../utils/app_utils.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
-class MapResultPage extends StatefulWidget {
+class MapResultPage extends ConsumerStatefulWidget {
   const MapResultPage(this.keyword, {super.key});
 
   final String keyword;
 
   @override
-  State<MapResultPage> createState() => MapResultPageState();
+  ConsumerState<MapResultPage> createState() => MapResultPageState();
 }
 
-class MapResultPageState extends State<MapResultPage> {
+class MapResultPageState extends ConsumerState<MapResultPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
   bool _isLoading = true;
   List<Marker> _markers = [];
-  Store store = Store(1, "", 0.0, 0.0, "", 0, false);
+
+  int storeNo = 0;
   bool resultVisibility = true;
   bool storeVisibility = false;
   String address = "";
@@ -35,37 +43,19 @@ class MapResultPageState extends State<MapResultPage> {
   @override
   void initState() {
     super.initState();
-    addCustomIcon();
     getCurrentLocation();
     setState(() {});
   }
 
-  void addCustomIcon() async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          ImageConfiguration(), "assets/icons/marker_ios.png");
-    }
-
-    for (int i = 0; i < stores.length; i++) {
-      Store s = stores[i];
-      _markers.add(Marker(
-          markerId: MarkerId(i.toString()),
-          draggable: false,
-          icon: star,
-          onTap: () => setState(() {
-                store = s;
-                resultVisibility = false;
-                storeVisibility = true;
-              }),
-          position: LatLng(s.latitude, s.longitude)));
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<Store> stores = ref.watch(storeProvider).list;
+
+    Future<void> onMapCreated(GoogleMapController controller) async {
+      ref.read(mapControllerProvider.notifier).setController(controller);
+      addCustomIcon(stores);
+    }
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -107,9 +97,7 @@ class MapResultPageState extends State<MapResultPage> {
                               _initPosition.latitude, _initPosition.longitude),
                           zoom: 14.4746,
                         ),
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
-                        },
+                        onMapCreated: onMapCreated,
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
@@ -148,9 +136,35 @@ class MapResultPageState extends State<MapResultPage> {
                   ? Container()
                   : ResultBottomSheet(scrollController, resultVisibility));
             }),
-        MapBottomSheet(store.storeNo, storeVisibility)
+        MapBottomSheet(storeVisibility)
       ]),
     );
+  }
+
+  void addCustomIcon(List<Store> stores) async {
+    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/icons/marker_store.png");
+
+    if (Platform.isIOS) {
+      star = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(), "assets/icons/marker_store_ios.png");
+    }
+
+    for (int i = 0; i < stores.length; i++) {
+      Store s = stores[i];
+      _markers.add(Marker(
+          markerId: MarkerId(i.toString()),
+          draggable: false,
+          icon: star,
+          onTap: () => setState(() {
+                ref
+                    .read(storeDetailProvider.notifier)
+                    .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
+                resultVisibility = false;
+                storeVisibility = true;
+              }),
+          position: LatLng(s.lat, s.lng)));
+    }
   }
 
   Future<Position> getCurrentLocation() async {

@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:sup/ui/common/tag_filter_item_selected.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
-import '../../main.dart';
+import '../../models/map/map.dart';
 import '../../models/tag_map.dart';
-import '../../utils/styles.dart';
 import '../common/tag_filter_item.dart';
 import '../map_result/map_search_result.dart';
 
-class TagMapList extends StatefulWidget {
-  const TagMapList({super.key});
+class TagMapList extends ConsumerStatefulWidget {
+  const TagMapList(this.userLocation, {super.key});
+  final MyLatLng userLocation;
 
   @override
-  State<StatefulWidget> createState() => TagMapListState();
+  ConsumerState<ConsumerStatefulWidget> createState() => TagMapListState();
 }
 
-class TagMapListState extends State<TagMapList> {
+class TagMapListState extends ConsumerState<TagMapList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -32,6 +33,13 @@ class TagMapListState extends State<TagMapList> {
                 : const EdgeInsets.only(top: 4),
             child: GestureDetector(
                 onTap: () {
+                  ref.read(storeProvider.notifier).getStoreList(
+                      widget.userLocation.latitude,
+                      widget.userLocation.longitude,
+                      0,
+                      tag.code,
+                      "",
+                      "STAR");
                   updateRecents(tag.tagName);
                   Navigator.push(
                     context,

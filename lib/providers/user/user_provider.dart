@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/main.dart';
-import 'package:sup/models/signup/signup_response.dart';
+import 'package:sup/models/signup/signup.dart';
 import 'package:sup/repositories/user/user_repository.dart';
 import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/sharedPreference_util.dart';

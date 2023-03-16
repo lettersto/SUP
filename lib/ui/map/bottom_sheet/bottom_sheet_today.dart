@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
-import '../../../models/store.dart';
+import '../../../models/map/map.dart';
+import '../../../models/map/today.dart';
+import '../../../providers/store/today_provider.dart';
 import '../../../utils/styles.dart';
 
-class TodayBottomSheet extends StatefulWidget {
+class TodayBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   final bool visibility;
   final String address;
+  final MyLatLng userLocation;
 
-  const TodayBottomSheet(this.sc, this.visibility, this.address, {super.key});
+  const TodayBottomSheet(
+      this.sc, this.visibility, this.address, this.userLocation,
+      {super.key});
 
   @override
-  State<TodayBottomSheet> createState() => _TodayBottomSheet();
+  ConsumerState<TodayBottomSheet> createState() => _TodayBottomSheet();
 }
 
-class _TodayBottomSheet extends State<TodayBottomSheet> {
+class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
   @override
   void initState() {
+    ref.read(todayProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
+        widget.userLocation.latitude, widget.userLocation.longitude);
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    TodayResponse todays = ref.watch(todayProvider);
+
     return widget.visibility
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: stores.length,
+            itemCount: todays.list.length + 1,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -108,7 +119,7 @@ class _TodayBottomSheet extends State<TodayBottomSheet> {
                   ],
                 );
               }
-              return TodayPickItem(stores[position]);
+              return TodayPickItem(todays.list[position - 1]);
             })
         : Container();
   }

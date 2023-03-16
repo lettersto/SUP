@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/utils/app_utils.dart';
 
 import '../../providers/review/review_form_provider.dart';
 import '../../providers/review/review_provider.dart';
 import '../../utils/styles.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/sharedPreference_util.dart';
 
 import './form_field/star_rating/star_rating_area.dart';
 import './form_field/tag_selection/tag_selection_area.dart';
-import 'form_field/comment/comment_text_field.dart';
-import 'form_field/add_photo/add_photo.dart';
+import './form_field/comment/comment_text_field.dart';
+import './form_field/add_photo/add_photo.dart';
 
 class ReviewForm extends ConsumerStatefulWidget {
   const ReviewForm({super.key});
@@ -19,11 +20,11 @@ class ReviewForm extends ConsumerStatefulWidget {
 }
 
 class _ReviewFormState extends ConsumerState<ReviewForm> {
-  bool _isFormValid = false;
   final _formKey = GlobalKey<FormState>();
   final _starRatingKey = GlobalKey();
   final _tagsKey = GlobalKey();
   final _commentController = TextEditingController();
+  bool _isFormValid = false;
 
   void _setComment() {
     ref
@@ -52,20 +53,27 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
       return;
     }
 
+    List<String> stringTags = [];
+    ref.watch(reviewFormProvider).tags.forEach((element) {
+      stringTags.add(element.toString());
+    });
+
     try {
       await ref.watch(reviewClientProvider).createReview(
           storeNo: 1,
-          userNo: 1,
+          userNo: SharedPreferenceUtil().userNo,
           content: ref.watch(reviewFormProvider).content,
-          star: ref.read(reviewFormProvider).star,
-          tags: ref.read(reviewFormProvider).tags,
-          imgs: ref.read(reviewFormProvider).imgs);
+          star: ref.watch(reviewFormProvider).star,
+          tags: stringTags,
+          imgs: ref.watch(reviewFormProvider).imgs);
     } catch (err, st) {
       print(err);
       print(st);
     }
 
-    _isFormValid = true;
+    setState(() {
+      _isFormValid = true;
+    });
   }
 
   @override
@@ -116,7 +124,6 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _submit();
-
                     if (_isFormValid) {
                       Navigator.pop(context);
                     }

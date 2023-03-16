@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/review/review_form.dart';
+import '../../models/review/tag.dart';
 
 class ReviewFormNotifier extends AutoDisposeNotifier<ReviewForm> {
   @override
@@ -31,7 +32,7 @@ class ReviewFormNotifier extends AutoDisposeNotifier<ReviewForm> {
   }
 
   void setStar(int star) {
-    if (star < 0 || star >= 5) return;
+    if (star < 0 || star > 5) return;
     state = state.copyWith(star: star);
   }
 
@@ -69,3 +70,5 @@ class ReviewFormNotifier extends AutoDisposeNotifier<ReviewForm> {
 final reviewFormProvider =
     NotifierProvider.autoDispose<ReviewFormNotifier, ReviewForm>(
         ReviewFormNotifier.new);
+
+final reviewTagsProvider = Provider((ref) => ReviewTags.fromJson(tagData));

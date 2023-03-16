@@ -103,13 +103,9 @@ class _ReviewClient implements ReviewClient {
       'star',
       star.toString(),
     ));
-    _data.files.add(MapEntry(
-        'tags',
-        MultipartFile.fromBytes(
-          tags,
-          filename: null,
-          contentType: MediaType.parse('multipart/form-data'),
-        )));
+    tags.forEach((i) {
+      _data.fields.add(MapEntry('tags', i));
+    });
     if (imgs != null) {
       _data.files.addAll(imgs.map((i) => MapEntry(
           'imgs',

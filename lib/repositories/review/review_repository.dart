@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -51,7 +52,7 @@ abstract class ReviewClient {
         required String content,
     @Part(name: 'star', contentType: 'multipart/form-data') required int star,
     @Part(name: 'tags', contentType: 'multipart/form-data')
-        required List<int> tags,
+        required List<String> tags,
     @Part(name: 'imgs', contentType: 'multipart/form-data') List<File>? imgs,
   });
 }

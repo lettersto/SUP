@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/models/map/map.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
@@ -9,8 +10,10 @@ import '../../../utils/styles.dart';
 class ResultBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   final bool visibility;
+  final int categoryNo;
 
-  const ResultBottomSheet(this.sc, this.visibility, {super.key});
+  const ResultBottomSheet(this.sc, this.visibility, this.categoryNo,
+      {super.key});
 
   @override
   ConsumerState<ResultBottomSheet> createState() => _ResultBottomSheet();
@@ -27,7 +30,7 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
         ? ListView.builder(
             physics: const ClampingScrollPhysics(),
             controller: widget.sc,
-            itemCount: stores.length,
+            itemCount: stores.length + 1,
             itemBuilder: (BuildContext context, int position) {
               if (position == 0) {
                 return Column(
@@ -66,8 +69,16 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                                             : TextStyles.orderUnselected,
                                       ),
                                       onTap: () {
+                                        ref
+                                            .read(storeProvider.notifier)
+                                            .getStoreList(
+                                                userLocation.latitude,
+                                                userLocation.longitude,
+                                                0,
+                                                widget.categoryNo,
+                                                "",
+                                                "STAR");
                                         setState(() {
-                                          //TODO get store list ordered by rating
                                           order = "별점순";
                                         });
                                       },
@@ -83,8 +94,16 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                                               : TextStyles.orderUnselected,
                                         ),
                                         onTap: () {
+                                          ref
+                                              .read(storeProvider.notifier)
+                                              .getStoreList(
+                                                  userLocation.latitude,
+                                                  userLocation.longitude,
+                                                  0,
+                                                  widget.categoryNo,
+                                                  "",
+                                                  "DIST");
                                           setState(() {
-                                            //TODO get store list ordered by dist
                                             order = "거리순";
                                           });
                                         },
@@ -99,7 +118,7 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                   ],
                 );
               }
-              return StoreItem(stores[position]);
+              return StoreItem(stores[position - 1]);
             })
         : Container();
   }

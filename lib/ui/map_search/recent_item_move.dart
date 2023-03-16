@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/models/map/map.dart';
+import '../../providers/store/store_provider.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 import '../common/line_divider.dart';
 import '../map_result/map_search_result.dart';
 
-class RecentItemMove extends StatefulWidget {
+class RecentItemMove extends ConsumerStatefulWidget {
   final List<String> filteredRecent;
 
   const RecentItemMove(this.filteredRecent, {super.key});
 
   @override
-  State<RecentItemMove> createState() => _RecentItemMove();
+  ConsumerState<RecentItemMove> createState() => _RecentItemMove();
 }
 
-class _RecentItemMove extends State<RecentItemMove> {
+class _RecentItemMove extends ConsumerState<RecentItemMove> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -75,10 +78,12 @@ class _RecentItemMove extends State<RecentItemMove> {
   }
 
   void openResultPage(String text) {
+    /*ref.read(storeProvider.notifier).getStoreList(
+        userLocation.latitude, userLocation.longitude, 0, 0, text, "STAR");*/
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, a1, a2) => MapResultPage(text),
+        pageBuilder: (context, a1, a2) => MapResultPage(text, 0),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       ),

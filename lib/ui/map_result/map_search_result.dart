@@ -14,15 +14,16 @@ import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import '../../main.dart';
+import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../providers/store/map_controller_provider.dart';
-import '../../utils/app_utils.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
 class MapResultPage extends ConsumerStatefulWidget {
-  const MapResultPage(this.keyword, {super.key});
+  const MapResultPage(this.keyword, this.categoryNo, {super.key});
 
   final String keyword;
+  final int categoryNo;
 
   @override
   ConsumerState<MapResultPage> createState() => MapResultPageState();
@@ -134,7 +135,8 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
             builder: (BuildContext context, ScrollController scrollController) {
               return (_isLoading
                   ? Container()
-                  : ResultBottomSheet(scrollController, resultVisibility));
+                  : ResultBottomSheet(
+                      scrollController, resultVisibility, widget.categoryNo));
             }),
         MapBottomSheet(storeVisibility)
       ]),
@@ -147,7 +149,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
     if (Platform.isIOS) {
       star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_store_ios.png");
+          const ImageConfiguration(), "assets/icons/marker_store.png");
     }
 
     for (int i = 0; i < stores.length; i++) {
@@ -173,6 +175,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
     setState(() {
       _initPosition = LatLng(position.latitude, position.longitude);
+
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

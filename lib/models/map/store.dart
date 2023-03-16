@@ -44,7 +44,7 @@ class Store {
   final List<String> reviews;
   final double distance;
   final String address;
-  final int category;
+  final String category;
 
   Store(
       this.storeNo,
@@ -70,7 +70,7 @@ class Store {
         reviews = [],
         distance = 0.0,
         address = "",
-        category = 0;
+        category = "";
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 

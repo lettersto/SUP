@@ -11,3 +11,5 @@ class LikeStore {
 
   LikeStore(this.storeNo, this.location);
 }
+
+late MyLatLng userLocation;

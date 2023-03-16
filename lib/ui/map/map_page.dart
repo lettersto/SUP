@@ -28,7 +28,6 @@ class MapPageState extends ConsumerState<MapPage> {
   final Completer<GoogleMapController> _controller = Completer();
 
   late LatLng _initPosition;
-  MyLatLng userLocation = MyLatLng(0, 0);
   bool _isLoading = true;
   bool todayVisibility = true;
   bool storeVisibility = false;
@@ -83,7 +82,7 @@ class MapPageState extends ConsumerState<MapPage> {
         Column(
           children: [
             const MapSearchBar(),
-            TagMapList(userLocation),
+            const TagMapList(),
             Container(
               alignment: AlignmentDirectional.topEnd,
               margin: const EdgeInsets.fromLTRB(0, 12, 12, 0),
@@ -106,8 +105,8 @@ class MapPageState extends ConsumerState<MapPage> {
             builder: (BuildContext context, ScrollController scrollController) {
               return (_isLoading
                   ? Container()
-                  : TodayBottomSheet(scrollController, todayVisibility, address,
-                      userLocation));
+                  : TodayBottomSheet(
+                      scrollController, todayVisibility, address));
             }),
         MapBottomSheet(storeVisibility)
       ]),
@@ -146,7 +145,8 @@ class MapPageState extends ConsumerState<MapPage> {
 
     setState(() {
       _initPosition = LatLng(position.latitude, position.longitude);
-      userLocation = MyLatLng(position.latitude, position.longitude);
+      userLocation = MyLatLng(_initPosition.latitude, _initPosition.longitude);
+
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

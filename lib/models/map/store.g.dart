@@ -40,7 +40,7 @@ Store _$StoreFromJson(Map<String, dynamic> json) => Store(
       (json['reviews'] as List<dynamic>).map((e) => e as String).toList(),
       (json['distance'] as num).toDouble(),
       json['address'] as String,
-      json['category'] as int,
+      json['category'] as String,
     );
 
 Map<String, dynamic> _$StoreToJson(Store instance) => <String, dynamic>{

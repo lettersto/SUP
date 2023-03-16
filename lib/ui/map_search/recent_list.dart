@@ -33,7 +33,7 @@ class RecentsState extends State<Recents> {
     Navigator.push(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, a1, a2) => MapResultPage(text),
+        pageBuilder: (context, a1, a2) => MapResultPage(text, 0),
         transitionDuration: Duration.zero,
         reverseTransitionDuration: Duration.zero,
       ),

@@ -35,8 +35,9 @@ class MyApp extends StatelessWidget {
       title: 'SUP',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(),
-      initialRoute:
-          SharedPreferenceUtil().nickname == "" ? routeSignup : routeMap,
+      home: SharedPreferenceUtil().nickname == ""
+          ? const SignUpPage()
+          : const MapPage(),
       navigatorKey: navigatorKey,
       onGenerateRoute: (settings) {
         late Widget page;

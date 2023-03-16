@@ -12,11 +12,8 @@ class TodayBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   final bool visibility;
   final String address;
-  final MyLatLng userLocation;
 
-  const TodayBottomSheet(
-      this.sc, this.visibility, this.address, this.userLocation,
-      {super.key});
+  const TodayBottomSheet(this.sc, this.visibility, this.address, {super.key});
 
   @override
   ConsumerState<TodayBottomSheet> createState() => _TodayBottomSheet();
@@ -26,7 +23,7 @@ class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
   @override
   void initState() {
     ref.read(todayProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
-        widget.userLocation.latitude, widget.userLocation.longitude);
+        userLocation.latitude, userLocation.longitude);
 
     super.initState();
   }

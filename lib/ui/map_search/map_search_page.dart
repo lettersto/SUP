@@ -85,7 +85,7 @@ class MapSearchState extends State<MapSearchPage> {
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            MapResultPage(text),
+                            MapResultPage(text, 0),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),

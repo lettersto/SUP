@@ -10,7 +10,7 @@ class StoreDetail {
   final int reviewCnt;
   final List<String> imgs;
   final String address;
-  final int category;
+  final String category;
   final bool isWish;
 
   StoreDetail(this.storeNo, this.storeName, this.starAvg, this.reviewCnt,
@@ -23,7 +23,7 @@ class StoreDetail {
         reviewCnt = 0,
         imgs = [],
         address = "",
-        category = 0,
+        category = "",
         isWish = false;
 
   factory StoreDetail.fromJson(Map<String, dynamic> json) =>

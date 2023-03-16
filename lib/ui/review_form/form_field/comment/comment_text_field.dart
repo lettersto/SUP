@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/styles.dart';
+import '../../../../utils/styles.dart';
 
 class CommentTextField extends StatelessWidget {
   final TextEditingController controller;
 
-  const CommentTextField({super.key, required this.controller,});
+  const CommentTextField({
+    super.key,
+    required this.controller,
+  });
 
   static const _hintText =
       '리뷰 작성하기\n업주와 다른 사용자들이 상처받지 않도록\n좋은 표현을 사용해주세요. 유용한 Tip도 남겨주세요!';

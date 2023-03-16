@@ -4,7 +4,7 @@ import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
 import '../../../models/map/map.dart';
-import '../../../models/map/today.dart';
+import '../../../models/map/today_pick.dart';
 import '../../../providers/store/today_provider.dart';
 import '../../../utils/styles.dart';
 

@@ -13,7 +13,7 @@ StoreDetail _$StoreDetailFromJson(Map<String, dynamic> json) => StoreDetail(
       json['reviewCnt'] as int,
       (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
       json['address'] as String,
-      json['category'] as int,
+      json['category'] as String,
       json['isWish'] as bool,
     );
 

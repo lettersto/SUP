@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
+import 'package:sup/ui/photo_detail/photos_detail_page.dart';
 import 'package:sup/ui/review_form/review_form_page.dart';
 import 'package:sup/ui/photo_detail/photo_detail_page.dart';
 import 'package:sup/ui/map/map_page.dart';
@@ -15,6 +16,7 @@ const routeMap = '/map';
 const routeReview = '/reviews';
 const routeReviewForm = '/review-form';
 const photoDetail = '/photo-detail';
+const photosDetail = '/photos-detail';
 const routeSearch = '/map-search';
 const routeSearchResult = '/map-result';
 
@@ -52,6 +54,10 @@ class MyApp extends StatelessWidget {
           page = const MapSearchPage();
         } else if (settings.name == photoDetail) {
           page = const PhotoDetailPage();
+        } else if (settings.name == photosDetail) {
+          page = const PhotosDetailPage(
+            images: [],
+          );
         } else if (settings.name == routeSignup) {
           page = const SignUpPage();
         } else {

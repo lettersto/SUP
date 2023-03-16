@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../api/dummy_api.dart';
-import '../../models/review/tag.dart';
 import '../../models/dummy/dummy.dart';
 
 // ===== image review =====

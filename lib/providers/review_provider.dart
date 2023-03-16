@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/review_filter.dart';
+import '../models/review/review_filter.dart';
 import '../models/review/review_filter_notifier.dart';
 import '../../../utils/enums.dart';
 

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/common/pagination_params.dart';
 import '../../providers/review/review_provider.dart';
 import '../../utils/pagination_utils.dart';
+import '../../utils/sharedPreference_util.dart';
 import '../common/pagination_sliver_list_view.dart';
 import './review_list/review_list_item.dart';
 import './review_appbar.dart';
@@ -20,8 +21,9 @@ class ReviewPage extends ConsumerStatefulWidget {
 
 class _ReviewPageState extends ConsumerState<ReviewPage> {
   final ScrollController _controller = ScrollController();
-  // TODO 어떤 식당과 유저에게서 넘겨오는 지에 따라 아래 storeNo와 userNo 변경
-  final params = ReviewDetailParams(storeNo: 1, userNo: 1);
+  // TODO 어떤 식당과 유저에게서 넘겨오는 지에 따라 아래 storeNo 변경
+  final params =
+      ReviewDetailParams(storeNo: 3839, userNo: SharedPreferenceUtil().userNo);
 
   void listener() {
     PaginationUtils.paginate(

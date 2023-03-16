@@ -1,28 +1,38 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../providers/review/review_detail_provider.dart';
+import '../../models/review/review.dart';
 import '../../utils/styles.dart';
+import './photos_review_content.dart';
 
-import './photo_review_content.dart';
+import './photo_detail_slider.dart';
 
-class PhotoDetailPage extends ConsumerStatefulWidget {
-  final int? imageNo;
+class PhotosDetailPage extends StatefulWidget {
+  final List<String> images;
+  final ReviewDetailWithPhotos? review;
 
-  const PhotoDetailPage({
+  const PhotosDetailPage({
     super.key,
-    this.imageNo = 0,
+    required this.images,
+    this.review,
   });
 
-  static const routeName = '/photo-detail';
+  static const routeName = '/photos-detail';
 
   @override
-  ConsumerState<PhotoDetailPage> createState() => _PhotoDetailPageState();
+  State<PhotosDetailPage> createState() => _PhotosDetailPageState();
 }
 
-class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
+class _PhotosDetailPageState extends State<PhotosDetailPage> {
+  int _currentPage = 1;
   bool _isOpen = false;
+
+  void _setCurrentPage(double pageIdx) {
+    setState(() {
+      if (pageIdx < 0 || pageIdx >= widget.images.length) return;
+      _currentPage = pageIdx.floor() + 1;
+    });
+  }
 
   void _setIsOpen(bool isOpen) {
     setState(() {
@@ -31,21 +41,23 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    ref.read(reviewDetailProvider.notifier).getReviewDetail(widget.imageNo!);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final review = ref.watch(reviewDetailProvider);
-
     final deviceWidth = MediaQuery.of(context).size.width;
-    final deviceHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.black,
+        actions: [
+          Container(
+            padding: const EdgeInsets.only(right: 16.0),
+            alignment: Alignment.center,
+            child: Text(
+              '$_currentPage / ${widget.images.length}',
+              style: TextStyles.medium14
+                  .merge(const TextStyle(color: AppColors.white)),
+            ),
+          ),
+        ],
       ),
       backgroundColor: AppColors.black,
       body: Container(
@@ -53,17 +65,9 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
         alignment: Alignment.center,
         child: Stack(
           children: [
-            Image.network(
-              review.img,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: deviceWidth,
-                  height: deviceHeight / 2,
-                  color: AppColors.black,
-                );
-              },
+            PhotoDetailSlider(
+              imgUrls: widget.images,
+              setCurrentPage: _setCurrentPage,
             ),
             Positioned.fill(
               child: IgnorePointer(
@@ -78,13 +82,14 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
                 ),
               ),
             ),
-            PhotoReviewContent(
-              review: review,
-              setIsOpen: _setIsOpen,
-            ),
+            // TODO change types
+            // PhotosReviewContent(
+            //   review: widget.review!,
+            //   setIsOpen: _setIsOpen,
+            // ),
             if (!_isOpen)
               Positioned(
-                bottom: -20,
+                bottom: 0,
                 left: 0,
                 width: deviceWidth,
                 height: 40,

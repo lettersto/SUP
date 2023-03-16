@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sup/models/review/review.dart';
 import '../../utils/enums.dart';
+import '../../utils/styles.dart';
+import '../photo_detail/photos_detail_page.dart';
 
 class ImageSlider extends StatelessWidget {
+  final ReviewDetailWithPhotos review;
   final List<String> images;
   final SizeType size;
 
@@ -15,6 +19,7 @@ class ImageSlider extends StatelessWidget {
 
   const ImageSlider({
     super.key,
+    required this.review,
     required this.images,
     this.size = SizeType.medium,
   });
@@ -32,12 +37,38 @@ class ImageSlider extends StatelessWidget {
           ...images
               .map((imageUrl) => Padding(
                     padding: const EdgeInsets.only(right: 4.0),
-                    child: ClipRRect(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PhotosDetailPage(
+                                  images: images,
+                                  review: review,
+                                )));
+                      },
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(4.0),
                         child: Image.network(
                           imageUrl,
                           height: height,
-                        )),
+                          loadingBuilder: (BuildContext context, Widget child,
+                              ImageChunkEvent? loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: List.generate(
+                                  3,
+                                  (index) => Container(
+                                        color: AppColors.grayTransparent2,
+                                        height: height,
+                                        width: height,
+                                        margin:
+                                            const EdgeInsets.only(right: 4.0),
+                                      )),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
                   ))
               .toList()
         ],

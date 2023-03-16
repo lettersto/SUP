@@ -51,6 +51,7 @@ class ReviewListItem extends ConsumerWidget {
           ),
           if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
             ImageSlider(
+              review: review,
               images: review.imgs,
               size: sliderSize,
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/review_filter.dart';
+import '../../../models/review/review_filter.dart';
 import '../../../providers/providers_exporter.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/enums.dart';

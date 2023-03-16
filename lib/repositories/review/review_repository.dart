@@ -55,4 +55,9 @@ abstract class ReviewClient {
         required List<String> tags,
     @Part(name: 'imgs', contentType: 'multipart/form-data') List<File>? imgs,
   });
+
+  @GET('/review/{reviewImgNo}')
+  Future<ReviewDetail> getReviewDetail({
+    @Path('reviewImgNo') required int reviewImgNo,
+  });
 }

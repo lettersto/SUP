@@ -4,21 +4,21 @@ import 'package:sup/ui/photo_detail/photo_review_content_item.dart';
 import '../../models/review/review.dart';
 import '../../utils/enums.dart';
 
-class PhotoReviewContent extends StatefulWidget {
+class PhotosReviewContent extends StatefulWidget {
   final Function setIsOpen;
-  final ReviewDetail review;
+  final ReviewDetailWithPhotos review;
 
-  const PhotoReviewContent({
+  const PhotosReviewContent({
     super.key,
     required this.setIsOpen,
     required this.review,
   });
 
   @override
-  State<PhotoReviewContent> createState() => _PhotoReviewContentState();
+  State<PhotosReviewContent> createState() => _PhotosReviewContentState();
 }
 
-class _PhotoReviewContentState extends State<PhotoReviewContent> {
+class _PhotosReviewContentState extends State<PhotosReviewContent> {
   Offset _offset = const Offset(0, 0.5);
 
   @override

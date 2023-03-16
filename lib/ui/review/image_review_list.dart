@@ -9,6 +9,8 @@ import '../../ui/photo_detail/photo_detail_page.dart';
 import '../../ui/common/headline.dart';
 
 class ImageReviewList extends ConsumerWidget {
+  final _imageNo = 19377;
+
   const ImageReviewList({super.key});
 
   @override
@@ -57,8 +59,11 @@ class ImageReviewList extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(8.0),
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, PhotoDetailPage.routeName);
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => PhotoDetailPage(
+                                imageNo: _imageNo,
+                              ),
+                            ));
                           },
                           child: Image.network(
                             data[index].imageUrl,

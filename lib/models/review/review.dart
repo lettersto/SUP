@@ -20,12 +20,10 @@ abstract class ReviewBase {
 class Review extends ReviewBase {
   final int userNo;
   final int storeNo;
-  // final List<File>? imgs;
 
   Review({
     required this.userNo,
     required this.storeNo,
-    // this.imgs,
     required String content,
     required int star,
     required List<String> tags,

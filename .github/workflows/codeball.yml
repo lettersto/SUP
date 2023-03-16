@@ -1,8 +1,6 @@
 name: Codeball
-on:
-  pull_request: {}
-  pull_request_review_comment:
-    types: [created, edited]
+on: [pull_request]
+
 permissions:
   contents: read
   issues: write
@@ -17,7 +15,7 @@ jobs:
         with:
           approvePullRequests: "true"
           labelPullRequestsWhenApproved: "true"
-          labelPullRequestsWhenReviewNeeded: "false"
+          labelPullRequestsWhenReviewNeeded: "true"
           failJobsWhenReviewNeeded: "false"
           codeSuggestionsFromComments: "true"
           approveThreshold: "0.630"

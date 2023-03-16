@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sup/models/dummy/dummy_review.dart';
 
 import '../../../utils/enums.dart';
 import '../../../utils/styles.dart';

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../utils/enums.dart';
 
 import '../review/review_list/review_list_item.dart';
-import '../review/review_dummy.dart';
 
 class PhotoReviewContent extends StatefulWidget {
   final Function setIsOpen;

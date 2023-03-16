@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/map/map.dart';
+import '../../models/map/map.dart';
 import '../../providers/store/store_provider.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
@@ -35,6 +35,13 @@ class _RecentItemMove extends ConsumerState<RecentItemMove> {
                     height: 48,
                     child: GestureDetector(
                       onTap: () {
+                        ref.read(storeProvider.notifier).getStoreList(
+                            userLocation.latitude,
+                            userLocation.longitude,
+                            0,
+                            0,
+                            filter,
+                            "STAR");
                         setState(() {
                           widget.filteredRecent.remove(filter);
                           widget.filteredRecent.add(filter);

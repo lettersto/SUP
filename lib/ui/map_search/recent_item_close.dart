@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/ui/map_search/map_search_page.dart';
+import 'package:sup/models/map/map.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 import '../common/line_divider.dart';
 import '../map_result/map_search_result.dart';
 
-class RecentItemClose extends StatefulWidget {
+class RecentItemClose extends ConsumerStatefulWidget {
   final List<String> filteredRecent;
 
   const RecentItemClose(this.filteredRecent, {super.key});
 
   @override
-  State<RecentItemClose> createState() => _RecentItemClose();
+  ConsumerState<RecentItemClose> createState() => _RecentItemClose();
 }
 
-class _RecentItemClose extends State<RecentItemClose> {
+class _RecentItemClose extends ConsumerState<RecentItemClose> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -51,6 +53,14 @@ class _RecentItemClose extends State<RecentItemClose> {
                                 });
                                 updateRecents(recent);
                                 openResultPage(recent);
+
+                                ref.read(storeProvider.notifier).getStoreList(
+                                    userLocation.latitude,
+                                    userLocation.longitude,
+                                    0,
+                                    0,
+                                    recent,
+                                    "STAR");
                               },
                               child: Text(
                                 recent,

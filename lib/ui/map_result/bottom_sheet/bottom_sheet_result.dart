@@ -57,7 +57,7 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                             width: MediaQuery.of(context).size.width,
                             child: Column(
                               children: [
-                                const TagResultList(),
+                                TagResultList(widget.categoryNo),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [

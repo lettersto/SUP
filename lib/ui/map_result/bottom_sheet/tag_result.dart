@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/ui/common/tag_filter_item_selected.dart';
 
+import '../../../models/map/map.dart';
 import '../../../models/tag_map.dart';
+import '../../../providers/store/store_provider.dart';
 import '../../../utils/styles.dart';
 import '../../common/tag_filter_item.dart';
 
-class TagResultList extends StatefulWidget {
-  const TagResultList({super.key});
+class TagResultList extends ConsumerStatefulWidget {
+  const TagResultList(this.cateNo, {super.key});
+
+  final int cateNo;
 
   @override
-  State<StatefulWidget> createState() => TagResultListState();
+  ConsumerState<ConsumerStatefulWidget> createState() => TagResultListState();
 }
 
-class TagResultListState extends State<TagResultList> {
+class TagResultListState extends ConsumerState<TagResultList> {
   int selectedIdx = -1;
 
   @override
@@ -30,7 +35,15 @@ class TagResultListState extends State<TagResultList> {
                     ? const EdgeInsets.only(left: 16, top: 4, right: 6)
                     : const EdgeInsets.only(top: 4, right: 6),
                 child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      //TODO 500 error
+                      ref.read(storeProvider.notifier).getStoreList(
+                          userLocation.latitude,
+                          userLocation.longitude,
+                          tag.code,
+                          widget.cateNo,
+                          "",
+                          "STAR");
                       setState(() {
                         selectedIdx = position;
                       });

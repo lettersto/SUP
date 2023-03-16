@@ -4,33 +4,83 @@ import '../common/model_with_id.dart';
 
 part 'review.g.dart';
 
-@JsonSerializable()
-class ReviewDetailWithPhotos extends IModelWithId {
-  @override
-  @JsonKey(name: 'reviewNo')
-  final int id;
-  final String nickname;
-  final int reviewCnt;
-  final double starAvg;
+abstract class ReviewBase {
   final String content;
   final int star;
+  final List<String> tags;
+
+  ReviewBase({
+    required this.content,
+    required this.star,
+    required this.tags,
+  });
+}
+
+@JsonSerializable()
+class Review extends ReviewBase {
+  final int userNo;
+  final int storeNo;
+  // final List<File>? imgs;
+
+  Review({
+    required this.userNo,
+    required this.storeNo,
+    // this.imgs,
+    required String content,
+    required int star,
+    required List<String> tags,
+  }) : super(content: content, star: star, tags: tags);
+
+  Map<String, dynamic> toJson() => _$ReviewToJson(this);
+}
+
+@JsonSerializable()
+class ReviewDetail extends ReviewBase {
+  final int userNo;
+  final int reviewNo;
+  final String nickname;
+  final String regDtm;
+  final String img;
+
+  ReviewDetail({
+    required this.userNo,
+    required this.nickname,
+    required this.reviewNo,
+    required this.regDtm,
+    required this.img,
+    required String content,
+    required int star,
+    required List<String> tags,
+  }) : super(content: content, star: star, tags: tags);
+
+  factory ReviewDetail.fromJson(Map<String, dynamic> json) =>
+      _$ReviewDetailFromJson(json);
+}
+
+@JsonSerializable()
+class ReviewDetailWithPhotos extends ReviewBase implements IModelWithId {
+  @override
+  @JsonKey(name: 'reviewNo')
+  final int id; // for pagination
+  final int reviewCnt;
+  final String nickname;
+  final double starAvg;
   final String regDtm;
   final List<String> imgs;
-  final List<String> tags;
   final bool isLike;
 
   ReviewDetailWithPhotos({
     required this.id,
-    required this.nickname,
     required this.reviewCnt,
     required this.starAvg,
-    required this.content,
-    required this.star,
+    required this.isLike,
+    required this.nickname,
     required this.regDtm,
     required this.imgs,
-    required this.tags,
-    required this.isLike,
-  }) : super(id: 0);
+    required String content,
+    required int star,
+    required List<String> tags,
+  }) : super(content: content, star: star, tags: tags);
 
   factory ReviewDetailWithPhotos.fromJson(Map<String, dynamic> json) =>
       _$ReviewDetailWithPhotosFromJson(json);

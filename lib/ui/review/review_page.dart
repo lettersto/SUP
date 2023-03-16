@@ -27,7 +27,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
     PaginationUtils.paginate(
       controller: _controller,
       provider: ref.read(
-        reviewProvider(params).notifier,
+        paginatedReviewProvider(params).notifier,
       ),
     );
   }
@@ -36,7 +36,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
     PaginationUtils.pullToRefresh(
         controller: _controller,
         provider: ref.read(
-          reviewProvider(params).notifier,
+          paginatedReviewProvider(params).notifier,
         ));
   }
 
@@ -67,7 +67,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
               const SliverToBoxAdapter(child: ImageReviewList()),
               const TagChart(),
               PaginationSliverListView(
-                provider: reviewProvider(params),
+                provider: paginatedReviewProvider(params),
                 itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {
                   return ReviewListItem(
                     review: model,

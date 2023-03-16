@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/dummy/dummy_providers.dart';
+import '../../../../providers/review/review_form_provider.dart';
 import '../../../../utils/styles.dart';
-import 'tag_selection_item.dart';
+
+import './tag_selection_item.dart';
 
 class TagSelectionColumn extends ConsumerWidget {
   final String category;
@@ -27,7 +28,9 @@ class TagSelectionColumn extends ConsumerWidget {
             category,
             style: TextStyles.medium20,
           ),
-          const SizedBox(height: 32,),
+          const SizedBox(
+            height: 32,
+          ),
           ...allTags
               .getTagsPerCategory(category)
               .map((tag) => TagSelectionItem(tag: tag))

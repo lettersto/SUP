@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/dummy/dummy_providers.dart';
-import '../../../../models/dummy/tag.dart';
+import '../../../../models/review/tag.dart';
+import '../../../../providers/review/review_form_provider.dart';
 import '../../../../utils/styles.dart';
 
-class TagSelectionItem extends ConsumerStatefulWidget {
+class TagSelectionItem extends ConsumerWidget {
   final ReviewTag tag;
 
   const TagSelectionItem({
@@ -14,20 +14,11 @@ class TagSelectionItem extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  ConsumerState<TagSelectionItem> createState() => _TagSelectionItemState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool isSelected = ref.watch(reviewFormProvider).tags.contains(tag.tagNo);
 
-class _TagSelectionItemState extends ConsumerState<TagSelectionItem> {
-  bool _isSelected = false;
-
-  @override
-  Widget build(BuildContext context) {
     void tapHandler() {
-      setState(() {
-        _isSelected =
-            ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo);
-      });
-      ref.read(reviewFormFieldProvider.notifier).setTag(widget.tag);
+      ref.read(reviewFormProvider.notifier).setTags(tag.tagNo);
     }
 
     return GestureDetector(
@@ -36,10 +27,7 @@ class _TagSelectionItemState extends ConsumerState<TagSelectionItem> {
         padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
         margin: const EdgeInsets.only(bottom: 8.0),
         decoration: BoxDecoration(
-          color:
-              ref.watch(reviewFormFieldProvider).tag.contains(widget.tag.tagNo)
-                  ? AppColors.pink40
-                  : AppColors.white,
+          color: isSelected ? AppColors.pink40 : AppColors.white,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
@@ -52,7 +40,7 @@ class _TagSelectionItemState extends ConsumerState<TagSelectionItem> {
         ),
         // padding: EdgeInsets.all(20.0),
         child: Text(
-          widget.tag.title,
+          tag.title,
           style: TextStyles.medium18,
         ),
       ),

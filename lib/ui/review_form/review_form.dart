@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/review/review_form_provider.dart';
 import '../../providers/review/review_provider.dart';
+import '../../providers/store/store_detail_provider.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/sharedPreference_util.dart';
@@ -60,7 +61,7 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
 
     try {
       await ref.watch(reviewClientProvider).createReview(
-          storeNo: 1,
+          storeNo: ref.watch(storeDetailProvider).storeNo,
           userNo: SharedPreferenceUtil().userNo,
           content: ref.watch(reviewFormProvider).content,
           star: ref.watch(reviewFormProvider).star,

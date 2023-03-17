@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/common/pagination_params.dart';
 import '../../providers/providers_exporter.dart';
 import '../../providers/review/review_provider.dart';
+import '../../providers/store/store_detail_provider.dart';
 import '../../utils/pagination_utils.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../common/pagination_sliver_list_view.dart';
@@ -83,6 +84,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
     final sort =
         ref.read(reviewFilterStarRegDtmProvider.notifier).getTypeAsString();
     final keyword = ref.watch(reviewSearchKeywordProvider);
+    final storeName = ref.watch(storeDetailProvider).storeName ?? '';
 
     params = Params(
         paginationPathParams: PaginationPathParams(
@@ -102,7 +104,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
           child: CustomScrollView(
             controller: _controller,
             slivers: [
-              const ReviewAppBar(storeName: '가게 이름'),
+              ReviewAppBar(storeName: storeName),
               const ReviewHeader(),
               const SliverToBoxAdapter(child: ImageReviewList()),
               const TagChart(),

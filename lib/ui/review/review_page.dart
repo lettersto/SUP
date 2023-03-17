@@ -107,7 +107,9 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
               ReviewAppBar(storeName: storeName),
               const ReviewHeader(),
               const SliverToBoxAdapter(child: ImageReviewList()),
-              const TagChart(),
+              TagChart(
+                storeNo: storeNo,
+              ),
               PaginationSliverListView(
                 provider: paginatedReviewProvider(params),
                 itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:retrofit/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
@@ -8,6 +7,7 @@ import 'package:http_parser/http_parser.dart';
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/pagination_params.dart';
 import '../../models/review/review.dart';
+import '../../models/review/tag_chart.dart';
 import '../../providers/common/common_provider.dart';
 import '../common/base_pagination_repository.dart';
 
@@ -58,5 +58,10 @@ abstract class ReviewClient {
   @GET('/review/{reviewImgNo}')
   Future<ReviewDetail> getReviewDetail({
     @Path('reviewImgNo') required int reviewImgNo,
+  });
+
+  @GET('/review/tags/{storeNo}')
+  Future<TagChartModel> getTagChart({
+    @Path('storeNo') required int storeNo,
   });
 }

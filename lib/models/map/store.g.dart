@@ -14,6 +14,8 @@ StoreDetail _$StoreDetailFromJson(Map<String, dynamic> json) => StoreDetail(
       (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
       json['address'] as String,
       json['category'] as String,
+      (json['lat'] as num).toDouble(),
+      (json['lng'] as num).toDouble(),
       json['isWish'] as bool,
     );
 
@@ -26,6 +28,8 @@ Map<String, dynamic> _$StoreDetailToJson(StoreDetail instance) =>
       'imgs': instance.imgs,
       'address': instance.address,
       'category': instance.category,
+      'lat': instance.lat,
+      'lng': instance.lng,
       'isWish': instance.isWish,
     };
 

@@ -15,6 +15,7 @@ import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import '../../main.dart';
+import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../models/wish/wish.dart';
 import '../../providers/store/map_controller_provider.dart';
@@ -44,8 +45,11 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
   @override
   void initState() {
-    super.initState();
     getCurrentLocation();
+    ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
+        userLocation.longitude, 0, widget.categoryNo, "", "STAR");
+
+    super.initState();
     setState(() {});
   }
 
@@ -54,11 +58,8 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     List<Store> stores = ref.watch(storeProvider).list;
     List<Wish> wishes = ref.watch(wishProvider).list;
 
-    Future<void> onMapCreated(GoogleMapController controller) async {
-      ref.read(mapControllerProvider.notifier).setController(controller);
-      addWishMarker(wishes);
-      addStoreMarker(stores);
-    }
+    addWishMarker(wishes);
+    addStoreMarker(stores);
 
     return Scaffold(
       appBar: AppBar(
@@ -101,7 +102,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                               _initPosition.latitude, _initPosition.longitude),
                           zoom: 14.4746,
                         ),
-                        onMapCreated: onMapCreated,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller.complete(controller);
+                        },
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
@@ -147,8 +150,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   void addWishMarker(List<Wish> wishes) async {
-    print("zzzzzzz${wishes.length}");
-
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
 

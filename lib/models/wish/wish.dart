@@ -47,10 +47,15 @@ class PostWishRequest {
 @JsonSerializable()
 class PostWishResponse {
   final int wishNo;
+  final double lat;
+  final double lng;
 
-  PostWishResponse(this.wishNo);
+  PostWishResponse(this.wishNo, this.lat, this.lng);
 
-  PostWishResponse.init() : wishNo = 0;
+  PostWishResponse.init()
+      : wishNo = 0,
+        lat = 0,
+        lng = 0;
 
   factory PostWishResponse.fromJson(Map<String, dynamic> json) =>
       _$PostWishResponseFromJson(json);

@@ -13,6 +13,7 @@ import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../models/map/map.dart';
+import '../../models/map/store.dart';
 import '../../providers/store/map_controller_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
@@ -49,9 +50,7 @@ class MapPageState extends ConsumerState<MapPage> {
     List<Wish> wishes = ref.watch(wishProvider).list;
 
     Future<void> onMapCreated(GoogleMapController controller) async {
-      ref.read(mapControllerProvider.notifier).setController(controller);
-      addMarker(wishes);
-      setState(() {});
+      addWishMarker(wishes);
     }
 
     return Scaffold(
@@ -117,7 +116,7 @@ class MapPageState extends ConsumerState<MapPage> {
     );
   }
 
-  void addMarker(List<Wish> wishes) async {
+  void addWishMarker(List<Wish> wishes) async {
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
 
@@ -145,6 +144,30 @@ class MapPageState extends ConsumerState<MapPage> {
     }
 
     setState(() {});
+  }
+
+  void addSingleWish(int storeNo, double lat, double lng) async {
+    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(), "assets/icons/marker.png");
+
+    if (Platform.isIOS) {
+      star = await BitmapDescriptor.fromAssetImage(
+          const ImageConfiguration(), "assets/icons/marker_ios.png");
+    }
+
+    markers.add(Marker(
+        markerId: MarkerId(storeNo.toString()),
+        draggable: false,
+        icon: star,
+        onTap: () => setState(() {
+              ref
+                  .read(storeDetailProvider.notifier)
+                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
+
+              todayVisibility = false;
+              storeVisibility = true;
+            }),
+        position: LatLng(lat, lng)));
   }
 
   void deleteMarker(int storeNo) {

@@ -44,9 +44,13 @@ Map<String, dynamic> _$PostWishRequestToJson(PostWishRequest instance) =>
 PostWishResponse _$PostWishResponseFromJson(Map<String, dynamic> json) =>
     PostWishResponse(
       json['wishNo'] as int,
+      (json['lat'] as num).toDouble(),
+      (json['lng'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$PostWishResponseToJson(PostWishResponse instance) =>
     <String, dynamic>{
       'wishNo': instance.wishNo,
+      'lat': instance.lat,
+      'lng': instance.lng,
     };

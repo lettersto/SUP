@@ -15,6 +15,8 @@ TodayPick _$TodayPickFromJson(Map<String, dynamic> json) => TodayPick(
       starAvg: (json['starAvg'] as num).toDouble(),
       imgs: (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
       isWish: json['isWish'] as bool,
+      lat: (json['lat'] as num).toDouble(),
+      lng: (json['lng'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$TodayPickToJson(TodayPick instance) => <String, dynamic>{
@@ -25,6 +27,8 @@ Map<String, dynamic> _$TodayPickToJson(TodayPick instance) => <String, dynamic>{
       'reviewCnt': instance.reviewCnt,
       'starAvg': instance.starAvg,
       'imgs': instance.imgs,
+      'lat': instance.lat,
+      'lng': instance.lng,
       'isWish': instance.isWish,
     };
 

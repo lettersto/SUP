@@ -6,7 +6,9 @@ import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
+import '../../../models/map/map.dart';
 import '../../../models/map/store.dart';
+import '../../../providers/store/today_provider.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 import '../../review/review_page.dart';
@@ -186,9 +188,19 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                           context
                                               .findRootAncestorStateOfType<
                                                   MapPageState>()
-                                              ?.addMarker(
-                                                  ref.read(wishProvider).list);
+                                              ?.addSingleWish(
+                                                  storeDetail.storeNo,
+                                                  storeDetail.lat,
+                                                  storeDetail.lng);
                                         }
+
+                                        ref
+                                            .read(todayProvider.notifier)
+                                            .getTodayList(
+                                                SharedPreferenceUtil().userNo,
+                                                userLocation.latitude,
+                                                userLocation.longitude);
+
                                         ref
                                             .read(storeDetailProvider.notifier)
                                             .getStoreDetail(storeDetail.storeNo,

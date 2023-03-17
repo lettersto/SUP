@@ -31,14 +31,7 @@ class TagMapListState extends ConsumerState<TagMapList> {
                 ? const EdgeInsets.only(top: 4, left: 9)
                 : const EdgeInsets.only(top: 4),
             child: GestureDetector(
-                onTap: () async {
-                  ref.read(storeProvider.notifier).getStoreList(
-                      userLocation.latitude,
-                      userLocation.longitude,
-                      0,
-                      tag.code,
-                      "",
-                      "STAR");
+                onTap: () {
                   updateRecents(tag.tagName);
                   Navigator.push(
                     context,

@@ -1,20 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sup/models/map/map.dart';
+import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_result/map_search_result.dart';
 import 'package:sup/ui/map_search/recent_list.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 
-class MapSearchPage extends StatefulWidget {
+class MapSearchPage extends ConsumerStatefulWidget {
   const MapSearchPage({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => MapSearchState();
+  ConsumerState<ConsumerStatefulWidget> createState() => MapSearchState();
 }
 
-class MapSearchState extends State<MapSearchPage> {
+class MapSearchState extends ConsumerState<MapSearchPage> {
   List<String> recents = [];
   List<String> filteredRecent = [];
   Timer? _debounce;
@@ -79,13 +82,20 @@ class MapSearchState extends State<MapSearchPage> {
                 },
                 onSubmitted: (text) {
                   if (text.isNotEmpty) {
+                    ref.read(storeProvider.notifier).getStoreList(
+                        userLocation.latitude,
+                        userLocation.longitude,
+                        0,
+                        0,
+                        text,
+                        "STAR");
                     updateRecents(text);
                     setRecents();
                     Navigator.push(
                       context,
                       PageRouteBuilder(
                         pageBuilder: (context, animation1, animation2) =>
-                            MapResultPage(text),
+                            MapResultPage(text, 0),
                         transitionDuration: Duration.zero,
                         reverseTransitionDuration: Duration.zero,
                       ),

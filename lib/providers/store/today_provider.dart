@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/map/today.dart';
+import 'package:sup/models/map/today_pick.dart';
 
 import '../../repositories/store/store_repository.dart';
 

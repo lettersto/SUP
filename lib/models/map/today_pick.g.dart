@@ -1,23 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'today.dart';
+part of 'today_pick.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Today _$TodayFromJson(Map<String, dynamic> json) => Today(
+TodayPick _$TodayPickFromJson(Map<String, dynamic> json) => TodayPick(
       storeNo: json['storeNo'] as int,
       storeName: json['storeName'] as String,
       address: json['address'] as String,
-      category: json['category'] as int,
+      category: json['category'] as String,
       reviewCnt: json['reviewCnt'] as int,
       starAvg: (json['starAvg'] as num).toDouble(),
       imgs: (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
       isWish: json['isWish'] as bool,
     );
 
-Map<String, dynamic> _$TodayToJson(Today instance) => <String, dynamic>{
+Map<String, dynamic> _$TodayPickToJson(TodayPick instance) => <String, dynamic>{
       'storeNo': instance.storeNo,
       'storeName': instance.storeName,
       'address': instance.address,
@@ -31,7 +31,7 @@ Map<String, dynamic> _$TodayToJson(Today instance) => <String, dynamic>{
 TodayResponse _$TodayResponseFromJson(Map<String, dynamic> json) =>
     TodayResponse(
       list: (json['list'] as List<dynamic>)
-          .map((e) => Today.fromJson(e as Map<String, dynamic>))
+          .map((e) => TodayPick.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

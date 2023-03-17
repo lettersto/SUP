@@ -10,8 +10,8 @@ class StoreDetail {
   final int reviewCnt;
   final List<String> imgs;
   final String address;
-  final int category;
-  final bool isWish;
+  final String category;
+  bool isWish;
 
   StoreDetail(this.storeNo, this.storeName, this.starAvg, this.reviewCnt,
       this.imgs, this.address, this.category, this.isWish);
@@ -23,7 +23,7 @@ class StoreDetail {
         reviewCnt = 0,
         imgs = [],
         address = "",
-        category = 0,
+        category = "",
         isWish = false;
 
   factory StoreDetail.fromJson(Map<String, dynamic> json) =>
@@ -44,7 +44,7 @@ class Store {
   final List<String> reviews;
   final double distance;
   final String address;
-  final int category;
+  final String category;
 
   Store(
       this.storeNo,
@@ -70,7 +70,7 @@ class Store {
         reviews = [],
         distance = 0.0,
         address = "",
-        category = 0;
+        category = "";
 
   factory Store.fromJson(Map<String, dynamic> json) => _$StoreFromJson(json);
 

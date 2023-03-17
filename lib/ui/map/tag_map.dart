@@ -10,8 +10,7 @@ import '../common/tag_filter_item.dart';
 import '../map_result/map_search_result.dart';
 
 class TagMapList extends ConsumerStatefulWidget {
-  const TagMapList(this.userLocation, {super.key});
-  final MyLatLng userLocation;
+  const TagMapList({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => TagMapListState();
@@ -32,10 +31,10 @@ class TagMapListState extends ConsumerState<TagMapList> {
                 ? const EdgeInsets.only(top: 4, left: 9)
                 : const EdgeInsets.only(top: 4),
             child: GestureDetector(
-                onTap: () {
+                onTap: () async {
                   ref.read(storeProvider.notifier).getStoreList(
-                      widget.userLocation.latitude,
-                      widget.userLocation.longitude,
+                      userLocation.latitude,
+                      userLocation.longitude,
                       0,
                       tag.code,
                       "",
@@ -51,7 +50,7 @@ class TagMapListState extends ConsumerState<TagMapList> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, a1, a2) =>
-                          MapResultPage(tag.tagName),
+                          MapResultPage(tag.tagName, tag.code),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),

@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/wish/wish_provider.dart';
+import 'package:sup/ui/map/map_page.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
-import '../../../models/map/today.dart';
+import '../../../models/map/today_pick.dart';
+import '../../../models/wish/wish.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 
-class TodayPickItem extends StatefulWidget {
-  final Today store;
+class TodayPickItem extends ConsumerStatefulWidget {
+  final TodayPick store;
 
   const TodayPickItem(this.store, {super.key});
 
   @override
-  State<TodayPickItem> createState() => _TodayPickItem();
+  ConsumerState<TodayPickItem> createState() => _TodayPickItem();
 }
 
-class _TodayPickItem extends State<TodayPickItem> {
+class _TodayPickItem extends ConsumerState<TodayPickItem> {
   @override
   Widget build(BuildContext context) {
     double imageWidth = (MediaQuery.of(context).size.width - 32);
+    List<Wish> wishes = ref.watch(wishProvider).list;
 
     return Container(
         color: Colors.white,
@@ -127,10 +133,26 @@ class _TodayPickItem extends State<TodayPickItem> {
                                     color: AppColors.pink60,
                                   ),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              widget.store.isWish = !widget.store.isWish;
-                            });
+                          onPressed: () async {
+                            if (widget.store.isWish) {
+                              ref.read(wishProvider.notifier).deleteWish(
+                                  SharedPreferenceUtil().userNo,
+                                  widget.store.storeNo);
+                              context
+                                  .findAncestorStateOfType<MapPageState>()
+                                  ?.deleteMarker(widget.store.storeNo);
+                            } else {
+                              ref.read(wishProvider.notifier).postWish(
+                                  SharedPreferenceUtil().userNo,
+                                  widget.store.storeNo);
+
+                              //TODO 즐겨찾기 위치 응답으로 받으면 처리하기
+                              context
+                                  .findAncestorStateOfType<MapPageState>()
+                                  ?.addMarker(wishes);
+                            }
+
+                            widget.store.isWish = !widget.store.isWish;
                           },
                         ),
                         const Icon(

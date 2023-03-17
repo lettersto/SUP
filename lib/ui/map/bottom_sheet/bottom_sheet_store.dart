@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/providers/store/store_detail_provider.dart';
 import 'package:sup/providers/store/store_provider.dart';
+import 'package:sup/providers/wish/wish_provider.dart';
+import 'package:sup/ui/map/map_page.dart';
+import 'package:sup/utils/sharedPreference_util.dart';
 
 import '../../../models/map/store.dart';
 import '../../../utils/app_utils.dart';
@@ -34,7 +37,8 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const ReviewPage()),
+                    MaterialPageRoute(
+                        builder: (context) => ReviewPage(storeDetail.storeNo)),
                   );
                 },
                 onVerticalDragUpdate: (DragUpdateDetails data) {
@@ -45,7 +49,8 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ReviewPage()),
+                            builder: (context) =>
+                                ReviewPage(storeDetail.storeNo)),
                       );
                     }
                   });
@@ -58,7 +63,8 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ReviewPage()),
+                            builder: (context) =>
+                                ReviewPage(storeDetail.storeNo)),
                       );
                       setState(() {
                         _bodyHeight = 0;
@@ -159,8 +165,38 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                               ),
                                       ),
                                       onPressed: () {
+                                        if (storeDetail.isWish) {
+                                          ref
+                                              .read(wishProvider.notifier)
+                                              .deleteWish(
+                                                  SharedPreferenceUtil().userNo,
+                                                  storeDetail.storeNo);
+                                          context
+                                              .findRootAncestorStateOfType<
+                                                  MapPageState>()
+                                              ?.deleteMarker(
+                                                  storeDetail.storeNo);
+                                        } else {
+                                          ref
+                                              .read(wishProvider.notifier)
+                                              .postWish(
+                                                  SharedPreferenceUtil().userNo,
+                                                  storeDetail.storeNo);
+
+                                          context
+                                              .findRootAncestorStateOfType<
+                                                  MapPageState>()
+                                              ?.addMarker(
+                                                  ref.read(wishProvider).list);
+                                        }
+                                        ref
+                                            .read(storeDetailProvider.notifier)
+                                            .getStoreDetail(storeDetail.storeNo,
+                                                SharedPreferenceUtil().userNo);
+
                                         setState(() {
-                                          //storeDetail.isWish = !store.like;
+                                          storeDetail.isWish =
+                                              !storeDetail.isWish;
                                         });
                                       },
                                     ),

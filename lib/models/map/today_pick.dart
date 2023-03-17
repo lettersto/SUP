@@ -1,19 +1,19 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'today.g.dart';
+part 'today_pick.g.dart';
 
 @JsonSerializable()
-class Today {
+class TodayPick {
   final int storeNo;
   final String storeName;
   final String address;
-  final int category;
+  final String category;
   final int reviewCnt;
   final double starAvg;
   final List<String> imgs;
   bool isWish;
 
-  Today(
+  TodayPick(
       {required this.storeNo,
       required this.storeName,
       required this.address,
@@ -23,24 +23,25 @@ class Today {
       required this.imgs,
       required this.isWish});
 
-  Today.init()
+  TodayPick.init()
       : storeNo = 0,
         storeName = "",
         address = "",
-        category = 0,
+        category = "",
         reviewCnt = 0,
         starAvg = 0.0,
         imgs = [],
         isWish = false;
 
-  factory Today.fromJson(Map<String, dynamic> json) => _$TodayFromJson(json);
+  factory TodayPick.fromJson(Map<String, dynamic> json) =>
+      _$TodayPickFromJson(json);
 
-  Map<String, dynamic> toJson() => _$TodayToJson(this);
+  Map<String, dynamic> toJson() => _$TodayPickToJson(this);
 }
 
 @JsonSerializable()
 class TodayResponse {
-  final List<Today> list;
+  final List<TodayPick> list;
 
   TodayResponse({required this.list});
 

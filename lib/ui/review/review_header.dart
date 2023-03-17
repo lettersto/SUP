@@ -10,21 +10,27 @@ import './filter_buttons/only_photo_filter_button.dart';
 import './filter_buttons/tag_filtter_button.dart';
 
 class ReviewHeader extends StatelessWidget {
-  const ReviewHeader({super.key});
+  final int totalCount;
+
+  const ReviewHeader({
+    super.key,
+    required this.totalCount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
       pinned: true,
-      delegate: ReviewHeaderDelegate(),
+      delegate: ReviewHeaderDelegate(totalCount),
     );
   }
 }
 
 class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
   final double height;
+  final int totalCount;
 
-  ReviewHeaderDelegate([this.height = 50]);
+  ReviewHeaderDelegate(this.totalCount, [this.height = 50]);
 
   @override
   Widget build(context, double shrinkOffset, bool overlapsContent) {
@@ -44,8 +50,9 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Headline(
+                Headline(
                   title: '리뷰',
+                  count: totalCount,
                 ),
                 ReviewTextButton(
                   text: '나도 참여',

@@ -64,4 +64,9 @@ abstract class ReviewClient {
   Future<TagChartModel> getTagChart({
     @Path('storeNo') required int storeNo,
   });
+
+  @GET('/review/count/{storeNo}')
+  Future<int> getTotalReviewCount({
+    @Path('storeNo') required int storeNo,
+  });
 }

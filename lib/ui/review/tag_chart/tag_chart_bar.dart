@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/providers/review/review_provider.dart';
 
 import '../../../models/review/tag_chart.dart';
 import '../../../utils/styles.dart';
 
-class TagChartBar extends StatelessWidget {
+class TagChartBar extends ConsumerWidget {
   final TagChartItemModel tag;
-  final int totalCnt;
 
   const TagChartBar({
     Key? key,
     required this.tag,
-    required this.totalCnt,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final totalCnt = ref.read(reviewTotalCountProvider);
+
     double percentage = 0;
     if (totalCnt != 0) {
       percentage = tag.tagCnt / totalCnt;
@@ -53,9 +55,9 @@ class TagChartBar extends StatelessWidget {
                 style: TextStyles.bold16,
               ),
               Text(
-                '250',
+                tag.tagCnt.toString(),
                 style: TextStyles.medium16.merge(
-                  const TextStyle(color: AppColors.pink30),
+                  const TextStyle(color: AppColors.pink40),
                 ),
               ),
             ],

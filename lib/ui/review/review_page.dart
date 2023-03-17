@@ -48,6 +48,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   }
 
   Future<void> _refreshHandler() async {
+    ref.read(reviewChartProvider.notifier).getReviewChart(widget.storeNo);
     PaginationUtils.pullToRefresh(
       controller: _controller,
       provider: ref.read(
@@ -59,6 +60,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
 
   @override
   void initState() {
+    ref.read(reviewTotalCountProvider.notifier).getReviewChart(widget.storeNo);
     super.initState();
     _controller.addListener(listener);
   }
@@ -85,6 +87,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
         ref.read(reviewFilterStarRegDtmProvider.notifier).getTypeAsString();
     final keyword = ref.watch(reviewSearchKeywordProvider);
     final storeName = ref.watch(storeDetailProvider).storeName ?? '';
+    final reviewTotalCount = ref.watch(reviewTotalCountProvider);
 
     params = Params(
         paginationPathParams: PaginationPathParams(
@@ -105,7 +108,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
             controller: _controller,
             slivers: [
               ReviewAppBar(storeName: storeName),
-              const ReviewHeader(),
+              ReviewHeader(totalCount: reviewTotalCount),
               const SliverToBoxAdapter(child: ImageReviewList()),
               TagChart(
                 storeNo: storeNo,

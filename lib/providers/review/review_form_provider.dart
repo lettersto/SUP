@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/review/review_form.dart';
-import '../../models/review/tag.dart';
+import '../../models/review/review_tag.dart';
 
 class ReviewFormNotifier extends AutoDisposeNotifier<ReviewForm> {
   @override

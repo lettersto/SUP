@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'pagination_params.g.dart';
 
 @JsonSerializable()
-class PaginationParams {
+class PaginationQueryParams {
   final int? lastNo;
   final int? size;
 
@@ -12,7 +12,7 @@ class PaginationParams {
   final String? sort;
   final bool? imgOnly;
 
-  const PaginationParams({
+  const PaginationQueryParams({
     this.lastNo,
     this.size,
     this.tagNo,
@@ -21,7 +21,7 @@ class PaginationParams {
     this.imgOnly,
   });
 
-  PaginationParams copyWith({
+  PaginationQueryParams copyWith({
     int? lastNo,
     int? size,
     int? tagNo,
@@ -29,7 +29,7 @@ class PaginationParams {
     String? sort,
     bool? imgOnly,
   }) {
-    return PaginationParams(
+    return PaginationQueryParams(
       lastNo: lastNo ?? this.lastNo,
       size: size ?? this.size,
       tagNo: tagNo ?? this.tagNo,
@@ -39,24 +39,39 @@ class PaginationParams {
     );
   }
 
-  factory PaginationParams.fromJson(Map<String, dynamic> json) =>
-      _$PaginationParamsFromJson(json);
+  factory PaginationQueryParams.fromJson(Map<String, dynamic> json) =>
+      _$PaginationQueryParamsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PaginationParamsToJson(this);
+  Map<String, dynamic> toJson() => _$PaginationQueryParamsToJson(this);
 }
 
 @JsonSerializable()
-class ReviewDetailParams {
-  final int storeNo;
-  final int userNo;
+class PaginationPathParams {
+  final int? storeNo;
+  final int? userNo;
 
-  ReviewDetailParams({
-    required this.storeNo,
-    required this.userNo,
+  const PaginationPathParams({
+    this.storeNo,
+    this.userNo,
   });
 
-  factory ReviewDetailParams.fromJson(Map<String, dynamic> json) =>
-      _$ReviewDetailParamsFromJson(json);
+  factory PaginationPathParams.fromJson(Map<String, dynamic> json) =>
+      _$PaginationPathParamsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$ReviewDetailParamsToJson(this);
+  Map<String, dynamic> toJson() => _$PaginationPathParamsToJson(this);
+}
+
+@JsonSerializable()
+class Params {
+  final PaginationPathParams paginationPathParams;
+  final PaginationQueryParams paginationQueryParams;
+
+  const Params({
+    required this.paginationPathParams,
+    required this.paginationQueryParams,
+  });
+
+  factory Params.fromJson(Map<String, dynamic> json) => _$ParamsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ParamsToJson(this);
 }

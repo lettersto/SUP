@@ -4,6 +4,9 @@ import '../../models/common/pagination_params.dart';
 
 abstract class IBasePaginationRepository<T extends IModelWithId> {
   Future<CursorPagination<T>> paginate({
-    PaginationParams? paginationParams = const PaginationParams(),
+    PaginationQueryParams? paginationQueryParams =
+        const PaginationQueryParams(),
+    required int storeNo,
+    required int userNo,
   });
 }

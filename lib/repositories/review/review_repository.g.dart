@@ -19,11 +19,15 @@ class _PaginatedReviewRepository implements PaginatedReviewRepository {
   String? baseUrl;
 
   @override
-  Future<CursorPagination<ReviewDetailWithPhotos>> paginate(
-      {paginationParams = const PaginationParams()}) async {
+  Future<CursorPagination<ReviewDetailWithPhotos>> paginate({
+    paginationQueryParams = const PaginationQueryParams(),
+    required storeNo,
+    required userNo,
+  }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(paginationParams?.toJson() ?? <String, dynamic>{});
+    queryParameters
+        .addAll(paginationQueryParams?.toJson() ?? <String, dynamic>{});
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
@@ -35,7 +39,7 @@ class _PaginatedReviewRepository implements PaginatedReviewRepository {
     )
             .compose(
               _dio.options,
-              '/',
+              '/review/${storeNo}/${userNo}',
               queryParameters: queryParameters,
               data: _data,
             )

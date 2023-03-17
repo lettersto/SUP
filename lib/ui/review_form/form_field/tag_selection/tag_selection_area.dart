@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../providers/review/review_form_provider.dart';
 import '../../../../utils/styles.dart';
 
 import '../tag_selection/tag_selection_column.dart';
@@ -14,7 +13,6 @@ class TagSelectionArea extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var height = MediaQuery.of(context).size.height;
-    final allTags = ref.watch(reviewTagsProvider);
 
     return Container(
       width: double.infinity,

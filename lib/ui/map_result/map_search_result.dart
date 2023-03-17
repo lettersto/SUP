@@ -18,7 +18,6 @@ import '../../main.dart';
 import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../models/wish/wish.dart';
-import '../../providers/store/map_controller_provider.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
 class MapResultPage extends ConsumerStatefulWidget {
@@ -32,7 +31,7 @@ class MapResultPage extends ConsumerStatefulWidget {
 }
 
 class MapResultPageState extends ConsumerState<MapResultPage> {
-  final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? _controller;
 
   late LatLng _initPosition;
   bool _isLoading = true;
@@ -103,9 +102,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                           zoom: 14.4746,
                         ),
                         onMapCreated: (GoogleMapController controller) {
-                          _controller.complete(controller);
+                          _controller = controller;
                         },
-                        myLocationEnabled: true,
+                        myLocationEnabled: false,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
@@ -149,6 +148,10 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     );
   }
 
+  void clearMarker() {
+    markers.clear();
+  }
+
   void addWishMarker(List<Wish> wishes) async {
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
@@ -186,7 +189,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
     if (Platform.isIOS) {
       star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_store.png");
+          const ImageConfiguration(), "assets/icons/marker_store_ios.png");
     }
 
     for (int i = 0; i < stores.length; i++) {
@@ -227,10 +230,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   Future<void> _goToCurrentPos() async {
-    final GoogleMapController controller = await _controller.future;
     var gps = await getCurrentLocation();
 
-    controller.animateCamera(
+    _controller?.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));
   }
 }

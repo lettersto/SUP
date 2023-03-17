@@ -35,6 +35,9 @@ class _RecentItemMove extends ConsumerState<RecentItemMove> {
                     height: 48,
                     child: GestureDetector(
                       onTap: () {
+                        context
+                            .findAncestorStateOfType<MapResultPageState>()
+                            ?.clearMarker();
                         ref.read(storeProvider.notifier).getStoreList(
                             userLocation.latitude,
                             userLocation.longitude,

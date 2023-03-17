@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/models/map/today_pick.dart';
 import 'package:sup/models/wish/wish.dart';
 import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
@@ -13,8 +12,6 @@ import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import 'dart:io' show Platform;
 import '../../models/map/map.dart';
-import '../../models/map/store.dart';
-import '../../providers/store/map_controller_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
@@ -27,7 +24,7 @@ class MapPage extends ConsumerStatefulWidget {
 }
 
 class MapPageState extends ConsumerState<MapPage> {
-  final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? _controller;
 
   late LatLng _initPosition;
   bool _isLoading = true;
@@ -39,8 +36,8 @@ class MapPageState extends ConsumerState<MapPage> {
   void initState() {
     getCurrentLocation();
     ref.read(wishProvider.notifier).getWishList(SharedPreferenceUtil().userNo);
-    super.initState();
     setState(() {});
+    super.initState();
   }
 
   Set<Marker> markers = {};
@@ -50,6 +47,7 @@ class MapPageState extends ConsumerState<MapPage> {
     List<Wish> wishes = ref.watch(wishProvider).list;
 
     Future<void> onMapCreated(GoogleMapController controller) async {
+      _controller = controller;
       addWishMarker(wishes);
     }
 
@@ -70,7 +68,7 @@ class MapPageState extends ConsumerState<MapPage> {
                           zoom: 14.4746,
                         ),
                         onMapCreated: onMapCreated,
-                        myLocationEnabled: true,
+                        myLocationEnabled: false,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
@@ -199,10 +197,9 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<void> _goToCurrentPos() async {
-    final GoogleMapController controller = await _controller.future;
     var gps = await getCurrentLocation();
 
-    controller.animateCamera(
+    _controller?.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));
   }
 }

@@ -19,8 +19,10 @@ class StoreNotifier extends StateNotifier<StoreResponse> {
   void getStoreList(double lat, double lng, int tagNo, int category,
       String keyword, String sort) async {
     try {
-      state = await repository.getStoreList(
-          lat, lng, tagNo, category, keyword, sort);
+      if (!(tagNo == 0 && category == 0 && keyword == "")) {
+        state = await repository.getStoreList(
+            lat, lng, tagNo, category, keyword, sort);
+      }
     } catch (e) {
       print(e);
     }

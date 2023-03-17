@@ -18,7 +18,9 @@ class StoreDetailNotifier extends StateNotifier<StoreDetail> {
 
   void getStoreDetail(int storeNo, int userNo) async {
     try {
-      state = await repository.getStoreDetail(storeNo, userNo);
+      if (state.storeNo != storeNo) {
+        state = await repository.getStoreDetail(storeNo, userNo);
+      }
     } catch (e) {
       print(e);
     }

@@ -74,11 +74,20 @@ class PaginationProvider<T extends IModelWithId,
         }
       }
 
-      final response = await repository.paginate(
-        paginationQueryParams: params,
-        userNo: paginationPathParams.userNo!,
-        storeNo: paginationPathParams.storeNo!,
-      );
+      final CursorPagination<T> response;
+
+      if (paginationPathParams.userNo != null) {
+        response = await repository.paginate(
+          paginationQueryParams: params,
+          userNo: paginationPathParams.userNo,
+          storeNo: paginationPathParams.storeNo!,
+        );
+      } else {
+        response = await repository.paginate(
+          paginationQueryParams: params,
+          storeNo: paginationPathParams.storeNo!,
+        );
+      }
 
       if (state is CursorPaginationFetchingMore) {
         final paginationState = state as CursorPaginationFetchingMore<T>;

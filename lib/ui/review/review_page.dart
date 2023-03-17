@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:sup/utils/app_utils.dart';
 
 import '../../models/common/pagination_params.dart';
 import '../../providers/providers_exporter.dart';
@@ -28,6 +27,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   final ScrollController _controller = ScrollController();
   final paginationQueryParams = const PaginationQueryParams(
       size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false);
+  final imageQueryParams = const PaginationQueryParams(size: 10);
 
   // NOTE initializer에 instance를 할당할 수 없기 때문에, 어쩔 수 없이 중복적으로 작성해야 한다.
   Params params = Params(
@@ -35,6 +35,11 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
         size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false),
     paginationPathParams:
         PaginationPathParams(storeNo: 0, userNo: SharedPreferenceUtil().userNo),
+  );
+
+  Params imageParams = const Params(
+    paginationQueryParams: PaginationQueryParams(size: 10),
+    paginationPathParams: PaginationPathParams(storeNo: 0),
   );
 
   void listener() {
@@ -56,12 +61,19 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       ),
       paginationQueryParams: paginationQueryParams,
     );
+    PaginationUtils.pullToRefresh(
+      controller: _controller,
+      provider: ref.read(
+        paginatedImageReviewProvider(imageParams).notifier,
+      ),
+      paginationQueryParams: imageQueryParams,
+    );
   }
 
   @override
   void initState() {
-    ref.read(reviewTotalCountProvider.notifier).getReviewChart(widget.storeNo);
     super.initState();
+    ref.read(reviewTotalCountProvider.notifier).getReviewChart(widget.storeNo);
     _controller.addListener(listener);
   }
 
@@ -99,7 +111,11 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
             sort: sort,
             imgOnly: isOnlyPhotosSelected));
 
-    // showToast(widget.storeNo.toString());
+    imageParams = Params(
+      paginationQueryParams: const PaginationQueryParams(size: 10),
+      paginationPathParams: PaginationPathParams(storeNo: storeNo),
+    );
+
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
@@ -109,7 +125,9 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
             slivers: [
               ReviewAppBar(storeName: storeName),
               ReviewHeader(totalCount: reviewTotalCount),
-              const SliverToBoxAdapter(child: ImageReviewList()),
+              ImageReviewList(
+                provider: paginatedImageReviewProvider(imageParams),
+              ),
               TagChart(
                 storeNo: storeNo,
               ),

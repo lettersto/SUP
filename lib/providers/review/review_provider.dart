@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/common/pagination_params.dart';
+import 'package:sup/models/review/image_review.dart';
 import 'package:sup/models/review/tag_chart.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
@@ -23,6 +24,27 @@ final paginatedReviewProvider = StateNotifierProvider.family<
     PaginatedReviewStateNotifier, CursorPaginationBase, Params>((ref, params) {
   final repository = ref.watch(paginatedReviewRepositoryProvider);
   final notifier = PaginatedReviewStateNotifier(
+      repository: repository,
+      paginationPathParams: params.paginationPathParams,
+      paginationQueryParams: params.paginationQueryParams); // 여기에서 외부에서 값을 받아옴
+
+  return notifier;
+});
+
+class PaginatedImageReviewStateNotifier extends PaginationProvider<
+    ImageReviewItemModel, PaginatedImageReviewRepository> {
+  PaginatedImageReviewStateNotifier(
+      {required super.repository,
+      required super.paginationPathParams,
+      required super.paginationQueryParams});
+}
+
+final paginatedImageReviewProvider = StateNotifierProvider.family<
+    PaginatedImageReviewStateNotifier,
+    CursorPaginationBase,
+    Params>((ref, params) {
+  final repository = ref.watch(paginatedImageReviewRepositoryProvider);
+  final notifier = PaginatedImageReviewStateNotifier(
       repository: repository,
       paginationPathParams: params.paginationPathParams,
       paginationQueryParams: params.paginationQueryParams); // 여기에서 외부에서 값을 받아옴

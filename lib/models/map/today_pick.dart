@@ -11,6 +11,8 @@ class TodayPick {
   final int reviewCnt;
   final double starAvg;
   final List<String> imgs;
+  final double lat;
+  final double lng;
   bool isWish;
 
   TodayPick(
@@ -21,7 +23,9 @@ class TodayPick {
       required this.reviewCnt,
       required this.starAvg,
       required this.imgs,
-      required this.isWish});
+      required this.isWish,
+      required this.lat,
+      required this.lng});
 
   TodayPick.init()
       : storeNo = 0,
@@ -31,7 +35,9 @@ class TodayPick {
         reviewCnt = 0,
         starAvg = 0.0,
         imgs = [],
-        isWish = false;
+        isWish = false,
+        lat = 0,
+        lng = 0;
 
   factory TodayPick.fromJson(Map<String, dynamic> json) =>
       _$TodayPickFromJson(json);

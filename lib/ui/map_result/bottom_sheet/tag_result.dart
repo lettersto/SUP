@@ -36,17 +36,30 @@ class TagResultListState extends ConsumerState<TagResultList> {
                     : const EdgeInsets.only(top: 4, right: 6),
                 child: GestureDetector(
                     onTap: () async {
-                      //TODO 500 error
-                      ref.read(storeProvider.notifier).getStoreList(
-                          userLocation.latitude,
-                          userLocation.longitude,
-                          tag.code,
-                          widget.cateNo,
-                          "",
-                          "STAR");
-                      setState(() {
-                        selectedIdx = position;
-                      });
+                      if (selectedIdx == position) {
+                        ref.read(storeProvider.notifier).getStoreList(
+                            userLocation.latitude,
+                            userLocation.longitude,
+                            tag.code,
+                            0,
+                            "",
+                            "STAR");
+
+                        setState(() {
+                          selectedIdx = -1;
+                        });
+                      } else {
+                        ref.read(storeProvider.notifier).getStoreList(
+                            userLocation.latitude,
+                            userLocation.longitude,
+                            tag.code,
+                            widget.cateNo,
+                            "",
+                            "STAR");
+                        setState(() {
+                          selectedIdx = position;
+                        });
+                      }
                     },
                     child: (selectedIdx == position)
                         ? TagFilterItemSelected(

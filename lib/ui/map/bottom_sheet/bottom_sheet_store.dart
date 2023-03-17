@@ -186,7 +186,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                           context
                                               .findRootAncestorStateOfType<
                                                   MapPageState>()
-                                              ?.addMarker(
+                                              ?.addWishMarker(
                                                   ref.read(wishProvider).list);
                                         }
                                         ref

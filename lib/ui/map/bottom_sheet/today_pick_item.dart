@@ -127,10 +127,9 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
                                       SharedPreferenceUtil().userNo,
                                       widget.store.storeNo);
 
-                                  //TODO 즐겨찾기 위치 응답으로 받으면 처리하기
                                   context
                                       .findAncestorStateOfType<MapPageState>()
-                                      ?.addMarker(wishes);
+                                      ?.addSingleWish(widget.store);
                                 }
 
                                 widget.store.isWish = !widget.store.isWish;

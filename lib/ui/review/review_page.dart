@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/utils/app_utils.dart';
+// import 'package:sup/utils/app_utils.dart';
 
 import '../../models/common/pagination_params.dart';
+import '../../providers/providers_exporter.dart';
 import '../../providers/review/review_provider.dart';
 import '../../utils/pagination_utils.dart';
 import '../../utils/sharedPreference_util.dart';
@@ -24,10 +25,16 @@ class ReviewPage extends ConsumerStatefulWidget {
 
 class _ReviewPageState extends ConsumerState<ReviewPage> {
   final ScrollController _controller = ScrollController();
+  final paginationQueryParams = const PaginationQueryParams(
+      size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false);
 
-  // TODO 어떤 식당과 유저에게서 넘겨오는 지에 따라 아래 storeNo 변경
-  final params =
-      ReviewDetailParams(storeNo: 3839, userNo: SharedPreferenceUtil().userNo);
+  // NOTE initializer에 instance를 할당할 수 없기 때문에, 어쩔 수 없이 중복적으로 작성해야 한다.
+  Params params = Params(
+    paginationQueryParams: const PaginationQueryParams(
+        size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false),
+    paginationPathParams:
+        PaginationPathParams(storeNo: 0, userNo: SharedPreferenceUtil().userNo),
+  );
 
   void listener() {
     PaginationUtils.paginate(
@@ -35,15 +42,18 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       provider: ref.read(
         paginatedReviewProvider(params).notifier,
       ),
+      paginationQueryParams: paginationQueryParams,
     );
   }
 
   Future<void> _refreshHandler() async {
     PaginationUtils.pullToRefresh(
-        controller: _controller,
-        provider: ref.read(
-          paginatedReviewProvider(params).notifier,
-        ));
+      controller: _controller,
+      provider: ref.read(
+        paginatedReviewProvider(params).notifier,
+      ),
+      paginationQueryParams: paginationQueryParams,
+    );
   }
 
   @override
@@ -61,7 +71,30 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    showToast(widget.storeNo.toString());
+    final storeNo = widget.storeNo;
+    ref.watch(reviewFilterStarRegDtmProvider);
+    final isOnlyPhotosSelected = ref.watch(reviewFilterOnlyPhotoProvider);
+    int selectedTag = ref.watch(reviewTagFilterProvider).selected;
+    if (selectedTag == -1) {
+      selectedTag = 0;
+    } else {
+      selectedTag += 3;
+    }
+    final sort =
+        ref.read(reviewFilterStarRegDtmProvider.notifier).getTypeAsString();
+    final keyword = ref.watch(reviewSearchKeywordProvider);
+
+    params = Params(
+        paginationPathParams: PaginationPathParams(
+            storeNo: storeNo, userNo: SharedPreferenceUtil().userNo),
+        paginationQueryParams: PaginationQueryParams(
+            size: 10,
+            tagNo: selectedTag,
+            keyword: keyword,
+            sort: sort,
+            imgOnly: isOnlyPhotosSelected));
+
+    // showToast(widget.storeNo.toString());
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(

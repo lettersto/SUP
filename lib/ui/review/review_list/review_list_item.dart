@@ -31,10 +31,9 @@ class ReviewListItem extends ConsumerWidget {
         : AppColors.pink15;
     final tagTextColor =
         (mode == ReviewMode.detail) ? AppColors.white : AppColors.gray;
-    final sliderSize =
-        ref.watch(isFilterSelectedProvider(ReviewFilterType.onlyPhotos))
-            ? SizeType.large
-            : SizeType.medium;
+    final sliderSize = ref.watch(reviewFilterOnlyPhotoProvider)
+        ? SizeType.large
+        : SizeType.medium;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),

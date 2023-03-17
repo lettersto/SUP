@@ -4,16 +4,9 @@ enum ReviewMode {
   photoOnly,
 }
 
-enum ReviewFilterType {
-  starRating,
-  latest,
-  onlyPhotos,
-  interior,
-  conversation,
-  speciality,
-  photoZone,
-  niceView,
-  parkingLot,
+enum ReviewFilterStarRegDtmType {
+  STAR,
+  REGDTM,
 }
 
 enum SizeType {

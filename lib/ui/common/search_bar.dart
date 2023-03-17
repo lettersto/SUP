@@ -1,8 +1,12 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers/review/review_filter_provider.dart';
 import '../../utils/styles.dart';
 
-class SearchBar extends StatefulWidget {
+class SearchBar extends ConsumerStatefulWidget {
   final String hintText;
   final IconData? icon; // Icon.add, Icon.favorite ...
 
@@ -10,27 +14,33 @@ class SearchBar extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<SearchBar> createState() => _SearchBarState();
+  ConsumerState<SearchBar> createState() => _SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
+class _SearchBarState extends ConsumerState<SearchBar> {
   final _inputController = TextEditingController();
+  Timer? _debounce;
 
-  // TODO implement search api
-  void _printLatestValue() {
-    print(_inputController.text);
+  void _setKeyword() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 800), () {
+      ref
+          .read(reviewSearchKeywordProvider.notifier)
+          .setKeyword(_inputController.text);
+    });
   }
 
   @override
   void initState() {
     super.initState();
-
-    _inputController.addListener(_printLatestValue);
+    _inputController.addListener(_setKeyword);
   }
 
   @override
   void dispose() {
+    _inputController.removeListener(_setKeyword);
     _inputController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 

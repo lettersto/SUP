@@ -4,9 +4,10 @@ import '../../utils/styles.dart';
 import '../common/headline.dart';
 import '../common/line_divider.dart';
 import '../common/search_bar.dart';
-import 'filter_buttons/review_text_button.dart';
+import './filter_buttons/review_text_button.dart';
 import './filter_buttons/filter_toggle_button.dart';
 import './filter_buttons/only_photo_filter_button.dart';
+import './filter_buttons/tag_filtter_button.dart';
 
 class ReviewHeader extends StatelessWidget {
   const ReviewHeader({super.key});
@@ -45,7 +46,6 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
               children: [
                 const Headline(
                   title: '리뷰',
-                  count: 220,
                 ),
                 ReviewTextButton(
                   text: '나도 참여',
@@ -81,14 +81,9 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
           ),
         ),
         Container(
-          decoration: const BoxDecoration(color: AppColors.pink10),
+          color: AppColors.white,
           height: height,
-          // TODO implement tag filter
-          // child: LineDivider(
-          //   child: FilterToggleButton.fromStringTitle(
-          //     const ['인테리어', '대화', '특별한메뉴', '사진맛집', '뷰맛집', '주차'],
-          //   ),
-          // ),
+          child: TagFilterButton(),
         ),
       ],
     );

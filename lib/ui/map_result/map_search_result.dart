@@ -105,7 +105,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                         onMapCreated: (GoogleMapController controller) {
                           _controller.complete(controller);
                         },
-                        myLocationEnabled: false,
+                        myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,

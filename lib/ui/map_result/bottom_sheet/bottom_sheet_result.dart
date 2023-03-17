@@ -27,6 +27,7 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
+    //AsyncValue<List<Store>> stores = ref.watch(storeProvider).list;
 
     Future.delayed(Duration.zero, () {
       if (stores.length == 1) {

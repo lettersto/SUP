@@ -11,10 +11,12 @@ class StoreDetail {
   final List<String> imgs;
   final String address;
   final String category;
+  final double lat;
+  final double lng;
   bool isWish;
 
   StoreDetail(this.storeNo, this.storeName, this.starAvg, this.reviewCnt,
-      this.imgs, this.address, this.category, this.isWish);
+      this.imgs, this.address, this.category, this.lat, this.lng, this.isWish);
 
   StoreDetail.init()
       : storeNo = 0,
@@ -24,6 +26,8 @@ class StoreDetail {
         imgs = [],
         address = "",
         category = "",
+        lat = 0,
+        lng = 0,
         isWish = false;
 
   factory StoreDetail.fromJson(Map<String, dynamic> json) =>
@@ -87,4 +91,16 @@ class StoreResponse {
       _$StoreResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$StoreResponseToJson(this);
+}
+
+class StoreRequest {
+  final double lat;
+  final double lng;
+  final int tagNo;
+  final int category;
+  final String keyword;
+  final String sort;
+
+  StoreRequest(
+      this.lat, this.lng, this.tagNo, this.category, this.keyword, this.sort);
 }

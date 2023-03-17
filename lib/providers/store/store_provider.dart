@@ -26,3 +26,27 @@ class StoreNotifier extends StateNotifier<StoreResponse> {
     }
   }
 }
+
+/*
+final storeProvider = FutureProvider.family
+    .autoDispose<StoreResponse, StoreRequest>((ref, request) => ref
+        .watch(storeRepositoryProvider)
+        .getStoreList(request.lat, request.lng, request.tagNo, request.category,
+            request.keyword, request.sort));
+
+class StoreNotifier extends StateNotifier<StoreResponse> {
+  final StoreRepository repository;
+
+  StoreNotifier({required this.repository}) : super(StoreResponse(list: []));
+
+  void getStoreList(double lat, double lng, int tagNo, int category,
+      String keyword, String sort) async {
+    try {
+      state = await repository.getStoreList(
+          lat, lng, tagNo, category, keyword, sort);
+    } catch (e) {
+      print(e);
+    }
+  }
+}
+*/

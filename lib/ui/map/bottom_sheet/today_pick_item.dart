@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/models/map/map.dart';
+import 'package:sup/providers/store/today_provider.dart';
 import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
@@ -114,11 +116,12 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
                                         color: AppColors.pink60,
                                       ),
                               ),
-                              onPressed: () async {
+                              onPressed: () {
                                 if (widget.store.isWish) {
                                   ref.read(wishProvider.notifier).deleteWish(
                                       SharedPreferenceUtil().userNo,
                                       widget.store.storeNo);
+
                                   context
                                       .findAncestorStateOfType<MapPageState>()
                                       ?.deleteMarker(widget.store.storeNo);
@@ -129,7 +132,8 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
 
                                   context
                                       .findAncestorStateOfType<MapPageState>()
-                                      ?.addSingleWish(widget.store);
+                                      ?.addSingleWish(widget.store.storeNo,
+                                          widget.store.lat, widget.store.lng);
                                 }
 
                                 widget.store.isWish = !widget.store.isWish;

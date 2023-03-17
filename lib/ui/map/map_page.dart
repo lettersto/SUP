@@ -146,7 +146,7 @@ class MapPageState extends ConsumerState<MapPage> {
     setState(() {});
   }
 
-  void addSingleWish(TodayPick store) async {
+  void addSingleWish(int storeNo, double lat, double lng) async {
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
 
@@ -156,18 +156,18 @@ class MapPageState extends ConsumerState<MapPage> {
     }
 
     markers.add(Marker(
-        markerId: MarkerId(store.storeNo.toString()),
+        markerId: MarkerId(storeNo.toString()),
         draggable: false,
         icon: star,
         onTap: () => setState(() {
               ref
                   .read(storeDetailProvider.notifier)
-                  .getStoreDetail(store.storeNo, SharedPreferenceUtil().userNo);
+                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
 
               todayVisibility = false;
               storeVisibility = true;
             }),
-        position: LatLng(store.lat, store.lng)));
+        position: LatLng(lat, lng)));
   }
 
   void deleteMarker(int storeNo) {

@@ -43,10 +43,10 @@ class _PaginationSliverListViewState<T extends IModelWithId>
     }
 
     if (state is CursorPaginationError) {
-      return SliverToBoxAdapter(
+      return const SliverToBoxAdapter(
         child: Center(
           child: Text(
-            state.message,
+            '리뷰가 없어요! 😭 \n 리뷰를 작성해 보세요!',
             textAlign: TextAlign.center,
           ),
         ),

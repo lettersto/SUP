@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../../models/review/tag.dart';
+import '../../../../models/review/review_tag.dart';
 import '../../../../providers/review/review_form_provider.dart';
 import '../../../../utils/styles.dart';
 

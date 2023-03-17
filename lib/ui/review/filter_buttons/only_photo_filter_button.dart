@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/review/review_filter.dart';
 import '../../../providers/providers_exporter.dart';
 import '../../../utils/styles.dart';
-import '../../../utils/enums.dart';
-
-import 'review_text_button.dart';
+import './review_text_button.dart';
 
 class OnlyPhotoFilterButton extends ConsumerStatefulWidget {
   const OnlyPhotoFilterButton({Key? key}) : super(key: key);
@@ -17,22 +14,12 @@ class OnlyPhotoFilterButton extends ConsumerStatefulWidget {
 }
 
 class _OnlyPhotoFilterButton extends ConsumerState<OnlyPhotoFilterButton> {
-  final int filterButtonIdx =
-      ReviewFilters.reviewFilterTypeMap[ReviewFilterType.onlyPhotos];
-
   @override
   Widget build(BuildContext context) {
-    bool isSelected =
-        filterButtonIdx == ref.watch(selectedReviewFilterProvider);
+    bool isSelected = ref.watch(reviewFilterOnlyPhotoProvider);
 
     void tapHandler() {
-      if (isSelected) {
-        ref.read(selectedReviewFilterProvider.notifier).resetFilter();
-      } else {
-        ref
-            .read(selectedReviewFilterProvider.notifier)
-            .selectFilter(filterButtonIdx);
-      }
+      ref.read(reviewFilterOnlyPhotoProvider.notifier).toggle();
     }
 
     return ReviewTextButton(

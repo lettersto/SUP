@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -21,19 +20,19 @@ abstract class PaginatedReviewRepository
       _PaginatedReviewRepository;
 
   @override
-  @GET('/')
+  @GET('/review/{storeNo}/{userNo}')
   Future<CursorPagination<ReviewDetailWithPhotos>> paginate({
-    @Queries() PaginationParams? paginationParams = const PaginationParams(),
+    @Queries() PaginationQueryParams? paginationQueryParams =
+        const PaginationQueryParams(),
+    @Path('storeNo') required int storeNo,
+    @Path('userNo') required int userNo,
   });
 }
 
 final paginatedReviewRepositoryProvider =
-    Provider.family<PaginatedReviewRepository, ReviewDetailParams>(
-        (ref, ReviewDetailParams params) {
+    Provider<PaginatedReviewRepository>((ref) {
   final dio = ref.watch(dioProvider);
-  final repository = PaginatedReviewRepository(dio,
-      baseUrl:
-          '${dotenv.env['baseUrl']}/review/${params.storeNo}/${params.userNo}');
+  final repository = PaginatedReviewRepository(dio);
   return repository;
 });
 

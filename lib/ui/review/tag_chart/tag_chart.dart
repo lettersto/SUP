@@ -23,6 +23,9 @@ class _TagChartState extends ConsumerState<TagChart> {
   final double _itemHeight = 48;
   int _chartItemStartIdx = 0;
   int delta = 5;
+  List<TagChartItemModel> _firstSlicedTags = [];
+  List<TagChartItemModel> _secondSlicedTags = [];
+  List<TagChartItemModel> _thirdSlicedTags = [];
 
   @override
   void initState() {
@@ -32,23 +35,23 @@ class _TagChartState extends ConsumerState<TagChart> {
 
   @override
   Widget build(BuildContext context) {
-    final totalCnt = ref.watch(reviewChartProvider).totalCnt;
     final tags = ref.watch(reviewChartProvider).tags;
-    List<TagChartItemModel> slicedTags = tags.sublist(0, 5);
+    if (tags.length >= 15) {
+      _firstSlicedTags = tags.sublist(0, 5);
+      _secondSlicedTags = tags.sublist(5, 10);
+      _thirdSlicedTags = tags.sublist(10, 15);
+    }
 
     void pressHandler() {
       if (_chartItemStartIdx >= 10) return;
       setState(() {
         _chartItemStartIdx += delta;
-        slicedTags = slicedTags +
-            tags.sublist(_chartItemStartIdx, _chartItemStartIdx + 5);
       });
     }
 
     void resetChartIdx() {
       setState(() {
         _chartItemStartIdx = 0;
-        slicedTags = tags.sublist(0, 5);
       });
     }
 
@@ -60,12 +63,23 @@ class _TagChartState extends ConsumerState<TagChart> {
           shrinkWrap: true,
           itemExtent: _itemHeight,
           children: [
-            ...slicedTags
+            ..._firstSlicedTags
                 .map((tag) => TagChartBar(
                       tag: tag,
-                      totalCnt: totalCnt,
                     ))
                 .toList(),
+            if (_chartItemStartIdx >= 5)
+              ..._secondSlicedTags
+                  .map((tag) => TagChartBar(
+                        tag: tag,
+                      ))
+                  .toList(),
+            if (_chartItemStartIdx >= 10)
+              ..._thirdSlicedTags
+                  .map((tag) => TagChartBar(
+                        tag: tag,
+                      ))
+                  .toList(),
             Stack(
               children: [
                 if (_chartItemStartIdx < 10)

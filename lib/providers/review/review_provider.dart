@@ -56,3 +56,25 @@ final reviewChartProvider =
   final reviewClient = ref.watch(reviewClientProvider);
   return ReviewChartNotifier(reviewClient: reviewClient);
 });
+
+class ReviewTotalCountNotifier extends StateNotifier<int> {
+  final ReviewClient reviewClient;
+
+  ReviewTotalCountNotifier({
+    required this.reviewClient,
+  }) : super(0);
+
+  void getReviewChart(int storeNo) async {
+    try {
+      state = await reviewClient.getTotalReviewCount(storeNo: storeNo);
+    } catch (err) {
+      print(err);
+    }
+  }
+}
+
+final reviewTotalCountProvider =
+    StateNotifierProvider<ReviewTotalCountNotifier, int>((ref) {
+  final reviewClient = ref.watch(reviewClientProvider);
+  return ReviewTotalCountNotifier(reviewClient: reviewClient);
+});

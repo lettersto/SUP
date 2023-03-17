@@ -76,6 +76,8 @@ class TextStyles {
       fontFamily: "NotoSans", fontSize: 14, fontWeight: FontWeight.w900);
   static const medium12 = TextStyle(
       fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w500);
+  static const regular12 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w700);
   static const bold12 = TextStyle(
       fontFamily: "NotoSans", fontSize: 12, fontWeight: FontWeight.w900);
 

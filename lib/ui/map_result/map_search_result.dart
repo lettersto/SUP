@@ -147,8 +147,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   void addWishMarker(List<Wish> wishes) async {
-    print("zzzzzzz${wishes.length}");
-
     BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
         const ImageConfiguration(), "assets/icons/marker.png");
 

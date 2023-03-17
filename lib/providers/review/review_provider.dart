@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/common/pagination_params.dart';
+import 'package:sup/models/review/tag_chart.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/review/review.dart';
@@ -30,4 +33,26 @@ final paginatedReviewProvider = StateNotifierProvider.family<
 final reviewClientProvider = Provider<ReviewClient>((ref) {
   final dio = ref.watch(dioProvider);
   return ReviewClient(dio);
+});
+
+class ReviewChartNotifier extends StateNotifier<TagChartModel> {
+  final ReviewClient reviewClient;
+
+  ReviewChartNotifier({
+    required this.reviewClient,
+  }) : super(const TagChartModel(totalCnt: 0, tags: []));
+
+  void getReviewChart(int storeNo) async {
+    try {
+      state = await reviewClient.getTagChart(storeNo: storeNo);
+    } catch (err) {
+      print(err);
+    }
+  }
+}
+
+final reviewChartProvider =
+    StateNotifierProvider<ReviewChartNotifier, TagChartModel>((ref) {
+  final reviewClient = ref.watch(reviewClientProvider);
+  return ReviewChartNotifier(reviewClient: reviewClient);
 });

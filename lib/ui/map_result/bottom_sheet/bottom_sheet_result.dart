@@ -26,11 +26,6 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
 

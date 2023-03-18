@@ -14,6 +14,7 @@ import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import '../../models/map/map.dart';
 import '../../providers/store/store_detail_provider.dart';
+import '../../providers/store/today_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
@@ -39,8 +40,6 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   void initState() {
-    ref.read(wishProvider.notifier).getWishList(SharedPreferenceUtil().userNo);
-
     if (Platform.isIOS) {
       BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(), "assets/icons/marker_store_ios.png")
@@ -64,8 +63,6 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    //List<Wish> wishes = ref.watch(wishProvider).list;
-
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: Stack(fit: StackFit.expand, children: [
@@ -117,7 +114,7 @@ class MapPageState extends ConsumerState<MapPage> {
           ],
         ),
         DraggableScrollableSheet(
-            initialChildSize: 0.3,
+            initialChildSize: 0.35,
             minChildSize: 0.18,
             snapSizes: const [0.3, 1],
             snap: true,
@@ -133,7 +130,6 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<void> addWishMarker(List<Wish> wishes) async {
-    print("addwishhhhhhh${wishes.length}");
     markers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
@@ -183,13 +179,22 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<Position> getCurrentLocation() async {
+    await ref
+        .read(wishProvider.notifier)
+        .getWishList(SharedPreferenceUtil().userNo);
+
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    setState(() {
-      _initPosition = LatLng(position.latitude, position.longitude);
-      userLocation = MyLatLng(_initPosition.latitude, _initPosition.longitude);
+    _initPosition = LatLng(position.latitude, position.longitude);
+    userLocation = MyLatLng(_initPosition.latitude, _initPosition.longitude);
 
+    await ref.read(todayProvider.notifier).getTodayList(
+        SharedPreferenceUtil().userNo,
+        userLocation.latitude,
+        userLocation.longitude);
+
+    setState(() {
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

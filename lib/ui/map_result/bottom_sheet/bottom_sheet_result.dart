@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/map/map.dart';
 import 'package:sup/providers/store/store_provider.dart';
-import 'package:sup/ui/map/bottom_sheet/store_item.dart';
+import 'package:sup/ui/map_result/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
+import 'package:sup/utils/app_utils.dart';
 import '../../../models/map/store.dart';
+import '../../../providers/store/store_detail_provider.dart';
+import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
 import '../map_search_result.dart';
 
@@ -23,26 +26,47 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
-    //TODO 결과 1개일 때 스크롤 막기
-    //AsyncValue<List<Store>> stores = ref.watch(storeProvider).list;
 
-    /*Future.delayed(Duration.zero, () {
-      //context.findAncestorStateOfType<MapResultPageState>()!.clearMarker();
-      print("ddddddd");
-      if (stores.length == 1) {
-        context
-            .findAncestorStateOfType<MapResultPageState>()
-            ?.showStoreDetailBottomSheet();
+    if (stores.length == 1) {
+      context
+          .findAncestorStateOfType<MapResultPageState>()
+          ?.showStoreDetailBottomSheet();
 
-        ref
-            .read(storeDetailProvider.notifier)
-            .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
+      ref
+          .read(storeDetailProvider.notifier)
+          .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
 
-        return Container();
-      }
-    });*/
+      return Container();
+    } else if (stores.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  offset: const Offset(0, -0.05),
+                  blurRadius: 0.7,
+                  spreadRadius: 0.7,
+                  color: Colors.grey.withOpacity(0.7))
+            ],
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+        child: const Center(
+          child: Text(
+            "일치하는 음식점이 없어요 🤔",
+            style: TextStyles.regular14,
+          ),
+        ),
+      );
+    } else {
+      widget.visibility = true;
+    }
 
     return widget.visibility
         ? ListView.builder(
@@ -65,8 +89,8 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                           ],
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12))),
                     ),
                     Stack(
                       children: [

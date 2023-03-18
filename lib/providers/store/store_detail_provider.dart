@@ -16,7 +16,7 @@ class StoreDetailNotifier extends StateNotifier<StoreDetail> {
 
   StoreDetailNotifier({required this.repository}) : super(StoreDetail.init());
 
-  void getStoreDetail(int storeNo, int userNo) async {
+  Future<void> getStoreDetail(int storeNo, int userNo) async {
     try {
       if (state.storeNo != storeNo) {
         state = await repository.getStoreDetail(storeNo, userNo);

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/store/store_detail_provider.dart';
+import '../../providers/review/review_provider.dart';
 import '../../utils/styles.dart';
 import '../common/headline.dart';
 import '../common/line_divider.dart';
@@ -9,11 +12,17 @@ import './filter_buttons/filter_toggle_button.dart';
 import './filter_buttons/only_photo_filter_button.dart';
 import './filter_buttons/tag_filtter_button.dart';
 
-class ReviewHeader extends StatelessWidget {
-  const ReviewHeader({super.key});
+class ReviewHeader extends ConsumerWidget {
+  const ReviewHeader({
+    super.key,
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref
+        .read(reviewTotalCountProvider.notifier)
+        .getReviewChart(ref.watch(storeDetailProvider).storeNo);
+
     return SliverPersistentHeader(
       pinned: true,
       delegate: ReviewHeaderDelegate(),
@@ -44,8 +53,13 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Headline(
-                  title: '리뷰',
+                Consumer(
+                  builder:
+                      (BuildContext context, WidgetRef ref, Widget? child) {
+                    return Headline(
+                        title: '리뷰',
+                        count: ref.watch(reviewTotalCountProvider));
+                  },
                 ),
                 ReviewTextButton(
                   text: '나도 참여',
@@ -83,7 +97,8 @@ class ReviewHeaderDelegate extends SliverPersistentHeaderDelegate {
         Container(
           color: AppColors.white,
           height: height,
-          child: TagFilterButton(),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: const TagFilterButton(),
         ),
       ],
     );

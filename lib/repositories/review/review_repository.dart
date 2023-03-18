@@ -1,13 +1,15 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:retrofit/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:sup/models/review/image_review.dart';
+import 'package:sup/models/review/like_param.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/pagination_params.dart';
 import '../../models/review/review.dart';
+import '../../models/review/tag_chart.dart';
 import '../../providers/common/common_provider.dart';
 import '../common/base_pagination_repository.dart';
 
@@ -25,7 +27,23 @@ abstract class PaginatedReviewRepository
     @Queries() PaginationQueryParams? paginationQueryParams =
         const PaginationQueryParams(),
     @Path('storeNo') required int storeNo,
-    @Path('userNo') required int userNo,
+    @Path('userNo') int? userNo,
+  });
+}
+
+@RestApi()
+abstract class PaginatedImageReviewRepository
+    implements IBasePaginationRepository<ImageReviewItemModel> {
+  factory PaginatedImageReviewRepository(Dio dio, {String baseUrl}) =
+      _PaginatedImageReviewRepository;
+
+  @override
+  @GET('/review/img/{storeNo}')
+  Future<CursorPagination<ImageReviewItemModel>> paginate({
+    @Queries() PaginationQueryParams? paginationQueryParams =
+        const PaginationQueryParams(),
+    @Path('storeNo') required int storeNo,
+    @Path('userNo') int? userNo,
   });
 }
 
@@ -33,6 +51,13 @@ final paginatedReviewRepositoryProvider =
     Provider<PaginatedReviewRepository>((ref) {
   final dio = ref.watch(dioProvider);
   final repository = PaginatedReviewRepository(dio);
+  return repository;
+});
+
+final paginatedImageReviewRepositoryProvider =
+    Provider<PaginatedImageReviewRepository>((ref) {
+  final dio = ref.watch(dioProvider);
+  final repository = PaginatedImageReviewRepository(dio);
   return repository;
 });
 
@@ -58,5 +83,24 @@ abstract class ReviewClient {
   @GET('/review/{reviewImgNo}')
   Future<ReviewDetail> getReviewDetail({
     @Path('reviewImgNo') required int reviewImgNo,
+  });
+
+  @GET('/review/tags/{storeNo}')
+  Future<TagChartModel> getTagChart({
+    @Path('storeNo') required int storeNo,
+  });
+
+  @GET('/review/count/{storeNo}')
+  Future<int> getTotalReviewCount({
+    @Path('storeNo') required int storeNo,
+  });
+
+  @POST('/review/like')
+  Future<void> markLike(@Body() LikeParam likeParam);
+
+  @DELETE('/review/like/{reviewLikeNo}/{userNo}')
+  Future<void> removeLike({
+    @Path('reviewLikeNo') required int reviewNo,
+    @Path('userNo') required int userNo,
   });
 }

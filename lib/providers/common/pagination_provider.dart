@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/models/review/review.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/model_with_id.dart';
@@ -27,8 +28,6 @@ class PaginationProvider<T extends IModelWithId,
     required PaginationQueryParams paginationQueryParams,
   }) async {
     try {
-      // 1. retune하는 경우1
-      // scroll 하단에 도달한 경우인데 값이 없다면 리턴
       if (state is CursorPagination && !forceRefetch) {
         final paginationState = state as CursorPagination;
 
@@ -37,8 +36,6 @@ class PaginationProvider<T extends IModelWithId,
         }
       }
 
-      // 2. return하는 경우 2
-      // 이미 갖고 오고 있는 중이라면 리턴
       final isLoading = state is CursorPaginationLoading;
       final isRefetching = state is CursorPaginationRefetching;
       final isFetchingMore = state is CursorPaginationFetchingMore;
@@ -47,11 +44,8 @@ class PaginationProvider<T extends IModelWithId,
         return;
       }
 
-      // 3. 실제로 값 가져오기 위한 준비 시작
-      // query parameter를 변형할 거니 변수에 할당 (item의 next number)
       PaginationQueryParams params = paginationQueryParams;
 
-      // 3-1. 스크롤 하단에 도달한 경우
       if (fetchMore) {
         final paginationState = state as CursorPagination<T>;
 
@@ -61,8 +55,6 @@ class PaginationProvider<T extends IModelWithId,
         params = params.copyWith(
           lastNo: paginationState.list.last.id,
         );
-        // 3-2. 데이터를 처음부터 가져오는 상황
-        // 그동안 데이터는 보여야 하니 나중에 바꾸더라도 일단 보존
       } else {
         if (state is CursorPagination && !forceRefetch) {
           final paginationState = state as CursorPagination<T>;
@@ -74,11 +66,20 @@ class PaginationProvider<T extends IModelWithId,
         }
       }
 
-      final response = await repository.paginate(
-        paginationQueryParams: params,
-        userNo: paginationPathParams.userNo!,
-        storeNo: paginationPathParams.storeNo!,
-      );
+      final CursorPagination<T> response;
+
+      if (paginationPathParams.userNo != null) {
+        response = await repository.paginate(
+          paginationQueryParams: params,
+          userNo: paginationPathParams.userNo,
+          storeNo: paginationPathParams.storeNo!,
+        );
+      } else {
+        response = await repository.paginate(
+          paginationQueryParams: params,
+          storeNo: paginationPathParams.storeNo!,
+        );
+      }
 
       if (state is CursorPaginationFetchingMore) {
         final paginationState = state as CursorPaginationFetchingMore<T>;
@@ -94,6 +95,49 @@ class PaginationProvider<T extends IModelWithId,
       print(error);
       print(stacktrace);
       state = CursorPaginationError(message: '연결을 다시 시도해주세요.');
+    }
+  }
+
+  void changeIsLikeState({required int itemIdx, required bool valueToChange}) {
+    final isLoading = state is CursorPaginationLoading;
+
+    if (isLoading) return;
+
+    var paginationState = state as CursorPagination<ReviewDetailWithPhotos>;
+    if (state is CursorPaginationRefetching) {
+      paginationState =
+          state as CursorPaginationRefetching<ReviewDetailWithPhotos>;
+    }
+    if (state is CursorPaginationFetchingMore) {
+      paginationState =
+          state as CursorPaginationFetchingMore<ReviewDetailWithPhotos>;
+    }
+
+    final item = paginationState.list[itemIdx];
+    final change = ReviewDetailWithPhotos(
+        id: item.id,
+        reviewCnt: item.reviewCnt,
+        starAvg: item.starAvg,
+        isLike: valueToChange,
+        nickname: item.nickname,
+        regDtm: item.regDtm,
+        imgs: item.imgs,
+        content: item.content,
+        star: item.star,
+        tags: item.tags);
+    paginationState.list[itemIdx] = change;
+
+    if (state is CursorPagination) {
+      state = CursorPagination(
+          hasNext: paginationState.hasNext, list: paginationState.list);
+    }
+    if (state is CursorPaginationRefetching) {
+      state = CursorPaginationRefetching(
+          hasNext: paginationState.hasNext, list: paginationState.list);
+    }
+    if (state is CursorPaginationFetchingMore) {
+      state = CursorPaginationFetchingMore(
+          hasNext: paginationState.hasNext, list: paginationState.list);
     }
   }
 }

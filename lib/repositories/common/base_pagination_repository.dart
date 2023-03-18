@@ -7,6 +7,6 @@ abstract class IBasePaginationRepository<T extends IModelWithId> {
     PaginationQueryParams? paginationQueryParams =
         const PaginationQueryParams(),
     required int storeNo,
-    required int userNo,
+    int? userNo,
   });
 }

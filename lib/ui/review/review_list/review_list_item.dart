@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/utils/app_utils.dart';
 
+import '../../../models/common/cursor_pagination_model.dart';
 import '../../../providers/providers_exporter.dart';
 import '../../../models/review/review.dart';
+import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/enums.dart';
 
@@ -17,11 +18,16 @@ final tagOpenProvider = StateProvider<bool>((ref) => false);
 class ReviewListItem extends ConsumerWidget {
   final ReviewDetailWithPhotos review;
   final ReviewMode mode;
+  final int reviewItemIdx;
+  final StateNotifierProvider<PaginationProvider, CursorPaginationBase>?
+      provider;
 
   const ReviewListItem({
     Key? key,
     required this.review,
     this.mode = ReviewMode.main,
+    this.reviewItemIdx = 0,
+    this.provider,
   }) : super(key: key);
 
   @override
@@ -47,6 +53,10 @@ class ReviewListItem extends ConsumerWidget {
             nickname: review.nickname,
             starAvg: review.starAvg,
             reviewCnt: review.reviewCnt,
+            reviewNo: review.id,
+            isLike: review.isLike,
+            provider: provider,
+            reviewItemidx: reviewItemIdx,
           ),
           if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
             ImageSlider(

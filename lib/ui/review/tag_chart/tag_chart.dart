@@ -1,91 +1,161 @@
 import 'package:flutter/material.dart';
-import 'package:sup/ui/review/filter_buttons/review_text_button.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../models/review/tag_chart.dart';
+import '../../../providers/review/review_provider.dart';
 import '../../../utils/styles.dart';
-
+import '../filter_buttons/review_text_button.dart';
 import './tag_chart_bar.dart';
 
-const _dummyTags = [
-  {'title': '💰 가성비가 좋아요', 'percent': 0.85},
-  {'title': '👨‍🍳 특별한 메뉴가 있어요', 'percent': 0.75},
-  {'title': '🤤 음식이 맛있어요', 'percent': 0.50},
-  {'title': '🍙 혼자 가기 좋아요', 'percent': 0.45},
-  {'title': '🔎 종류가 다양해요', 'percent': 0.43},
-  {'title': '📸 사진이 잘 나와요', 'percent': 0.32},
-  {'title': '💬 대화하기 좋아요', 'percent': 0.31},
-  {'title': '🏞️ 뷰가 좋아요', 'percent': 0.20},
-  {'title': '💻 집중하기 좋아요', 'percent': 0.14},
-  {'title': '🛋️ 인테리어가 멋져요', 'percent': 0.14},
-  {'title': '🚻 화장실이 깨끗해요', 'percent': 0.1},
-  {'title': '🪑 좌석이 편해요', 'percent': 0.1},
-  {'title': '🅿️ 주차하기 편해요', 'percent': 0.1},
-  {'title': '💓 친절해요', 'percent': 0.1},
-  {'title': '✨ 매장이 청결해요', 'percent': 0.1},
-];
+class TagChart extends ConsumerStatefulWidget {
+  final int storeNo;
 
-class TagChart extends StatefulWidget {
-  const TagChart({Key? key}) : super(key: key);
+  const TagChart({
+    super.key,
+    required this.storeNo,
+  });
 
   @override
-  State<TagChart> createState() => _TagChartState();
+  ConsumerState<TagChart> createState() => _TagChartState();
 }
 
-class _TagChartState extends State<TagChart> {
+class _TagChartState extends ConsumerState<TagChart> {
   final double _itemHeight = 48;
-  List<Map<String, dynamic>> _tags = _dummyTags.sublist(0, 5);
   int _chartItemStartIdx = 0;
   int delta = 5;
-
-  void _pressHandler() {
-    if (_chartItemStartIdx >= 10) return;
-    setState(() {
-      _chartItemStartIdx += delta;
-      _tags = _tags +
-          _dummyTags.sublist(_chartItemStartIdx, _chartItemStartIdx + 5);
-    });
-  }
-
-  void _resetChartIdx() {
-    setState(() {
-      _chartItemStartIdx = 0;
-      _tags = _dummyTags.sublist(0, 5);
-    });
-  }
+  List<TagChartItemModel> _firstSlicedTags = [];
+  List<TagChartItemModel> _secondSlicedTags = [];
+  List<TagChartItemModel> _thirdSlicedTags = [];
 
   @override
   Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Padding(
+    final state = ref.watch(reviewChartProvider);
+
+    void pressHandler() {
+      if (_chartItemStartIdx >= 10) return;
+      setState(() {
+        _chartItemStartIdx += delta;
+      });
+    }
+
+    void resetChartIdx() {
+      setState(() {
+        _chartItemStartIdx = 0;
+      });
+    }
+
+    Widget renderChartContainer({required List<Widget> children}) {
+      return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemExtent: _itemHeight,
+          // itemExtent: _itemHeight,
+          children: [...children],
+        ),
+      );
+    }
+
+    return SliverToBoxAdapter(
+      child: state.when(data: (data) {
+        final tags = data.tags;
+        if (tags.length >= 15) {
+          _firstSlicedTags = tags.sublist(0, 5);
+          _secondSlicedTags = tags.sublist(5, 10);
+          _thirdSlicedTags = tags.sublist(10, 15);
+        }
+
+        return renderChartContainer(
           children: [
-            ..._tags.map((tag) => TagChartBar(tag: tag)).toList(),
-            Stack(children: [
-              if (_chartItemStartIdx < 10) Container(
-                alignment: Alignment.center,
-                child: IconButton(
-                  onPressed: _pressHandler,
-                  icon: const Icon(
-                    Icons.expand_more_rounded,
-                    size: 32,
-                    color: AppColors.gray,
+            ..._firstSlicedTags
+                .map((tag) => TagChartBar(
+                      tag: tag,
+                    ))
+                .toList(),
+            if (_chartItemStartIdx >= 5)
+              ..._secondSlicedTags
+                  .map((tag) => TagChartBar(
+                        tag: tag,
+                      ))
+                  .toList(),
+            if (_chartItemStartIdx >= 10)
+              ..._thirdSlicedTags
+                  .map((tag) => TagChartBar(
+                        tag: tag,
+                      ))
+                  .toList(),
+            Stack(
+              children: [
+                if (_chartItemStartIdx < 10)
+                  Container(
+                    alignment: Alignment.center,
+                    child: IconButton(
+                      onPressed: pressHandler,
+                      icon: const Icon(
+                        Icons.expand_more_rounded,
+                        size: 32,
+                        color: AppColors.gray,
+                      ),
+                    ),
+                  ),
+                if (_chartItemStartIdx > 0)
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: ReviewTextButton(
+                      text: '접기',
+                      tapHandler: resetChartIdx,
+                    ),
+                  )
+              ],
+            )
+          ],
+        );
+      }, error: (err, st) {
+        return renderChartContainer(children: [
+          Container(
+              height: _itemHeight * 5 + 8,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.pink10,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                '헉! 네트워크 에러가 발생했어요! \n다시 시도해 주세요 😵‍💫',
+                style: TextStyles.medium16
+                    .merge(const TextStyle(color: AppColors.black)),
+              ))
+        ]);
+      }, loading: () {
+        return renderChartContainer(children: [
+          ...List.generate(
+              5,
+              (index) => Container(
+                    width: double.infinity,
+                    height: _itemHeight,
+                    margin: const EdgeInsets.symmetric(vertical: 2.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.grayTransparent2,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  )),
+          Stack(
+            children: [
+              if (_chartItemStartIdx < 10)
+                Container(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.expand_more_rounded,
+                      size: 32,
+                      color: AppColors.gray,
+                    ),
                   ),
                 ),
-              ),
-              if (_chartItemStartIdx > 0) Container(
-                alignment: Alignment.centerRight,
-                child: ReviewTextButton(
-                  text: '접기',
-                  tapHandler: _resetChartIdx,
-                ),
-              ),
-            ],)
-          ],
-        ),
-      ),
+            ],
+          )
+        ]);
+      }),
     );
   }
 }

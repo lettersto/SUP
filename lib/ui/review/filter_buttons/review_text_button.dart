@@ -9,12 +9,12 @@ class ReviewTextButton extends StatelessWidget {
   final Color? textColor;
 
   const ReviewTextButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.tapHandler,
     this.icon,
     this.textColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/models/review/review.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/model_with_id.dart';
@@ -94,6 +95,49 @@ class PaginationProvider<T extends IModelWithId,
       print(error);
       print(stacktrace);
       state = CursorPaginationError(message: '연결을 다시 시도해주세요.');
+    }
+  }
+
+  void changeIsLikeState({required int itemIdx, required bool valueToChange}) {
+    final isLoading = state is CursorPaginationLoading;
+
+    if (isLoading) return;
+
+    var paginationState = state as CursorPagination<ReviewDetailWithPhotos>;
+    if (state is CursorPaginationRefetching) {
+      paginationState =
+          state as CursorPaginationRefetching<ReviewDetailWithPhotos>;
+    }
+    if (state is CursorPaginationFetchingMore) {
+      paginationState =
+          state as CursorPaginationFetchingMore<ReviewDetailWithPhotos>;
+    }
+
+    final item = paginationState.list[itemIdx];
+    final change = ReviewDetailWithPhotos(
+        id: item.id,
+        reviewCnt: item.reviewCnt,
+        starAvg: item.starAvg,
+        isLike: valueToChange,
+        nickname: item.nickname,
+        regDtm: item.regDtm,
+        imgs: item.imgs,
+        content: item.content,
+        star: item.star,
+        tags: item.tags);
+    paginationState.list[itemIdx] = change;
+
+    if (state is CursorPagination) {
+      state = CursorPagination(
+          hasNext: paginationState.hasNext, list: paginationState.list);
+    }
+    if (state is CursorPaginationRefetching) {
+      state = CursorPaginationRefetching(
+          hasNext: paginationState.hasNext, list: paginationState.list);
+    }
+    if (state is CursorPaginationFetchingMore) {
+      state = CursorPaginationFetchingMore(
+          hasNext: paginationState.hasNext, list: paginationState.list);
     }
   }
 }

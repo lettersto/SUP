@@ -69,7 +69,6 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       ),
       paginationQueryParams: imageQueryParams,
     );
-    ref.read(reviewChartProvider.notifier).refetch();
   }
 
   @override
@@ -140,6 +139,8 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                 itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {
                   return ReviewListItem(
                     review: model,
+                    reviewItemIdx: index,
+                    provider: paginatedReviewProvider(params),
                   );
                 },
               ),

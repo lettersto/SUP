@@ -4,6 +4,7 @@ import 'package:retrofit/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:sup/models/review/image_review.dart';
+import 'package:sup/models/review/like_param.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/pagination_params.dart';
@@ -92,5 +93,14 @@ abstract class ReviewClient {
   @GET('/review/count/{storeNo}')
   Future<int> getTotalReviewCount({
     @Path('storeNo') required int storeNo,
+  });
+
+  @POST('/review/like')
+  Future<void> markLike(@Body() LikeParam likeParam);
+
+  @DELETE('/review/like/{reviewLikeNo}/{userNo}')
+  Future<void> removeLike({
+    @Path('reviewLikeNo') required int reviewNo,
+    @Path('userNo') required int userNo,
   });
 }

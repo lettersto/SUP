@@ -10,6 +10,7 @@ import 'package:sup/ui/review/review_page.dart';
 import 'package:sup/ui/signup/signup_page.dart';
 import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
+import 'package:sup/utils/styles.dart';
 
 const routeSignup = '/';
 const routeMap = '/map';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'SUP',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(),
+      theme: ThemeData(scaffoldBackgroundColor: AppColors.white),
       home: SharedPreferenceUtil().nickname == ""
           ? const SignUpPage()
           : const MapPage(),

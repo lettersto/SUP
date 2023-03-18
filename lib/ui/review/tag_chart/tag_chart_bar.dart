@@ -22,48 +22,51 @@ class TagChartBar extends ConsumerWidget {
       percentage = tag.tagCnt / totalCnt;
     }
 
-    return Stack(
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          margin: const EdgeInsets.symmetric(vertical: 2.0),
-          decoration: BoxDecoration(
-            color: AppColors.pink15,
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-        ),
-        FractionallySizedBox(
-          widthFactor: percentage,
-          child: Container(
+    return SizedBox(
+      height: 48,
+      child: Stack(
+        children: [
+          Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             margin: const EdgeInsets.symmetric(vertical: 2.0),
             decoration: BoxDecoration(
-              color: Color.fromRGBO(250, 173, 202, percentage),
+              color: AppColors.pink15,
               borderRadius: BorderRadius.circular(8.0),
             ),
           ),
-        ),
-        Container(
-          alignment: Alignment.center,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          margin: const EdgeInsets.symmetric(vertical: 2.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                tag.value,
-                style: TextStyles.bold16,
+          FractionallySizedBox(
+            widthFactor: percentage,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              margin: const EdgeInsets.symmetric(vertical: 2.0),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(250, 173, 202, percentage),
+                borderRadius: BorderRadius.circular(8.0),
               ),
-              Text(
-                tag.tagCnt.toString(),
-                style: TextStyles.medium16.merge(
-                  const TextStyle(color: AppColors.pink40),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+          Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            margin: const EdgeInsets.symmetric(vertical: 2.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  tag.value,
+                  style: TextStyles.bold16,
+                ),
+                Text(
+                  tag.tagCnt.toString(),
+                  style: TextStyles.medium16.merge(
+                    const TextStyle(color: AppColors.pink40),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

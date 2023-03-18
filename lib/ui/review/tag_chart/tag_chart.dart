@@ -28,19 +28,8 @@ class _TagChartState extends ConsumerState<TagChart> {
   List<TagChartItemModel> _thirdSlicedTags = [];
 
   @override
-  void initState() {
-    ref.read(reviewChartProvider.notifier).getReviewChart(widget.storeNo);
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final tags = ref.watch(reviewChartProvider).tags;
-    if (tags.length >= 15) {
-      _firstSlicedTags = tags.sublist(0, 5);
-      _secondSlicedTags = tags.sublist(5, 10);
-      _thirdSlicedTags = tags.sublist(10, 15);
-    }
+    final state = ref.watch(reviewChartProvider);
 
     void pressHandler() {
       if (_chartItemStartIdx >= 10) return;
@@ -55,13 +44,28 @@ class _TagChartState extends ConsumerState<TagChart> {
       });
     }
 
-    return SliverToBoxAdapter(
-      child: Padding(
+    Widget renderChartContainer({required List<Widget> children}) {
+      return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         child: ListView(
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
-          itemExtent: _itemHeight,
+          // itemExtent: _itemHeight,
+          children: [...children],
+        ),
+      );
+    }
+
+    return SliverToBoxAdapter(
+      child: state.when(data: (data) {
+        final tags = data.tags;
+        if (tags.length >= 15) {
+          _firstSlicedTags = tags.sublist(0, 5);
+          _secondSlicedTags = tags.sublist(5, 10);
+          _thirdSlicedTags = tags.sublist(10, 15);
+        }
+
+        return renderChartContainer(
           children: [
             ..._firstSlicedTags
                 .map((tag) => TagChartBar(
@@ -105,8 +109,126 @@ class _TagChartState extends ConsumerState<TagChart> {
               ],
             )
           ],
-        ),
-      ),
+        );
+      }, error: (err, st) {
+        return renderChartContainer(children: [
+          Container(
+              height: _itemHeight * 5 + 8,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: AppColors.pink10,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                '헉! 네트워크 에러가 발생했어요! \n다시 시도해 주세요 😵‍💫',
+                style: TextStyles.medium16
+                    .merge(const TextStyle(color: AppColors.black)),
+              ))
+        ]);
+      }, loading: () {
+        return renderChartContainer(children: [
+          ...List.generate(
+              5,
+              (index) => Container(
+                    width: double.infinity,
+                    height: _itemHeight,
+                    margin: const EdgeInsets.symmetric(vertical: 2.0),
+                    decoration: BoxDecoration(
+                      color: AppColors.grayTransparent2,
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  )),
+          Stack(
+            children: [
+              if (_chartItemStartIdx < 10)
+                Container(
+                  alignment: Alignment.center,
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.expand_more_rounded,
+                      size: 32,
+                      color: AppColors.gray,
+                    ),
+                  ),
+                ),
+            ],
+          )
+        ]);
+      }),
     );
+
+    // if (tags.length >= 15) {
+    //   _firstSlicedTags = tags.sublist(0, 5);
+    //   _secondSlicedTags = tags.sublist(5, 10);
+    //   _thirdSlicedTags = tags.sublist(10, 15);
+    // }
+
+    // void pressHandler() {
+    //   if (_chartItemStartIdx >= 10) return;
+    //   setState(() {
+    //     _chartItemStartIdx += delta;
+    //   });
+    // }
+
+    // void resetChartIdx() {
+    //   setState(() {
+    //     _chartItemStartIdx = 0;
+    //   });
+    // }
+
+    // return SliverToBoxAdapter(
+    //   child: Padding(
+    //     padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    //     child: ListView(
+    //       physics: const NeverScrollableScrollPhysics(),
+    //       shrinkWrap: true,
+    //       itemExtent: _itemHeight,
+    //       children: [
+    //         ..._firstSlicedTags
+    //             .map((tag) => TagChartBar(
+    //                   tag: tag,
+    //                 ))
+    //             .toList(),
+    //         if (_chartItemStartIdx >= 5)
+    //           ..._secondSlicedTags
+    //               .map((tag) => TagChartBar(
+    //                     tag: tag,
+    //                   ))
+    //               .toList(),
+    //         if (_chartItemStartIdx >= 10)
+    //           ..._thirdSlicedTags
+    //               .map((tag) => TagChartBar(
+    //                     tag: tag,
+    //                   ))
+    //               .toList(),
+    //         Stack(
+    //           children: [
+    //             if (_chartItemStartIdx < 10)
+    //               Container(
+    //                 alignment: Alignment.center,
+    //                 child: IconButton(
+    //                   onPressed: pressHandler,
+    //                   icon: const Icon(
+    //                     Icons.expand_more_rounded,
+    //                     size: 32,
+    //                     color: AppColors.gray,
+    //                   ),
+    //                 ),
+    //               ),
+    //             if (_chartItemStartIdx > 0)
+    //               Container(
+    //                 alignment: Alignment.centerRight,
+    //                 child: ReviewTextButton(
+    //                   text: '접기',
+    //                   tapHandler: resetChartIdx,
+    //                 ),
+    //               )
+    //           ],
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

@@ -39,8 +39,6 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   void initState() {
-    ref.read(wishProvider.notifier).getWishList(SharedPreferenceUtil().userNo);
-
     if (Platform.isIOS) {
       BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(), "assets/icons/marker_store_ios.png")
@@ -64,8 +62,6 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    //List<Wish> wishes = ref.watch(wishProvider).list;
-
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: Stack(fit: StackFit.expand, children: [
@@ -183,6 +179,10 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<Position> getCurrentLocation() async {
+    await ref
+        .read(wishProvider.notifier)
+        .getWishList(SharedPreferenceUtil().userNo);
+
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 

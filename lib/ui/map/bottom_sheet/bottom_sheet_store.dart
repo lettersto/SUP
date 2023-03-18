@@ -13,16 +13,16 @@ import '../../../utils/styles.dart';
 import '../../review/review_page.dart';
 
 class MapBottomSheet extends ConsumerStatefulWidget {
-  final bool visibility;
+  bool visibility;
 
-  const MapBottomSheet(this.visibility, {super.key});
+  MapBottomSheet(this.visibility, {super.key});
 
   @override
   ConsumerState<MapBottomSheet> createState() => _MapBottomSheet();
 }
 
 class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
-  double _bodyHeight = 200;
+  double _bodyHeight = 220;
 
   @override
   Widget build(BuildContext context) {

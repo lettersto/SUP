@@ -15,7 +15,7 @@ class WishNotifier extends StateNotifier<WishResponse> {
 
   WishNotifier({required this.repository}) : super(WishResponse(list: []));
 
-  void getWishList(int userNo) async {
+  Future<void> getWishList(int userNo) async {
     try {
       state = await repository.getWishList(userNo);
     } catch (e) {

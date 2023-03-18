@@ -5,6 +5,8 @@ import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
 import '../../../models/map/store.dart';
+import '../../../providers/store/store_detail_provider.dart';
+import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
 import '../map_search_result.dart';
 
@@ -25,24 +27,20 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
-    //TODO 결과 1개일 때 스크롤 막기
-    //AsyncValue<List<Store>> stores = ref.watch(storeProvider).list;
 
-    /*Future.delayed(Duration.zero, () {
-      //context.findAncestorStateOfType<MapResultPageState>()!.clearMarker();
-      print("ddddddd");
-      if (stores.length == 1) {
-        context
-            .findAncestorStateOfType<MapResultPageState>()
-            ?.showStoreDetailBottomSheet();
+    if (stores.length == 1) {
+      context
+          .findAncestorStateOfType<MapResultPageState>()
+          ?.showStoreDetailBottomSheet();
 
-        ref
-            .read(storeDetailProvider.notifier)
-            .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
+      ref
+          .read(storeDetailProvider.notifier)
+          .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
 
-        return Container();
-      }
-    });*/
+      return Container();
+    } else {
+      widget.visibility = true;
+    }
 
     return widget.visibility
         ? ListView.builder(

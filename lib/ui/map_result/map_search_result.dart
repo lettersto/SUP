@@ -47,8 +47,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   void initState() {
     super.initState();
     getCurrentLocation();
-    ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
-        userLocation.longitude, 0, widget.categoryNo, "", "STAR");
   }
 
   @override
@@ -58,7 +56,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
     addStoreMarker(stores);
     addWishMarker(wishes);
-
     storeMarkers.addAll(wishMarkers);
 
     return Scaffold(
@@ -97,65 +94,66 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
         ],
       ),
       extendBodyBehindAppBar: false,
-      body: Stack(fit: StackFit.expand, children: [
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-                child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : GoogleMap(
-                        mapType: MapType.normal,
-                        initialCameraPosition: CameraPosition(
-                          target: LatLng(
-                              _initPosition.latitude, _initPosition.longitude),
-                          zoom: 14.4746,
-                        ),
-                        onMapCreated: (GoogleMapController controller) {
-                          _controller = controller;
-                        },
-                        myLocationEnabled: false,
-                        myLocationButtonEnabled: false,
-                        zoomControlsEnabled: false,
-                        mapToolbarEnabled: false,
-                        markers: storeMarkers,
-                        onTap: (LatLng) => setState(() {
-                          storeVisibility = false;
-                          resultVisibility = true;
-                        }),
-                      )),
-          ],
-        ),
-        Column(
-          children: [
-            Container(
-              alignment: AlignmentDirectional.topEnd,
-              margin: const EdgeInsets.fromLTRB(0, 12, 12, 0),
-              child: FloatingActionButton.small(
-                  elevation: 2,
-                  backgroundColor: AppColors.pinkAccent,
-                  onPressed: _goToCurrentPos,
-                  child: const Icon(
-                    Icons.location_searching,
-                    size: 20,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(fit: StackFit.expand, children: [
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                      child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                          _initPosition.latitude, _initPosition.longitude),
+                      zoom: 14.4746,
+                    ),
+                    onMapCreated: (GoogleMapController controller) {
+                      _controller = controller;
+                    },
+                    myLocationEnabled: false,
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    mapToolbarEnabled: false,
+                    markers: storeMarkers,
+                    onTap: (LatLng) => setState(() {
+                      storeVisibility = false;
+                      resultVisibility = true;
+                    }),
                   )),
-            ),
-          ],
-        ),
-        DraggableScrollableSheet(
-            initialChildSize: 0.3,
-            minChildSize: 0.18,
-            snapSizes: const [0.3, 1],
-            expand: false,
-            snap: true,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return (_isLoading
-                  ? Container()
-                  : ResultBottomSheet(
-                      scrollController, resultVisibility, widget.categoryNo));
-            }),
-        MapBottomSheet(storeVisibility)
-      ]),
+                ],
+              ),
+              Column(
+                children: [
+                  Container(
+                    alignment: AlignmentDirectional.topEnd,
+                    margin: const EdgeInsets.fromLTRB(0, 12, 12, 0),
+                    child: FloatingActionButton.small(
+                        elevation: 2,
+                        backgroundColor: AppColors.pinkAccent,
+                        onPressed: _goToCurrentPos,
+                        child: const Icon(
+                          Icons.location_searching,
+                          size: 20,
+                        )),
+                  ),
+                ],
+              ),
+              DraggableScrollableSheet(
+                  initialChildSize: 0.3,
+                  minChildSize: 0.18,
+                  snapSizes: const [0.3, 1],
+                  expand: false,
+                  snap: true,
+                  builder: (BuildContext context,
+                      ScrollController scrollController) {
+                    return (_isLoading
+                        ? Container()
+                        : ResultBottomSheet(scrollController, resultVisibility,
+                            widget.categoryNo));
+                  }),
+              MapBottomSheet(storeVisibility)
+            ]),
     );
   }
 
@@ -179,8 +177,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
             draggable: false,
             icon: wishImg!,
             onTap: () => setState(() {
-                  showToast(s.storeNo.toString());
-
                   ref
                       .read(storeDetailProvider.notifier)
                       .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
@@ -194,6 +190,11 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   void showStoreDetailBottomSheet() {
     storeVisibility = true;
     resultVisibility = false;
+  }
+
+  void showResultBottomSheet() {
+    storeVisibility = false;
+    resultVisibility = true;
   }
 
   void addStoreMarker(List<Store> stores) {
@@ -217,6 +218,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   Future<Position> getCurrentLocation() async {
+    await ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
+        userLocation.longitude, 0, widget.categoryNo, "", "STAR");
+
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 

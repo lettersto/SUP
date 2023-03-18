@@ -12,7 +12,6 @@ import '../../repositories/review/review_repository.dart';
 import '../common/common_provider.dart';
 import '../common/pagination_provider.dart';
 
-// T와 U에 값을 집어 넣는 과정
 class PaginatedReviewStateNotifier extends PaginationProvider<
     ReviewDetailWithPhotos, PaginatedReviewRepository> {
   PaginatedReviewStateNotifier(
@@ -27,7 +26,7 @@ final paginatedReviewProvider = StateNotifierProvider.family<
   final notifier = PaginatedReviewStateNotifier(
       repository: repository,
       paginationPathParams: params.paginationPathParams,
-      paginationQueryParams: params.paginationQueryParams); // 여기에서 외부에서 값을 받아옴
+      paginationQueryParams: params.paginationQueryParams);
 
   return notifier;
 });
@@ -48,7 +47,7 @@ final paginatedImageReviewProvider = StateNotifierProvider.family<
   final notifier = PaginatedImageReviewStateNotifier(
       repository: repository,
       paginationPathParams: params.paginationPathParams,
-      paginationQueryParams: params.paginationQueryParams); // 여기에서 외부에서 값을 받아옴
+      paginationQueryParams: params.paginationQueryParams);
 
   return notifier;
 });

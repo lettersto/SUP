@@ -27,8 +27,6 @@ class PaginationProvider<T extends IModelWithId,
     required PaginationQueryParams paginationQueryParams,
   }) async {
     try {
-      // 1. retune하는 경우1
-      // scroll 하단에 도달한 경우인데 값이 없다면 리턴
       if (state is CursorPagination && !forceRefetch) {
         final paginationState = state as CursorPagination;
 
@@ -37,8 +35,6 @@ class PaginationProvider<T extends IModelWithId,
         }
       }
 
-      // 2. return하는 경우 2
-      // 이미 갖고 오고 있는 중이라면 리턴
       final isLoading = state is CursorPaginationLoading;
       final isRefetching = state is CursorPaginationRefetching;
       final isFetchingMore = state is CursorPaginationFetchingMore;
@@ -47,11 +43,8 @@ class PaginationProvider<T extends IModelWithId,
         return;
       }
 
-      // 3. 실제로 값 가져오기 위한 준비 시작
-      // query parameter를 변형할 거니 변수에 할당 (item의 next number)
       PaginationQueryParams params = paginationQueryParams;
 
-      // 3-1. 스크롤 하단에 도달한 경우
       if (fetchMore) {
         final paginationState = state as CursorPagination<T>;
 
@@ -61,8 +54,6 @@ class PaginationProvider<T extends IModelWithId,
         params = params.copyWith(
           lastNo: paginationState.list.last.id,
         );
-        // 3-2. 데이터를 처음부터 가져오는 상황
-        // 그동안 데이터는 보여야 하니 나중에 바꾸더라도 일단 보존
       } else {
         if (state is CursorPagination && !forceRefetch) {
           final paginationState = state as CursorPagination<T>;

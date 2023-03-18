@@ -43,7 +43,8 @@ class _ReviewTagsState extends State<ReviewTags>
             )
           else if (widget.tags.length > 1 &&
               !_isOpen &&
-              !(widget.mode == ReviewMode.detail))
+              !(widget.mode == ReviewMode.detail) &&
+              !(widget.mode == ReviewMode.photoOnly))
             Row(
               children: [
                 TagItem(

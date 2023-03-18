@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sup/ui/review/common/no_content_indicator.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/pagination_params.dart';
@@ -102,19 +103,7 @@ class _ImageReviewListState extends ConsumerState<ImageReviewList> {
     if (state is CursorPaginationError) {
       return SliverToBoxAdapter(
         child: renderImageReviewContainer(
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.pink10,
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            alignment: Alignment.center,
-            height: height,
-            child: Text(
-              '사진이 없어요! 😔',
-              style: TextStyles.medium16
-                  .merge(const TextStyle(color: AppColors.black)),
-            ),
-          ),
+          child: NoContentIndicator(height: height, message: '사진이 없어요! 😔'),
         ),
       );
     }

@@ -18,9 +18,10 @@ class ReviewListTop extends ConsumerWidget {
   final int? reviewNo;
   final ReviewMode mode;
   final bool? isLike;
+  final int? star;
   final StateNotifierProvider<PaginationProvider, CursorPaginationBase>?
       provider;
-  final int? reviewItemidx;
+  final int? reviewItemIdx;
 
   const ReviewListTop({
     Key? key,
@@ -31,14 +32,24 @@ class ReviewListTop extends ConsumerWidget {
     this.reviewCnt,
     this.isLike,
     this.provider,
-    this.reviewItemidx,
+    this.reviewItemIdx,
+    this.star,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final textColor =
-        mode == ReviewMode.detail ? AppColors.white : AppColors.black;
-    final paddingVertical = mode == ReviewMode.detail ? 8.0 : 16.0;
+    final titleColor =
+        (mode == ReviewMode.detail || mode == ReviewMode.photoOnly)
+            ? AppColors.white
+            : AppColors.black;
+    final subTitleColor =
+        (mode == ReviewMode.detail || mode == ReviewMode.photoOnly)
+            ? AppColors.white
+            : AppColors.gray;
+    final paddingVertical =
+        (mode == ReviewMode.detail || mode == ReviewMode.photoOnly)
+            ? 8.0
+            : 16.0;
 
     Future<void> markHelpful() async {
       if (reviewNo == null) return;
@@ -47,7 +58,7 @@ class ReviewListTop extends ConsumerWidget {
             userNo: SharedPreferenceUtil().userNo, reviewNo: reviewNo!));
         ref
             .read(provider!.notifier)
-            .changeIsLikeState(itemIdx: reviewItemidx!, valueToChange: true);
+            .changeIsLikeState(itemIdx: reviewItemIdx!, valueToChange: true);
       } catch (err) {
         print(err);
       }
@@ -60,14 +71,14 @@ class ReviewListTop extends ConsumerWidget {
             userNo: SharedPreferenceUtil().userNo, reviewNo: reviewNo!);
         ref
             .read(provider!.notifier)
-            .changeIsLikeState(itemIdx: reviewItemidx!, valueToChange: false);
+            .changeIsLikeState(itemIdx: reviewItemIdx!, valueToChange: false);
       } catch (err) {
         print(err);
       }
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: paddingVertical),
+    return Container(
+      margin: EdgeInsets.only(top: paddingVertical),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -75,16 +86,42 @@ class ReviewListTop extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Headline(
-                title: nickname,
-                textColor: textColor,
+              Row(
+                children: [
+                  Headline(
+                    title: nickname,
+                    textColor: titleColor,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  if (mode == ReviewMode.main)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.star_rounded,
+                          color: AppColors.pink40,
+                          size: 20,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          star.toString(),
+                          style: TextStyles.medium14
+                              .merge(const TextStyle(color: AppColors.pink40)),
+                        )
+                      ],
+                    )
+                ],
               ),
               if (reviewCnt != null && starAvg != null)
                 Text(
                   '리뷰 $reviewCnt / 평균 별점 $starAvg',
                   style: TextStyles.medium12.merge(
                     TextStyle(
-                      color: textColor,
+                      color: subTitleColor,
                     ),
                   ),
                 )

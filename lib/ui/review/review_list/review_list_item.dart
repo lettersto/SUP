@@ -56,13 +56,17 @@ class ReviewListItem extends ConsumerWidget {
             reviewNo: review.id,
             isLike: review.isLike,
             provider: provider,
-            reviewItemidx: reviewItemIdx,
+            reviewItemIdx: reviewItemIdx,
+            star: review.star,
           ),
           if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
-            ImageSlider(
-              review: review,
-              images: review.imgs,
-              size: sliderSize,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ImageSlider(
+                review: review,
+                images: review.imgs,
+                size: sliderSize,
+              ),
             ),
           if (mode != ReviewMode.detail)
             ReviewText.forMain(review.content)

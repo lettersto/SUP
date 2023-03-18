@@ -1,10 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/review/review_detail_provider.dart';
 import '../../utils/styles.dart';
-
 import './photo_review_content.dart';
 
 class PhotoDetailPage extends ConsumerStatefulWidget {
@@ -22,14 +20,6 @@ class PhotoDetailPage extends ConsumerStatefulWidget {
 }
 
 class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
-  bool _isOpen = false;
-
-  void _setIsOpen(bool isOpen) {
-    setState(() {
-      _isOpen = isOpen;
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -39,7 +29,6 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
   @override
   Widget build(BuildContext context) {
     final review = ref.watch(reviewDetailProvider);
-
     final deviceWidth = MediaQuery.of(context).size.width;
     final deviceHeight = MediaQuery.of(context).size.height;
 
@@ -49,10 +38,17 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
       ),
       backgroundColor: AppColors.black,
       body: Container(
+        width: deviceWidth,
+        height: deviceHeight,
         color: AppColors.black,
         alignment: Alignment.center,
         child: Stack(
+          alignment: Alignment.center,
           children: [
+            SizedBox(
+              width: deviceWidth,
+              height: deviceHeight,
+            ),
             Image.network(
               review.img,
               loadingBuilder: (BuildContext context, Widget child,
@@ -65,54 +61,19 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
                 );
               },
             ),
-            Positioned.fill(
-              child: IgnorePointer(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 0.0,
-                    sigmaY: 0.0,
-                  ),
-                  child: Container(
-                    color: Colors.black.withOpacity(_isOpen ? .2 : 0),
-                  ),
-                ),
-              ),
-            ),
             PhotoReviewContent(
               review: review,
-              setIsOpen: _setIsOpen,
             ),
-            if (!_isOpen)
-              Positioned(
-                bottom: -20,
-                left: 0,
-                width: deviceWidth,
-                height: 40,
-                child: ClipRect(
-                  child: IgnorePointer(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(
-                        sigmaX: 0.8,
-                        sigmaY: 0.0,
-                      ),
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.center,
-                            end: Alignment.topCenter,
-                            colors: [
-                              Color.fromARGB(177, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0),
-                              Color.fromARGB(0, 0, 0, 0),
-                            ],
-                          ),
-                        ),
-                        // color: Color.fromARGB(0, 0, 0, 0),
-                      ),
-                    ),
-                  ),
+            Positioned(
+              bottom: 0,
+              child: IgnorePointer(
+                child: Container(
+                  height: 80,
+                  width: deviceWidth,
+                  color: AppColors.black,
                 ),
               ),
+            )
           ],
         ),
       ),

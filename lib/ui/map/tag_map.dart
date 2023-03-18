@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_search/map_search_page.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
-
 import '../../models/map/map.dart';
 import '../../models/tag_map.dart';
+import '../../providers/store/store_provider.dart';
 import '../common/tag_filter_item.dart';
 import '../map_result/map_search_result.dart';
 
@@ -33,6 +32,7 @@ class TagMapListState extends ConsumerState<TagMapList> {
             child: GestureDetector(
                 onTap: () {
                   updateRecents(tag.tagName);
+
                   Navigator.push(
                     context,
                     PageRouteBuilder(

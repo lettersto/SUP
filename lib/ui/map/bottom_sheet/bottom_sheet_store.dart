@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/providers/store/store_detail_provider.dart';
-import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/map_page.dart';
+import 'package:sup/ui/map_result/map_search_result.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
-
 import '../../../models/map/map.dart';
 import '../../../models/map/store.dart';
 import '../../../providers/store/today_provider.dart';
@@ -192,6 +191,11 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                                   storeDetail.storeNo,
                                                   storeDetail.lat,
                                                   storeDetail.lng);
+
+                                          context
+                                              .findAncestorStateOfType<
+                                                  MapResultPageState>()
+                                              ?.setState(() {});
                                         }
 
                                         ref

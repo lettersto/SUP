@@ -84,9 +84,9 @@ class _RecentItemMove extends ConsumerState<RecentItemMove> {
         });
   }
 
+  Future<void> getStoreResult() async {}
+
   void openResultPage(String text) {
-    /*ref.read(storeProvider.notifier).getStoreList(
-        userLocation.latitude, userLocation.longitude, 0, 0, text, "STAR");*/
     Navigator.push(
       context,
       PageRouteBuilder(

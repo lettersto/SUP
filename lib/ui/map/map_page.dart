@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:sup/models/map/today_pick.dart';
 import 'package:sup/models/wish/wish.dart';
 import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/bottom_sheet/bottom_sheet_today.dart';
@@ -11,13 +12,13 @@ import 'package:sup/ui/map/tag_map.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
-import 'dart:io' show Platform;
 import '../../models/map/map.dart';
-import '../../models/map/store.dart';
-import '../../providers/store/map_controller_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
+
+BitmapDescriptor? wishImg;
+BitmapDescriptor? starImg;
 
 class MapPage extends ConsumerStatefulWidget {
   const MapPage({super.key});
@@ -27,31 +28,43 @@ class MapPage extends ConsumerStatefulWidget {
 }
 
 class MapPageState extends ConsumerState<MapPage> {
-  final Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? _controller;
 
   late LatLng _initPosition;
   bool _isLoading = true;
   bool todayVisibility = true;
   bool storeVisibility = false;
   String address = "";
-
-  @override
-  void initState() {
-    getCurrentLocation();
-    ref.read(wishProvider.notifier).getWishList(SharedPreferenceUtil().userNo);
-    super.initState();
-    setState(() {});
-  }
-
   Set<Marker> markers = {};
 
   @override
-  Widget build(BuildContext context) {
-    List<Wish> wishes = ref.watch(wishProvider).list;
+  void initState() {
+    ref.read(wishProvider.notifier).getWishList(SharedPreferenceUtil().userNo);
 
-    Future<void> onMapCreated(GoogleMapController controller) async {
-      addWishMarker(wishes);
+    if (Platform.isIOS) {
+      BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(), "assets/icons/marker_store_ios.png")
+          .then((value) => starImg = value);
+      BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(), "assets/icons/marker_ios.png")
+          .then((value) => wishImg = value);
+    } else {
+      BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(), "assets/icons/marker_store.png")
+          .then((value) => starImg = value);
+      BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(), "assets/icons/marker.png")
+          .then((value) => wishImg = value);
     }
+
+    getCurrentLocation();
+
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //List<Wish> wishes = ref.watch(wishProvider).list;
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -60,7 +73,7 @@ class MapPageState extends ConsumerState<MapPage> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Expanded(
-                child: _isLoading
+                child: (_isLoading)
                     ? const Center(child: CircularProgressIndicator())
                     : GoogleMap(
                         mapType: MapType.normal,
@@ -69,7 +82,10 @@ class MapPageState extends ConsumerState<MapPage> {
                               _initPosition.latitude, _initPosition.longitude),
                           zoom: 14.4746,
                         ),
-                        onMapCreated: onMapCreated,
+                        onMapCreated: (GoogleMapController controller) {
+                          _controller = controller;
+                          addWishMarker(ref.watch(wishProvider).list);
+                        },
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
@@ -116,14 +132,9 @@ class MapPageState extends ConsumerState<MapPage> {
     );
   }
 
-  void addWishMarker(List<Wish> wishes) async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_ios.png");
-    }
+  Future<void> addWishMarker(List<Wish> wishes) async {
+    print("addwishhhhhhh${wishes.length}");
+    markers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
       Wish s = wishes[i];
@@ -131,7 +142,7 @@ class MapPageState extends ConsumerState<MapPage> {
       markers.add(Marker(
           markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
-          icon: star,
+          icon: wishImg!,
           onTap: () => setState(() {
                 ref
                     .read(storeDetailProvider.notifier)
@@ -146,19 +157,11 @@ class MapPageState extends ConsumerState<MapPage> {
     setState(() {});
   }
 
-  void addSingleWish(int storeNo, double lat, double lng) async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_ios.png");
-    }
-
+  void addSingleWish(int storeNo, double lat, double lng) {
     markers.add(Marker(
         markerId: MarkerId(storeNo.toString()),
         draggable: false,
-        icon: star,
+        icon: wishImg!,
         onTap: () => setState(() {
               ref
                   .read(storeDetailProvider.notifier)
@@ -168,6 +171,8 @@ class MapPageState extends ConsumerState<MapPage> {
               storeVisibility = true;
             }),
         position: LatLng(lat, lng)));
+
+    setState(() {});
   }
 
   void deleteMarker(int storeNo) {
@@ -199,10 +204,9 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<void> _goToCurrentPos() async {
-    final GoogleMapController controller = await _controller.future;
     var gps = await getCurrentLocation();
 
-    controller.animateCamera(
+    _controller?.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));
   }
 }

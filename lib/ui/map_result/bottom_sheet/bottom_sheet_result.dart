@@ -4,6 +4,7 @@ import 'package:sup/models/map/map.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_result/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
+import 'package:sup/utils/app_utils.dart';
 import '../../../models/map/store.dart';
 import '../../../providers/store/store_detail_provider.dart';
 import '../../../utils/sharedPreference_util.dart';
@@ -25,6 +26,11 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
 
@@ -38,6 +44,26 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
           .getStoreDetail(stores[0].storeNo, SharedPreferenceUtil().userNo);
 
       return Container();
+    } else if (stores.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                  offset: const Offset(0, -0.05),
+                  blurRadius: 0.7,
+                  spreadRadius: 0.7,
+                  color: Colors.grey.withOpacity(0.7))
+            ],
+            color: Colors.white,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
+        child: const Center(
+          child: Text(
+            "일치하는 음식점이 없어요 🤔",
+            style: TextStyles.regular14,
+          ),
+        ),
+      );
     } else {
       widget.visibility = true;
     }
@@ -63,8 +89,8 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                           ],
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12))),
                     ),
                     Stack(
                       children: [

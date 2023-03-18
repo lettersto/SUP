@@ -114,7 +114,7 @@ class MapPageState extends ConsumerState<MapPage> {
           ],
         ),
         DraggableScrollableSheet(
-            initialChildSize: 0.3,
+            initialChildSize: 0.35,
             minChildSize: 0.18,
             snapSizes: const [0.3, 1],
             snap: true,
@@ -130,7 +130,6 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   Future<void> addWishMarker(List<Wish> wishes) async {
-    print("addwishhhhhhh${wishes.length}");
     markers.clear();
 
     for (int i = 0; i < wishes.length; i++) {

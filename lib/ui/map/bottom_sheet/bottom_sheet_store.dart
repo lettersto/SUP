@@ -22,7 +22,7 @@ class MapBottomSheet extends ConsumerStatefulWidget {
 }
 
 class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
-  double _bodyHeight = 220;
+  double _bodyHeight = 240;
 
   @override
   Widget build(BuildContext context) {
@@ -108,119 +108,146 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Text(
-                                      storeDetail.storeName,
-                                      style:
-                                          const TextStyle(color: AppColors.blue)
+                                    Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          storeDetail.storeName,
+                                          style: const TextStyle(
+                                                  color: AppColors.blue)
                                               .merge(TextStyles.semiBold16),
+                                        ),
+                                        Text("  ${storeDetail.category}",
+                                            style: const TextStyle(
+                                                    color: AppColors.gray)
+                                                .merge(TextStyles.regular14)),
+                                      ],
                                     ),
                                     Row(
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
+                                        IconButton(
+                                          iconSize: 24,
+                                          padding: const EdgeInsets.fromLTRB(
+                                              4, 0, 4, 0),
+                                          icon: Container(
+                                            child: storeDetail.isWish == true
+                                                ? const Icon(
+                                                    Icons.star_rounded,
+                                                    color: AppColors.pink60,
+                                                  )
+                                                : const Icon(
+                                                    Icons.star_border_rounded,
+                                                    color: AppColors.pink60,
+                                                  ),
+                                          ),
+                                          onPressed: () {
+                                            if (storeDetail.isWish) {
+                                              ref
+                                                  .read(wishProvider.notifier)
+                                                  .deleteWish(
+                                                      SharedPreferenceUtil()
+                                                          .userNo,
+                                                      storeDetail.storeNo);
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapPageState>()
+                                                  ?.deleteMarker(
+                                                      storeDetail.storeNo);
+                                            } else {
+                                              ref
+                                                  .read(wishProvider.notifier)
+                                                  .postWish(
+                                                      SharedPreferenceUtil()
+                                                          .userNo,
+                                                      storeDetail.storeNo);
+
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapPageState>()
+                                                  ?.addSingleWish(
+                                                      storeDetail.storeNo,
+                                                      storeDetail.lat,
+                                                      storeDetail.lng);
+
+                                              context
+                                                  .findAncestorStateOfType<
+                                                      MapResultPageState>()
+                                                  ?.setState(() {});
+                                            }
+
+                                            ref
+                                                .read(todayProvider.notifier)
+                                                .getTodayList(
+                                                    SharedPreferenceUtil()
+                                                        .userNo,
+                                                    userLocation.latitude,
+                                                    userLocation.longitude);
+
+                                            ref
+                                                .read(storeDetailProvider
+                                                    .notifier)
+                                                .getStoreDetail(
+                                                    storeDetail.storeNo,
+                                                    SharedPreferenceUtil()
+                                                        .userNo);
+
+                                            setState(() {
+                                              storeDetail.isWish =
+                                                  !storeDetail.isWish;
+                                            });
+                                          },
+                                        ),
                                         const Icon(
-                                          Icons.star,
-                                          color: Colors.redAccent,
-                                          size: 15,
-                                        ),
-                                        Text(
-                                          " ${storeDetail.starAvg}  ",
-                                          style: const TextStyle(
-                                                  color: Colors.grey)
-                                              .merge(TextStyles.regular14),
-                                        ),
-                                        const Icon(
-                                          Icons.circle,
-                                          size: 4,
-                                          color: AppColors.whiteGrey,
-                                        ),
-                                        Text(
-                                          "  방문자리뷰 ${Format.currency.format(storeDetail.reviewCnt)} ",
-                                          style: const TextStyle(
-                                                  color: Colors.grey)
-                                              .merge(TextStyles.regular14),
-                                        ),
+                                          size: 24,
+                                          Icons.share,
+                                          color: Colors.black54,
+                                        )
                                       ],
                                     ),
                                   ],
                                 ),
+                                Container(
+                                  width: MediaQuery.of(context).size.width - 40,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    storeDetail.address,
+                                    style: const TextStyle(color: Colors.black)
+                                        .merge(TextStyles.regular14),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.fade,
+                                    softWrap: false,
+                                  ),
+                                ),
                                 Row(
                                   children: [
-                                    IconButton(
-                                      iconSize: 28,
-                                      padding:
-                                          const EdgeInsets.fromLTRB(4, 0, 4, 0),
-                                      icon: Container(
-                                        child: storeDetail.isWish == true
-                                            ? const Icon(
-                                                Icons.star_rounded,
-                                                color: AppColors.pink60,
-                                              )
-                                            : const Icon(
-                                                Icons.star_border_rounded,
-                                                color: AppColors.pink60,
-                                              ),
-                                      ),
-                                      onPressed: () {
-                                        if (storeDetail.isWish) {
-                                          ref
-                                              .read(wishProvider.notifier)
-                                              .deleteWish(
-                                                  SharedPreferenceUtil().userNo,
-                                                  storeDetail.storeNo);
-                                          context
-                                              .findRootAncestorStateOfType<
-                                                  MapPageState>()
-                                              ?.deleteMarker(
-                                                  storeDetail.storeNo);
-                                        } else {
-                                          ref
-                                              .read(wishProvider.notifier)
-                                              .postWish(
-                                                  SharedPreferenceUtil().userNo,
-                                                  storeDetail.storeNo);
-
-                                          context
-                                              .findRootAncestorStateOfType<
-                                                  MapPageState>()
-                                              ?.addSingleWish(
-                                                  storeDetail.storeNo,
-                                                  storeDetail.lat,
-                                                  storeDetail.lng);
-
-                                          context
-                                              .findAncestorStateOfType<
-                                                  MapResultPageState>()
-                                              ?.setState(() {});
-                                        }
-
-                                        ref
-                                            .read(todayProvider.notifier)
-                                            .getTodayList(
-                                                SharedPreferenceUtil().userNo,
-                                                userLocation.latitude,
-                                                userLocation.longitude);
-
-                                        ref
-                                            .read(storeDetailProvider.notifier)
-                                            .getStoreDetail(storeDetail.storeNo,
-                                                SharedPreferenceUtil().userNo);
-
-                                        setState(() {
-                                          storeDetail.isWish =
-                                              !storeDetail.isWish;
-                                        });
-                                      },
+                                    const Icon(
+                                      Icons.star,
+                                      color: Colors.redAccent,
+                                      size: 15,
+                                    ),
+                                    Text(
+                                      " ${storeDetail.starAvg}  ",
+                                      style: const TextStyle(color: Colors.grey)
+                                          .merge(TextStyles.regular14),
                                     ),
                                     const Icon(
-                                      size: 24,
-                                      Icons.share,
-                                      color: Colors.black54,
-                                    )
+                                      Icons.circle,
+                                      size: 4,
+                                      color: AppColors.whiteGrey,
+                                    ),
+                                    Text(
+                                      "  방문자리뷰 ${Format.currency.format(storeDetail.reviewCnt)} ",
+                                      style: const TextStyle(color: Colors.grey)
+                                          .merge(TextStyles.regular14),
+                                    ),
                                   ],
                                 )
                               ],

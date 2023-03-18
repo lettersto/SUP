@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/ui/map/bottom_sheet/today_pick_item.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 
-import '../../../models/map/map.dart';
 import '../../../models/map/today_pick.dart';
 import '../../../providers/store/today_provider.dart';
 import '../../../utils/styles.dart';
@@ -50,8 +49,8 @@ class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
                           ],
                           color: Colors.white,
                           borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12))),
                     ),
                     Stack(
                       children: [

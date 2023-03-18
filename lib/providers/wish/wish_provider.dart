@@ -23,7 +23,7 @@ class WishNotifier extends StateNotifier<WishResponse> {
     }
   }
 
-  void postWish(int userNo, int storeNo) async {
+  Future<void> postWish(int userNo, int storeNo) async {
     try {
       await repository.postWish(PostWishRequest(userNo, storeNo));
       state = await repository.getWishList(userNo);
@@ -33,7 +33,7 @@ class WishNotifier extends StateNotifier<WishResponse> {
     }
   }
 
-  void deleteWish(int userNo, int storeNo) async {
+  Future<void> deleteWish(int userNo, int storeNo) async {
     try {
       await repository.deleteWish(userNo, storeNo);
       state = await repository.getWishList(userNo);

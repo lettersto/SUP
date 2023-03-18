@@ -140,7 +140,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                 ],
               ),
               DraggableScrollableSheet(
-                  initialChildSize: 0.3,
+                  initialChildSize: 0.32,
                   minChildSize: 0.18,
                   snapSizes: const [0.3, 1],
                   expand: false,

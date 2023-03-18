@@ -203,9 +203,6 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: [],
-                  ),
                 ],
               ),
             ),

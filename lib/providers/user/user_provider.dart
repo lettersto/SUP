@@ -18,7 +18,7 @@ class UserNotifier extends StateNotifier<User> {
 
   UserNotifier({required this.repository}) : super(User.init());
 
-  void signup(UserRequest userRequest) async {
+  Future<void> signup(UserRequest userRequest) async {
     try {
       state = await repository.signup(userRequest);
 

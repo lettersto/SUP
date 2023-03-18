@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -9,12 +7,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sup/providers/store/store_detail_provider.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/providers/wish/wish_provider.dart';
+import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/ui/map_result/appbar_search_bar.dart';
+import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
-import '../../main.dart';
 import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../models/wish/wish.dart';
@@ -35,30 +34,32 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
   late LatLng _initPosition;
   bool _isLoading = true;
-  Set<Marker> markers = {};
+  Set<Marker> storeMarkers = {};
+  Set<Marker> wishMarkers = {};
 
   int storeNo = 0;
   bool resultVisibility = true;
   bool storeVisibility = false;
   String address = "";
+  List<Store> stores = [];
 
   @override
   void initState() {
+    super.initState();
     getCurrentLocation();
     ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
         userLocation.longitude, 0, widget.categoryNo, "", "STAR");
-
-    super.initState();
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Store> stores = ref.watch(storeProvider).list;
+    stores = ref.watch(storeProvider).list;
     List<Wish> wishes = ref.watch(wishProvider).list;
 
-    addWishMarker(wishes);
     addStoreMarker(stores);
+    addWishMarker(wishes);
+
+    storeMarkers.addAll(wishMarkers);
 
     return Scaffold(
       appBar: AppBar(
@@ -78,7 +79,16 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(routeMap);
+                //Navigator.of(context).pushReplacementNamed(routeMap);
+                Navigator.pushReplacement(
+                  context,
+                  PageRouteBuilder(
+                    pageBuilder: (context, animation1, animation2) =>
+                        const MapPage(),
+                    transitionDuration: Duration.zero,
+                    reverseTransitionDuration: Duration.zero,
+                  ),
+                );
               },
               icon: const Icon(
                 Icons.close_sharp,
@@ -108,7 +118,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                         myLocationButtonEnabled: false,
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
-                        markers: markers,
+                        markers: storeMarkers,
                         onTap: (LatLng) => setState(() {
                           storeVisibility = false;
                           resultVisibility = true;
@@ -136,6 +146,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
             initialChildSize: 0.3,
             minChildSize: 0.18,
             snapSizes: const [0.3, 1],
+            expand: false,
             snap: true,
             builder: (BuildContext context, ScrollController scrollController) {
               return (_isLoading
@@ -148,34 +159,36 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     );
   }
 
-  void clearMarker() {
-    markers.clear();
-  }
-
   void addWishMarker(List<Wish> wishes) async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_ios.png");
-    }
+    wishMarkers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
       Wish s = wishes[i];
-      markers.add(Marker(
-          markerId: MarkerId(i.toString()),
-          draggable: false,
-          icon: star,
-          onTap: () => setState(() {
-                ref
-                    .read(storeDetailProvider.notifier)
-                    .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
-                showStoreDetailBottomSheet();
-              }),
-          position: LatLng(s.lat, s.lng)));
+      bool isExist = false;
+
+      for (Marker m in storeMarkers) {
+        if (m.markerId.value == s.storeNo.toString()) {
+          isExist = true;
+          break;
+        }
+      }
+
+      if (!isExist) {
+        wishMarkers.add(Marker(
+            markerId: MarkerId(s.storeNo.toString()),
+            draggable: false,
+            icon: wishImg!,
+            onTap: () => setState(() {
+                  showToast(s.storeNo.toString());
+
+                  ref
+                      .read(storeDetailProvider.notifier)
+                      .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
+                  showStoreDetailBottomSheet();
+                }),
+            position: LatLng(s.lat, s.lng)));
+      }
     }
-    setState(() {});
   }
 
   void showStoreDetailBottomSheet() {
@@ -183,21 +196,15 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     resultVisibility = false;
   }
 
-  void addStoreMarker(List<Store> stores) async {
-    BitmapDescriptor star = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(), "assets/icons/marker_store.png");
-
-    if (Platform.isIOS) {
-      star = await BitmapDescriptor.fromAssetImage(
-          const ImageConfiguration(), "assets/icons/marker_store_ios.png");
-    }
+  void addStoreMarker(List<Store> stores) {
+    storeMarkers.clear();
 
     for (int i = 0; i < stores.length; i++) {
       Store s = stores[i];
-      markers.add(Marker(
-          markerId: MarkerId(i.toString()),
+      storeMarkers.add(Marker(
+          markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
-          icon: star,
+          icon: starImg!,
           onTap: () => setState(() {
                 ref
                     .read(storeDetailProvider.notifier)

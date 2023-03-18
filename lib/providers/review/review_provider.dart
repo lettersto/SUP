@@ -66,13 +66,6 @@ class ReviewChartNotifier extends AsyncNotifier<TagChartModel> {
         .watch(reviewClientProvider)
         .getTagChart(storeNo: ref.watch(storeDetailProvider).storeNo);
   }
-
-  FutureOr<TagChartModel> refetch() async {
-    print('???');
-    return await ref
-        .watch(reviewClientProvider)
-        .getTagChart(storeNo: ref.watch(storeDetailProvider).storeNo);
-  }
 }
 
 final reviewChartProvider =

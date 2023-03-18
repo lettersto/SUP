@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/common/pagination_params.dart';
 import 'package:sup/models/review/image_review.dart';
 import 'package:sup/models/review/tag_chart.dart';
+import 'package:sup/providers/store/store_detail_provider.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/review/review.dart';
@@ -57,27 +58,27 @@ final reviewClientProvider = Provider<ReviewClient>((ref) {
   return ReviewClient(dio);
 });
 
-class ReviewChartNotifier extends StateNotifier<TagChartModel> {
-  final ReviewClient reviewClient;
+class ReviewChartNotifier extends AsyncNotifier<TagChartModel> {
+  ReviewChartNotifier();
 
-  ReviewChartNotifier({
-    required this.reviewClient,
-  }) : super(const TagChartModel(totalCnt: 0, tags: []));
+  @override
+  FutureOr<TagChartModel> build() async {
+    return await ref
+        .watch(reviewClientProvider)
+        .getTagChart(storeNo: ref.watch(storeDetailProvider).storeNo);
+  }
 
-  void getReviewChart(int storeNo) async {
-    try {
-      state = await reviewClient.getTagChart(storeNo: storeNo);
-    } catch (err) {
-      print(err);
-    }
+  FutureOr<TagChartModel> refetch() async {
+    print('???');
+    return await ref
+        .watch(reviewClientProvider)
+        .getTagChart(storeNo: ref.watch(storeDetailProvider).storeNo);
   }
 }
 
 final reviewChartProvider =
-    StateNotifierProvider<ReviewChartNotifier, TagChartModel>((ref) {
-  final reviewClient = ref.watch(reviewClientProvider);
-  return ReviewChartNotifier(reviewClient: reviewClient);
-});
+    AsyncNotifierProvider<ReviewChartNotifier, TagChartModel>(
+        ReviewChartNotifier.new);
 
 class ReviewTotalCountNotifier extends StateNotifier<int> {
   final ReviewClient reviewClient;

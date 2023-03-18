@@ -27,40 +27,37 @@ class _TagFilterButtonState extends ConsumerState<TagFilterButton> {
       shrinkWrap: true,
       scrollDirection: Axis.horizontal,
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: ToggleButtons(
-            isSelected: selectedState,
-            renderBorder: false,
-            color: AppColors.gray,
-            fillColor: transparent,
-            highlightColor: transparent,
-            focusColor: transparent,
-            splashColor: transparent,
-            selectedColor: AppColors.pink40,
-            onPressed: pressHandler,
-            children: tags
-                .map((tag) => Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16.0),
-                      border: Border.all(
-                        color: ((ref.watch(reviewTagFilterProvider).selected !=
-                                    -1) &&
-                                (ref.watch(reviewTagFilterProvider).selected +
-                                        3 ==
-                                    tag['tagNo'] as int))
-                            ? AppColors.pink30
-                            : AppColors.grayTransparent2,
-                      ),
+        ToggleButtons(
+          isSelected: selectedState,
+          renderBorder: false,
+          color: AppColors.gray,
+          fillColor: transparent,
+          highlightColor: transparent,
+          focusColor: transparent,
+          splashColor: transparent,
+          selectedColor: AppColors.pink40,
+          onPressed: pressHandler,
+          children: tags
+              .map((tag) => Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16.0),
+                    border: Border.all(
+                      color: ((ref.watch(reviewTagFilterProvider).selected !=
+                                  -1) &&
+                              (ref.watch(reviewTagFilterProvider).selected +
+                                      3 ==
+                                  tag['tagNo'] as int))
+                          ? AppColors.pink30
+                          : AppColors.grayTransparent2,
                     ),
-                    height: 30,
-                    margin: const EdgeInsets.only(right: 4.0),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 2.0),
-                    alignment: Alignment.center,
-                    child: Text(tag['value_abbrv'] as String)))
-                .toList(),
-          ),
+                  ),
+                  height: 30,
+                  margin: const EdgeInsets.only(right: 4.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8.0, vertical: 2.0),
+                  alignment: Alignment.center,
+                  child: Text(tag['value_abbrv'] as String)))
+              .toList(),
         ),
       ],
     );

@@ -53,7 +53,8 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   }
 
   Future<void> _refreshHandler() async {
-    ref.read(reviewChartProvider.notifier).getReviewChart(widget.storeNo);
+    ref.refresh(reviewChartProvider);
+    await ref.read(reviewChartProvider.future);
     PaginationUtils.pullToRefresh(
       controller: _controller,
       provider: ref.read(
@@ -68,6 +69,7 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
       ),
       paginationQueryParams: imageQueryParams,
     );
+    ref.read(reviewChartProvider.notifier).refetch();
   }
 
   @override
@@ -99,7 +101,6 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
         ref.read(reviewFilterStarRegDtmProvider.notifier).getTypeAsString();
     final keyword = ref.watch(reviewSearchKeywordProvider);
     final storeName = ref.watch(storeDetailProvider).storeName ?? '';
-    final reviewTotalCount = ref.watch(reviewTotalCountProvider);
 
     params = Params(
         paginationPathParams: PaginationPathParams(
@@ -124,9 +125,12 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
             controller: _controller,
             slivers: [
               ReviewAppBar(storeName: storeName),
-              ReviewHeader(totalCount: reviewTotalCount),
-              ImageReviewList(
-                provider: paginatedImageReviewProvider(imageParams),
+              const ReviewHeader(),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                sliver: ImageReviewList(
+                  provider: paginatedImageReviewProvider(imageParams),
+                ),
               ),
               TagChart(
                 storeNo: storeNo,

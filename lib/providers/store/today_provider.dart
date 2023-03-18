@@ -17,7 +17,7 @@ class TodayNotifier extends StateNotifier<TodayResponse> {
 
   TodayNotifier({required this.repository}) : super(TodayResponse(list: []));
 
-  void getTodayList(int userNo, double lat, double lng) async {
+  Future<void> getTodayList(int userNo, double lat, double lng) async {
     try {
       state = await repository.getTodayList(userNo, lat, lng);
     } catch (e) {

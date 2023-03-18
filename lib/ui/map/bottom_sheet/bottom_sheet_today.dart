@@ -22,9 +22,6 @@ class TodayBottomSheet extends ConsumerStatefulWidget {
 class _TodayBottomSheet extends ConsumerState<TodayBottomSheet> {
   @override
   void initState() {
-    ref.read(todayProvider.notifier).getTodayList(SharedPreferenceUtil().userNo,
-        userLocation.latitude, userLocation.longitude);
-
     super.initState();
   }
 

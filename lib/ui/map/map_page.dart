@@ -14,6 +14,7 @@ import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
 import '../../models/map/map.dart';
 import '../../providers/store/store_detail_provider.dart';
+import '../../providers/store/today_provider.dart';
 import 'bottom_sheet/bottom_sheet_store.dart';
 import 'map_search_bar.dart';
 
@@ -186,10 +187,15 @@ class MapPageState extends ConsumerState<MapPage> {
     Position position = await Geolocator()
         .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 
-    setState(() {
-      _initPosition = LatLng(position.latitude, position.longitude);
-      userLocation = MyLatLng(_initPosition.latitude, _initPosition.longitude);
+    _initPosition = LatLng(position.latitude, position.longitude);
+    userLocation = MyLatLng(_initPosition.latitude, _initPosition.longitude);
 
+    await ref.read(todayProvider.notifier).getTodayList(
+        SharedPreferenceUtil().userNo,
+        userLocation.latitude,
+        userLocation.longitude);
+
+    setState(() {
       getAddressByGeo(_initPosition.latitude.toString(),
               _initPosition.longitude.toString())
           .then((String res) {

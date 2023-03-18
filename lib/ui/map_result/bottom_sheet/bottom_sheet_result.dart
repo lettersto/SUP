@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/map/map.dart';
 import 'package:sup/providers/store/store_provider.dart';
-import 'package:sup/ui/map/bottom_sheet/store_item.dart';
+import 'package:sup/ui/map_result/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
 import '../../../models/map/store.dart';
 import '../../../providers/store/store_detail_provider.dart';

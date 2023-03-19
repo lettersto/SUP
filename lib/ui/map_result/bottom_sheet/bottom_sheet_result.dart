@@ -5,12 +5,8 @@ import 'package:sup/models/map/map.dart';
 import 'package:sup/providers/store/store_provider.dart';
 import 'package:sup/ui/map_result/bottom_sheet/store_item.dart';
 import 'package:sup/ui/map_result/bottom_sheet/tag_result.dart';
-import 'package:sup/utils/app_utils.dart';
 import '../../../models/map/store.dart';
-import '../../../providers/store/store_detail_provider.dart';
-import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
-import '../map_search_result.dart';
 
 class ResultBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
@@ -32,34 +28,6 @@ class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
   @override
   Widget build(BuildContext context) {
     List<Store> stores = ref.watch(storeProvider).list;
-
-    /*if (stores.isEmpty) {
-      context
-          .findAncestorStateOfType<MapResultPageState>()
-          ?.showResultBottomSheet();
-
-      return Container(
-        decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                  offset: const Offset(0, -0.05),
-                  blurRadius: 0.7,
-                  spreadRadius: 0.7,
-                  color: Colors.grey.withOpacity(0.7))
-            ],
-            color: Colors.white,
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(12), topRight: Radius.circular(12))),
-        child: const Center(
-          child: Text(
-            "일치하는 음식점이 없어요 🤔",
-            style: TextStyles.regular14,
-          ),
-        ),
-      );
-    } else {
-      widget.visibility = true;
-    }*/
 
     return widget.visibility
         ? Column(

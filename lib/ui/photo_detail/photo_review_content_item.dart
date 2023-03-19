@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/providers/review/review_detail_provider.dart';
-import 'package:sup/utils/app_utils.dart';
 
 import '../../../utils/styles.dart';
 import '../../../utils/enums.dart';
@@ -24,6 +23,12 @@ class PhotoReviewContentItem extends ConsumerWidget {
     final review = ref.watch(reviewDetailProvider);
     const tagColor = AppColors.grayTransparent30;
     const tagTextColor = AppColors.white;
+    String visitedDate = '';
+
+    if (review.regDtm.isNotEmpty) {
+      visitedDate =
+          '${review.regDtm.substring(0, 4)}.${review.regDtm.substring(5, 7)}.${review.regDtm.substring(8, 10)}';
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -50,7 +55,7 @@ class PhotoReviewContentItem extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '${AppUtils.dateFormatter(review.regDtm)} 방문',
+                '$visitedDate 방문',
                 style: TextStyles.medium14
                     .merge(const TextStyle(color: AppColors.gray)),
               ),

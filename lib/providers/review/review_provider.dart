@@ -79,7 +79,7 @@ class ReviewTotalCountNotifier extends StateNotifier<int> {
     required this.reviewClient,
   }) : super(0);
 
-  void getReviewChart(int storeNo) async {
+  void getTotalReviewCount(int storeNo) async {
     try {
       state = await reviewClient.getTotalReviewCount(storeNo: storeNo);
     } catch (err) {

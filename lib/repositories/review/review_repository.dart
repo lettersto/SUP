@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
-import 'package:sup/models/review/image_review.dart';
-import 'package:sup/models/review/like_param.dart';
 
+import '../../models/review/image_review.dart';
+import '../../models/review/like_param.dart';
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/pagination_params.dart';
 import '../../models/review/review.dart';

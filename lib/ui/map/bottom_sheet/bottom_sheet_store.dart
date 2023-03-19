@@ -161,6 +161,11 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                                       MapPageState>()
                                                   ?.deleteMarker(
                                                       storeDetail.storeNo);
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapResultPageState>()
+                                                  ?.deleteWishMarker(
+                                                      storeDetail.storeNo);
                                             } else {
                                               ref
                                                   .read(wishProvider.notifier)
@@ -172,6 +177,14 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                               context
                                                   .findRootAncestorStateOfType<
                                                       MapPageState>()
+                                                  ?.addSingleWish(
+                                                      storeDetail.storeNo,
+                                                      storeDetail.lat,
+                                                      storeDetail.lng);
+
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapResultPageState>()
                                                   ?.addSingleWish(
                                                       storeDetail.storeNo,
                                                       storeDetail.lat,
@@ -205,11 +218,6 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                             });
                                           },
                                         ),
-                                        const Icon(
-                                          size: 24,
-                                          Icons.share,
-                                          color: Colors.black54,
-                                        )
                                       ],
                                     ),
                                   ],

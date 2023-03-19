@@ -21,11 +21,11 @@ class _StoreItem extends State<StoreItem> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        /*Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => ReviewPage(widget.store.storeNo)),
-        );
+        );*/
       },
       child: Container(
         color: Colors.white,
@@ -76,15 +76,6 @@ class _StoreItem extends State<StoreItem> {
                       ),
                     ],
                   ),
-                  Row(
-                    children: const [
-                      Icon(
-                        size: 24,
-                        Icons.share,
-                        color: Colors.black54,
-                      )
-                    ],
-                  )
                 ],
               ),
             ),

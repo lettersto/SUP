@@ -144,11 +144,6 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
                                   widget.store.isWish = !widget.store.isWish;
                                 },
                               ),
-                              const Icon(
-                                size: 20,
-                                Icons.share,
-                                color: Colors.black54,
-                              ),
                             ],
                           )
                         ],

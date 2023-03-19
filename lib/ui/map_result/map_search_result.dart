@@ -10,7 +10,6 @@ import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/ui/map_result/appbar_search_bar.dart';
-import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
@@ -37,11 +36,11 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   Set<Marker> storeMarkers = {};
   Set<Marker> wishMarkers = {};
 
-  int storeNo = 0;
   bool resultVisibility = true;
   bool storeVisibility = false;
   String address = "";
   List<Store> stores = [];
+  int selectedStoreNo = 0;
 
   @override
   void initState() {
@@ -111,12 +110,13 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                     onMapCreated: (GoogleMapController controller) {
                       _controller = controller;
                     },
-                    myLocationEnabled: false,
+                    myLocationEnabled: true,
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
                     mapToolbarEnabled: false,
                     markers: storeMarkers,
                     onTap: (LatLng) => setState(() {
+                      selectedStoreNo = 0;
                       storeVisibility = false;
                       resultVisibility = true;
                     }),
@@ -157,7 +157,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     );
   }
 
-  void addWishMarker(List<Wish> wishes) async {
+  void addWishMarker(List<Wish> wishes) {
     wishMarkers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
@@ -205,16 +205,41 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
       storeMarkers.add(Marker(
           markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
-          icon: starImg!,
+          icon: selectedStoreNo == s.storeNo ? selectedImg! : starImg!,
           onTap: () => setState(() {
+                selectedStoreNo = s.storeNo;
+
                 ref
                     .read(storeDetailProvider.notifier)
                     .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
+
                 resultVisibility = false;
                 storeVisibility = true;
               }),
           position: LatLng(s.lat, s.lng)));
     }
+  }
+
+  void addSingleWish(int storeNo, double lat, double lng) {
+    storeMarkers.add(Marker(
+        markerId: MarkerId(storeNo.toString()),
+        draggable: false,
+        icon: wishImg!,
+        onTap: () => setState(() {
+              ref
+                  .read(storeDetailProvider.notifier)
+                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
+            }),
+        position: LatLng(lat, lng)));
+
+    setState(() {});
+  }
+
+  void deleteWishMarker(int storeNo) {
+    Marker marker = storeMarkers
+        .firstWhere((marker) => marker.markerId.value == storeNo.toString());
+    storeMarkers.remove(marker);
+    setState(() {});
   }
 
   Future<Position> getCurrentLocation() async {

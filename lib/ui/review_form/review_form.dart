@@ -45,7 +45,7 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
   }
 
   Future<void> _submitHandler() async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate() || _isLoading) return;
 
     if (!ref.read(reviewFormProvider.notifier).isStarValidate) {
       _scrollToWidget(_starRatingKey);
@@ -104,6 +104,15 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
     );
   }
 
+  void _pressHandler() async {
+    if (_formKey.currentState!.validate()) {
+      await _submitHandler().then((value) {
+        _refreshReview();
+        Navigator.pop(context);
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -154,14 +163,7 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.pink40,
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        await _submitHandler().then((value) {
-                          _refreshReview();
-                          Navigator.pop(context);
-                        });
-                      }
-                    },
+                    onPressed: _isLoading ? null : _pressHandler,
                     child: Text(
                       '등록 하기',
                       style: TextStyles.bold14.merge(

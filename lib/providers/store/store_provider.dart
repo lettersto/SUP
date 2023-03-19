@@ -24,7 +24,7 @@ class StoreNotifier extends StateNotifier<StoreResponse> {
             lat, lng, tagNo, category, keyword, sort);
       }
     } catch (e) {
-      print(e);
+      state = StoreResponse(list: []);
     }
   }
 }

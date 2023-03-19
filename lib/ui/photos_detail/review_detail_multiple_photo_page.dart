@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/review/review.dart';
 import '../../utils/styles.dart';
 import 'review_detail_multiple_photo_body.dart';
-
 import '../photo_detail/photo_detail_slider.dart';
 
 class ReviewDetailMultiplePhotoPage extends StatefulWidget {

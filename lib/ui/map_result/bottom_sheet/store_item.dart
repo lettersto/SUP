@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/providers/store/store_detail_provider.dart';
-import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
-import 'package:sup/ui/map_result/bottom_sheet/review_page_view.dart';
+import 'package:sup/ui/review/review_page_view.dart';
 import 'package:sup/ui/map_result/map_search_result.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import '../../../models/map/store.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
-import '../../review/review_page.dart';
 
 class StoreItem extends ConsumerStatefulWidget {
   final Store store;

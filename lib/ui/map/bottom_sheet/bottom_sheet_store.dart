@@ -181,19 +181,6 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                                       storeDetail.storeNo,
                                                       storeDetail.lat,
                                                       storeDetail.lng);
-
-                                              context
-                                                  .findRootAncestorStateOfType<
-                                                      MapResultPageState>()
-                                                  ?.addSingleWish(
-                                                      storeDetail.storeNo,
-                                                      storeDetail.lat,
-                                                      storeDetail.lng);
-
-                                              context
-                                                  .findAncestorStateOfType<
-                                                      MapResultPageState>()
-                                                  ?.setState(() {});
                                             }
 
                                             ref

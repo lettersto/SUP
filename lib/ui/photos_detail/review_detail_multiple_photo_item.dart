@@ -24,6 +24,13 @@ class ReviewDetailMultiplePhotoItem extends ConsumerWidget {
     const tagColor = AppColors.grayTransparent30;
     const tagTextColor = AppColors.white;
 
+    String visitedDate = '';
+
+    if (review.regDtm.isNotEmpty) {
+      visitedDate =
+          '${review.regDtm.substring(0, 4)}.${review.regDtm.substring(5, 7)}.${review.regDtm.substring(8, 10)}';
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       decoration: const BoxDecoration(
@@ -49,7 +56,7 @@ class ReviewDetailMultiplePhotoItem extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '${AppUtils.dateFormatter(review.regDtm)} 방문',
+                '$visitedDate 방문',
                 style: TextStyles.medium14
                     .merge(const TextStyle(color: AppColors.gray)),
               ),

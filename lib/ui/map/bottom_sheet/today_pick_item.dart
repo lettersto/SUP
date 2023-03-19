@@ -164,7 +164,7 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
                         children: [
                           const Icon(
                             Icons.star,
-                            color: Colors.redAccent,
+                            color: Colors.pinkAccent,
                             size: 14,
                           ),
                           Text(

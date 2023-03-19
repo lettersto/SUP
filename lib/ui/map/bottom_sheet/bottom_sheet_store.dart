@@ -122,7 +122,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                           storeDetail.storeName,
                                           style: const TextStyle(
                                                   color: AppColors.blue)
-                                              .merge(TextStyles.semiBold16),
+                                              .merge(TextStyles.semiBold17),
                                         ),
                                         Text("  ${storeDetail.category}",
                                             style: const TextStyle(
@@ -225,13 +225,14 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                   children: [
                                     const Icon(
                                       Icons.star,
-                                      color: Colors.redAccent,
+                                      color: Colors.pinkAccent,
                                       size: 15,
                                     ),
                                     Text(
                                       " ${storeDetail.starAvg}  ",
-                                      style: const TextStyle(color: Colors.grey)
-                                          .merge(TextStyles.regular14),
+                                      style:
+                                          const TextStyle(color: Colors.black)
+                                              .merge(TextStyles.regular14),
                                     ),
                                     const Icon(
                                       Icons.circle,
@@ -240,8 +241,9 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                     ),
                                     Text(
                                       "  방문자리뷰 ${Format.currency.format(storeDetail.reviewCnt)} ",
-                                      style: const TextStyle(color: Colors.grey)
-                                          .merge(TextStyles.regular14),
+                                      style:
+                                          const TextStyle(color: Colors.black54)
+                                              .merge(TextStyles.regular14),
                                     ),
                                   ],
                                 )

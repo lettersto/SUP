@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/providers/store/store_detail_provider.dart';
-import 'package:sup/ui/review/review_page_view.dart';
-import 'package:sup/ui/map_result/map_search_result.dart';
-import 'package:sup/utils/sharedPreference_util.dart';
+
 import '../../../models/map/store.dart';
+import '../../../providers/store/store_detail_provider.dart';
 import '../../../utils/app_utils.dart';
+import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
+import '../../review/review_page_view.dart';
+import '../map_search_result.dart';
 
 class StoreItem extends ConsumerStatefulWidget {
   final Store store;
@@ -51,21 +52,28 @@ class _StoreItem extends ConsumerState<StoreItem> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.store.storeName,
-                        style: const TextStyle(color: AppColors.blue)
-                            .merge(TextStyles.semiBold16),
+                      Row(
+                        children: [
+                          Text(
+                            widget.store.storeName,
+                            style: const TextStyle(color: AppColors.blue)
+                                .merge(TextStyles.semiBold17),
+                          ),
+                          Text("  ${widget.store.category}",
+                              style: const TextStyle(color: AppColors.gray)
+                                  .merge(TextStyles.regular14)),
+                        ],
                       ),
                       Row(
                         children: [
                           const Icon(
                             Icons.star,
-                            color: Colors.redAccent,
+                            color: Colors.pinkAccent,
                             size: 15,
                           ),
                           Text(
                             " ${widget.store.starAvg}  ",
-                            style: const TextStyle(color: Colors.grey)
+                            style: const TextStyle(color: Colors.black)
                                 .merge(TextStyles.regular14),
                           ),
                           const Icon(
@@ -75,7 +83,7 @@ class _StoreItem extends ConsumerState<StoreItem> {
                           ),
                           Text(
                             "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
-                            style: const TextStyle(color: Colors.grey)
+                            style: const TextStyle(color: Colors.black54)
                                 .merge(TextStyles.regular14),
                           ),
                         ],

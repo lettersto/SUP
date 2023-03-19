@@ -49,17 +49,25 @@ class _PhotoDetailPageState extends ConsumerState<PhotoDetailPage> {
               width: deviceWidth,
               height: deviceHeight,
             ),
-            Image.network(
-              review.img,
-              loadingBuilder: (BuildContext context, Widget child,
-                  ImageChunkEvent? loadingProgress) {
-                if (loadingProgress == null) return child;
-                return Container(
-                  width: deviceWidth,
-                  height: deviceHeight / 2,
-                  color: AppColors.black,
-                );
-              },
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.network(
+                  review.img,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Container(
+                      width: deviceWidth,
+                      height: 400,
+                      color: AppColors.black,
+                    );
+                  },
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.top,
+                )
+              ],
             ),
             PhotoReviewContent(
               review: review,

@@ -67,9 +67,20 @@ class _ReviewDetailMultiplePhotoPageState
               height: deviceHeight,
               width: deviceWidth,
             ),
-            PhotoDetailSlider(
-              imgUrls: widget.images,
-              setCurrentPage: _setCurrentPage,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: deviceHeight - 400,
+                  child: PhotoDetailSlider(
+                    imgUrls: widget.images,
+                    setCurrentPage: _setCurrentPage,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.top,
+                ),
+              ],
             ),
             ReviewDetailMultiplePhotoBody(
               review: widget.review!,

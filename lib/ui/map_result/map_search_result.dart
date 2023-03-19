@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
@@ -45,6 +46,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
 
   @override
   void initState() {
+    selectedStoreNo = 0;
     super.initState();
     getCurrentLocation();
   }
@@ -76,7 +78,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
         actions: [
           IconButton(
               onPressed: () {
-                //Navigator.of(context).pushReplacementNamed(routeMap);
                 Navigator.pushReplacement(
                   context,
                   PageRouteBuilder(
@@ -140,14 +141,40 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                   ),
                 ],
               ),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Visibility(
+                    visible: stores.isEmpty,
+                    child: Container(
+                      decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                offset: const Offset(0, -0.05),
+                                blurRadius: 0.7,
+                                spreadRadius: 0.7,
+                                color: Colors.grey.withOpacity(0.7))
+                          ],
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12))),
+                      height: 160,
+                      width: MediaQuery.of(context).size.width,
+                      child: const Center(
+                        child: Text(
+                          "일치하는 음식점이 없어요 🤔",
+                          style: TextStyles.regular14,
+                        ),
+                      ),
+                    ),
+                  )),
               Visibility(
                 visible: resultVisibility,
                 child: DraggableScrollableSheet(
-                    initialChildSize: 0.32,
-                    minChildSize: 0.18,
-                    snapSizes: const [0.3, 1],
+                    initialChildSize: stores.isEmpty ? 0 : 0.32,
+                    minChildSize: stores.isEmpty ? 0 : 0.18,
+                    maxChildSize: min(1, stores.length * 0.3 + 0.3),
                     expand: false,
-                    snap: true,
                     builder: (BuildContext context,
                         ScrollController scrollController) {
                       return (_isLoading
@@ -185,8 +212,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
         wishMarkers.add(Marker(
             markerId: MarkerId(s.storeNo.toString()),
             draggable: false,
-            icon: wishImg!,
+            icon: selectedStoreNo == s.storeNo ? selectedImg! : wishImg!,
             onTap: () => setState(() {
+                  selectedStoreNo = s.storeNo;
                   ref
                       .read(storeDetailProvider.notifier)
                       .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
@@ -198,17 +226,13 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   void showStoreDetailBottomSheet() {
-    setState(() {
-      storeVisibility = true;
-      resultVisibility = false;
-    });
+    storeVisibility = true;
+    resultVisibility = false;
   }
 
   void showResultBottomSheet() {
-    setState(() {
-      storeVisibility = false;
-      resultVisibility = true;
-    });
+    storeVisibility = false;
+    resultVisibility = true;
   }
 
   void addStoreMarker(List<Store> stores) {
@@ -234,26 +258,12 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     }
   }
 
-  void addSingleWish(int storeNo, double lat, double lng) {
-    storeMarkers.add(Marker(
-        markerId: MarkerId(storeNo.toString()),
-        draggable: false,
-        icon: wishImg!,
-        onTap: () => setState(() {
-              ref
-                  .read(storeDetailProvider.notifier)
-                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
-            }),
-        position: LatLng(lat, lng)));
-
-    setState(() {});
-  }
-
   void deleteWishMarker(int storeNo) {
-    Marker marker = storeMarkers
-        .firstWhere((marker) => marker.markerId.value == storeNo.toString());
-    storeMarkers.remove(marker);
-    setState(() {});
+    setState(() {
+      Marker marker = storeMarkers
+          .firstWhere((marker) => marker.markerId.value == storeNo.toString());
+      storeMarkers.remove(marker);
+    });
   }
 
   Future<Position> getCurrentLocation() async {

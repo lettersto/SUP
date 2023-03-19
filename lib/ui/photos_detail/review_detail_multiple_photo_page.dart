@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/review/review.dart';
 import '../../utils/styles.dart';
 import 'review_detail_multiple_photo_body.dart';
-
 import '../photo_detail/photo_detail_slider.dart';
 
 class ReviewDetailMultiplePhotoPage extends StatefulWidget {
@@ -67,9 +66,20 @@ class _ReviewDetailMultiplePhotoPageState
               height: deviceHeight,
               width: deviceWidth,
             ),
-            PhotoDetailSlider(
-              imgUrls: widget.images,
-              setCurrentPage: _setCurrentPage,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SizedBox(
+                  height: deviceHeight - 400,
+                  child: PhotoDetailSlider(
+                    imgUrls: widget.images,
+                    setCurrentPage: _setCurrentPage,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).padding.top,
+                ),
+              ],
             ),
             ReviewDetailMultiplePhotoBody(
               review: widget.review!,

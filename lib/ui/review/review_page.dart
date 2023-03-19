@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/common/pagination_params.dart';
-import '../../providers/providers_exporter.dart';
 import '../../providers/review/review_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import '../../utils/pagination_utils.dart';
-import '../../utils/sharedPreference_util.dart';
 import '../common/pagination_sliver_list_view.dart';
 import './review_list/review_list_item.dart';
 import './review_appbar.dart';
@@ -25,56 +23,41 @@ class ReviewPage extends ConsumerStatefulWidget {
 
 class _ReviewPageState extends ConsumerState<ReviewPage> {
   final ScrollController _controller = ScrollController();
-  final paginationQueryParams = const PaginationQueryParams(
-      size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false);
-  final imageQueryParams = const PaginationQueryParams(size: 10);
-
-  // NOTE initializer에 instance를 할당할 수 없기 때문에, 어쩔 수 없이 중복적으로 작성해야 한다.
-  Params params = Params(
-    paginationQueryParams: const PaginationQueryParams(
-        size: 10, tagNo: 0, keyword: '', sort: 'STAR', imgOnly: false),
-    paginationPathParams:
-        PaginationPathParams(storeNo: 0, userNo: SharedPreferenceUtil().userNo),
-  );
-
-  Params imageParams = const Params(
-    paginationQueryParams: PaginationQueryParams(size: 10),
-    paginationPathParams: PaginationPathParams(storeNo: 0),
-  );
+  late Params _params;
+  late Params _imageParams;
 
   void listener() {
     PaginationUtils.paginate(
       controller: _controller,
       provider: ref.read(
-        paginatedReviewProvider(params).notifier,
+        paginatedReviewProvider(_params).notifier,
       ),
-      paginationQueryParams: paginationQueryParams,
+      paginationQueryParams: _params.paginationQueryParams,
     );
   }
 
   Future<void> _refreshHandler() async {
-    ref.refresh(reviewChartProvider);
-    await ref.read(reviewChartProvider.future);
+    ref.read(reviewChartProvider.notifier).build();
     PaginationUtils.pullToRefresh(
-      controller: _controller,
       provider: ref.read(
-        paginatedReviewProvider(params).notifier,
+        paginatedReviewProvider(_params).notifier,
       ),
-      paginationQueryParams: paginationQueryParams,
+      paginationQueryParams: _params.paginationQueryParams,
     );
     PaginationUtils.pullToRefresh(
-      controller: _controller,
       provider: ref.read(
-        paginatedImageReviewProvider(imageParams).notifier,
+        paginatedImageReviewProvider(_imageParams).notifier,
       ),
-      paginationQueryParams: imageQueryParams,
+      paginationQueryParams: _imageParams.paginationQueryParams,
     );
   }
 
   @override
   void initState() {
     super.initState();
-    ref.read(reviewTotalCountProvider.notifier).getReviewChart(widget.storeNo);
+    ref
+        .read(reviewTotalCountProvider.notifier)
+        .getTotalReviewCount(widget.storeNo);
     _controller.addListener(listener);
   }
 
@@ -88,33 +71,10 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
   @override
   Widget build(BuildContext context) {
     final storeNo = widget.storeNo;
-    ref.watch(reviewFilterStarRegDtmProvider);
-    final isOnlyPhotosSelected = ref.watch(reviewFilterOnlyPhotoProvider);
-    int selectedTag = ref.watch(reviewTagFilterProvider).selected;
-    if (selectedTag == -1) {
-      selectedTag = 0;
-    } else {
-      selectedTag += 3;
-    }
-    final sort =
-        ref.read(reviewFilterStarRegDtmProvider.notifier).getTypeAsString();
-    final keyword = ref.watch(reviewSearchKeywordProvider);
     final storeName = ref.watch(storeDetailProvider).storeName ?? '';
 
-    params = Params(
-        paginationPathParams: PaginationPathParams(
-            storeNo: storeNo, userNo: SharedPreferenceUtil().userNo),
-        paginationQueryParams: PaginationQueryParams(
-            size: 10,
-            tagNo: selectedTag,
-            keyword: keyword,
-            sort: sort,
-            imgOnly: isOnlyPhotosSelected));
-
-    imageParams = Params(
-      paginationQueryParams: const PaginationQueryParams(size: 10),
-      paginationPathParams: PaginationPathParams(storeNo: storeNo),
-    );
+    _params = ref.watch(paginatedReviewParamsProvider);
+    _imageParams = ref.watch(paginatedImageParamsProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -128,14 +88,14 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 sliver: ImageReviewList(
-                  provider: paginatedImageReviewProvider(imageParams),
+                  provider: paginatedImageReviewProvider(_imageParams),
                 ),
               ),
               TagChart(
                 storeNo: storeNo,
               ),
               PaginationSliverListView(
-                provider: paginatedReviewProvider(params),
+                provider: paginatedReviewProvider(_params),
                 itemBuilder: <ReviewDetailWithPhotos>(_, index, model) {
                   return ReviewListItem(
                     review: model,

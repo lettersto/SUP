@@ -58,6 +58,9 @@ class MapPageState extends ConsumerState<MapPage> {
       BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(), "assets/icons/marker.png")
           .then((value) => wishImg = value);
+      BitmapDescriptor.fromAssetImage(
+              const ImageConfiguration(), "assets/icons/marker_selected.png")
+          .then((value) => selectedImg = value);
     }
 
     getCurrentLocation();
@@ -118,7 +121,7 @@ class MapPageState extends ConsumerState<MapPage> {
           ],
         ),
         DraggableScrollableSheet(
-            initialChildSize: 0.35,
+            initialChildSize: 0.3,
             minChildSize: 0.18,
             snapSizes: const [0.3, 1],
             snap: true,
@@ -158,28 +161,29 @@ class MapPageState extends ConsumerState<MapPage> {
   }
 
   void addSingleWish(int storeNo, double lat, double lng) {
-    markers.add(Marker(
-        markerId: MarkerId(storeNo.toString()),
-        draggable: false,
-        icon: wishImg!,
-        onTap: () => setState(() {
-              ref
-                  .read(storeDetailProvider.notifier)
-                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
+    setState(() {
+      markers.add(Marker(
+          markerId: MarkerId(storeNo.toString()),
+          draggable: false,
+          icon: wishImg!,
+          onTap: () => setState(() {
+                ref
+                    .read(storeDetailProvider.notifier)
+                    .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
 
-              todayVisibility = false;
-              storeVisibility = true;
-            }),
-        position: LatLng(lat, lng)));
-
-    setState(() {});
+                todayVisibility = false;
+                storeVisibility = true;
+              }),
+          position: LatLng(lat, lng)));
+    });
   }
 
   void deleteMarker(int storeNo) {
-    Marker marker = markers
-        .firstWhere((marker) => marker.markerId.value == storeNo.toString());
-    markers.remove(marker);
-    setState(() {});
+    setState(() {
+      Marker marker = markers
+          .firstWhere((marker) => marker.markerId.value == storeNo.toString());
+      markers.remove(marker);
+    });
   }
 
   Future<Position> getCurrentLocation() async {

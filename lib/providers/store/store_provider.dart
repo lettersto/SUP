@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/map/store.dart';
 import '../../repositories/store/store_repository.dart';
@@ -24,7 +25,7 @@ class StoreNotifier extends StateNotifier<StoreResponse> {
             lat, lng, tagNo, category, keyword, sort);
       }
     } catch (e) {
-      print(e);
+      state = StoreResponse(list: []);
     }
   }
 }

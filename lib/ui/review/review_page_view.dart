@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../utils/styles.dart';
+import '../../utils/styles.dart';
 
 class ReviewPageView extends StatefulWidget {
   final List<String> reviews;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sup/models/common/pagination_params.dart';
 
+import '../models/common/pagination_params.dart';
 import '../providers/providers_exporter.dart';
 
 class PaginationUtils {
@@ -18,7 +18,6 @@ class PaginationUtils {
   }
 
   static void pullToRefresh({
-    required ScrollController controller,
     required PaginationProvider provider,
     required PaginationQueryParams paginationQueryParams,
   }) {

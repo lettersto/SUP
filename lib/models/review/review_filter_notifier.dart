@@ -25,10 +25,6 @@ class ReviewFilterStarRegDtmNotifier
   void setType(ReviewFilterStarRegDtmType type) {
     state = type;
   }
-
-  String getTypeAsString() {
-    return state.toString().split('.').last;
-  }
 }
 
 class ReviewTagFilterNotifier extends Notifier<ReviewTagFilter> {

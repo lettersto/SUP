@@ -60,7 +60,7 @@ class _PaginationSliverListViewState<T extends IModelWithId>
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, itemIdx) {
-          if (itemIdx == cp.list.length - 1) {
+          if (itemIdx == cp.list.length) {
             return Center(
               child: cp is CursorPaginationFetchingMore
                   ? const ReviewListItemSkeleton()

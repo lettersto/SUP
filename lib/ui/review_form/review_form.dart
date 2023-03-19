@@ -1,12 +1,15 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../models/common/pagination_params.dart';
 import '../../providers/review/review_form_provider.dart';
 import '../../providers/review/review_provider.dart';
 import '../../providers/store/store_detail_provider.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_utils.dart';
 import '../../utils/sharedPreference_util.dart';
+import '../../utils/pagination_utils.dart';
 
 import './form_field/star_rating/star_rating_area.dart';
 import './form_field/tag_selection/tag_selection_area.dart';
@@ -25,7 +28,9 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
   final _starRatingKey = GlobalKey();
   final _tagsKey = GlobalKey();
   final _commentController = TextEditingController();
-  bool _isFormValid = false;
+  late Params _params;
+  late Params _imageParams;
+  bool _isLoading = false;
 
   void _setComment() {
     ref
@@ -33,30 +38,34 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
         .setContent(_commentController.text.trim());
   }
 
-  Future scrollToWidget(GlobalKey key) async {
+  Future _scrollToWidget(GlobalKey key) async {
     final context = key.currentContext;
     await Scrollable.ensureVisible(context!,
         duration: const Duration(milliseconds: 800));
   }
 
-  Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+  Future<void> _submitHandler() async {
+    if (!_formKey.currentState!.validate() || _isLoading) return;
 
     if (!ref.read(reviewFormProvider.notifier).isStarValidate) {
-      scrollToWidget(_starRatingKey);
+      _scrollToWidget(_starRatingKey);
       showToast('별점을 1개 이상 주세요!');
-      return;
+      throw Exception('Invalid Form Format');
     }
 
     if (!ref.read(reviewFormProvider.notifier).isTagsValidate) {
-      scrollToWidget(_tagsKey);
+      _scrollToWidget(_tagsKey);
       showToast('어떤 점이 좋았는지 최소 하나를 선택해 주세요!');
-      return;
+      throw Exception('Invalid Form Format');
     }
 
     List<String> stringTags = [];
     ref.watch(reviewFormProvider).tags.forEach((element) {
       stringTags.add(element.toString());
+    });
+
+    setState(() {
+      _isLoading = true;
     });
 
     try {
@@ -67,14 +76,41 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
           star: ref.watch(reviewFormProvider).star,
           tags: stringTags,
           imgs: ref.watch(reviewFormProvider).imgs);
-    } catch (err, st) {
-      print(err);
-      print(st);
+    } on DioError catch (err) {
+      throw Exception(err);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
+  }
 
-    setState(() {
-      _isFormValid = true;
-    });
+  void _refreshReview() {
+    ref.read(reviewChartProvider.notifier).build();
+    ref
+        .read(reviewTotalCountProvider.notifier)
+        .getTotalReviewCount(ref.watch(storeDetailProvider).storeNo);
+    PaginationUtils.pullToRefresh(
+      provider: ref.read(
+        paginatedReviewProvider(_params).notifier,
+      ),
+      paginationQueryParams: _params.paginationQueryParams,
+    );
+    PaginationUtils.pullToRefresh(
+      provider: ref.read(
+        paginatedImageReviewProvider(_imageParams).notifier,
+      ),
+      paginationQueryParams: _imageParams.paginationQueryParams,
+    );
+  }
+
+  void _pressHandler() async {
+    if (_formKey.currentState!.validate()) {
+      await _submitHandler().then((value) {
+        _refreshReview();
+        Navigator.pop(context);
+      });
+    }
   }
 
   @override
@@ -91,60 +127,61 @@ class _ReviewFormState extends ConsumerState<ReviewForm> {
 
   @override
   Widget build(BuildContext context) {
+    _params = ref.watch(paginatedReviewParamsProvider);
+    _imageParams = ref.watch(paginatedImageParamsProvider);
+
     return SliverToBoxAdapter(
-      child: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            StarRatingArea(
-              key: _starRatingKey,
-            ),
-            TagSelectionArea(
-              key: _tagsKey,
-            ),
-            const SizedBox(
-              height: 80,
-            ),
-            const AddPhoto(),
-            const SizedBox(
-              height: 80,
-            ),
-            CommentTextField(
-              controller: _commentController,
-            ),
-            const SizedBox(
-              height: 40,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              alignment: Alignment.centerRight,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.pink40,
+      child: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                StarRatingArea(
+                  key: _starRatingKey,
                 ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _submit();
-                    if (_isFormValid) {
-                      Navigator.pop(context);
-                    }
-                  }
-                },
-                child: Text(
-                  '등록 하기',
-                  style: TextStyles.bold14.merge(
-                    const TextStyle(
-                      color: AppColors.white,
+                TagSelectionArea(
+                  key: _tagsKey,
+                ),
+                const SizedBox(
+                  height: 80,
+                ),
+                const AddPhoto(),
+                const SizedBox(
+                  height: 80,
+                ),
+                CommentTextField(
+                  controller: _commentController,
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.pink40,
+                    ),
+                    onPressed: _isLoading ? null : _pressHandler,
+                    child: Text(
+                      '등록 하기',
+                      style: TextStyles.bold14.merge(
+                        const TextStyle(
+                          color: AppColors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+                const SizedBox(
+                  height: 80,
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 80,
-            ),
-          ],
-        ),
+          ),
+          if (_isLoading) const CircularProgressIndicator(),
+        ],
       ),
     );
   }

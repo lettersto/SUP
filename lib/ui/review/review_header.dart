@@ -21,7 +21,7 @@ class ReviewHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref
         .read(reviewTotalCountProvider.notifier)
-        .getReviewChart(ref.watch(storeDetailProvider).storeNo);
+        .getTotalReviewCount(ref.watch(storeDetailProvider).storeNo);
 
     return SliverPersistentHeader(
       pinned: true,

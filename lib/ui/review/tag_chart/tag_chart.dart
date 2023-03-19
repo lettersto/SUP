@@ -5,6 +5,7 @@ import '../../../models/review/tag_chart.dart';
 import '../../../providers/review/review_provider.dart';
 import '../../../utils/styles.dart';
 import '../filter_buttons/review_text_button.dart';
+import '../common/no_content_indicator.dart';
 import './tag_chart_bar.dart';
 
 class TagChart extends ConsumerStatefulWidget {
@@ -112,18 +113,9 @@ class _TagChartState extends ConsumerState<TagChart> {
         );
       }, error: (err, st) {
         return renderChartContainer(children: [
-          Container(
+          NoContentIndicator(
               height: _itemHeight * 5 + 8,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: AppColors.pink10,
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Text(
-                '헉! 네트워크 에러가 발생했어요! \n다시 시도해 주세요 😵‍💫',
-                style: TextStyles.medium16
-                    .merge(const TextStyle(color: AppColors.black)),
-              ))
+              message: '네트워크 에러가 발생했어요! \n다시 시도해 주세요 😵‍💫'),
         ]);
       }, loading: () {
         return renderChartContainer(children: [

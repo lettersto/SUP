@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/model_with_id.dart';
 import '../../providers/common/pagination_provider.dart';
+import '../review/review_list/review_list_item_skeleton.dart';
+import '../review/common/no_content_indicator.dart';
 
 typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
   BuildContext context,
@@ -33,24 +35,24 @@ class _PaginationSliverListViewState<T extends IModelWithId>
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(widget.provider);
+    const pad = EdgeInsets.fromLTRB(16, 0, 16, 40);
 
     if (state is CursorPaginationLoading) {
       return const SliverToBoxAdapter(
-        child: Center(
-          child: CircularProgressIndicator(),
+        child: Padding(
+          padding: pad,
+          child: ReviewListItemSkeleton(),
         ),
       );
     }
 
     if (state is CursorPaginationError) {
       return const SliverToBoxAdapter(
-        child: Center(
-          child: Text(
-            '리뷰가 없어요! 😭 \n 리뷰를 작성해 보세요!',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+          child: Padding(
+        padding: pad,
+        child: NoContentIndicator(
+            height: 200, message: '리뷰가 없어요! 😭 \n 리뷰를 작성해 보세요!'),
+      ));
     }
 
     final cp = state as CursorPagination<T>;
@@ -58,11 +60,13 @@ class _PaginationSliverListViewState<T extends IModelWithId>
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, itemIdx) {
-          if (itemIdx == cp.list.length) {
+          if (itemIdx == cp.list.length - 1) {
             return Center(
               child: cp is CursorPaginationFetchingMore
-                  ? const CircularProgressIndicator()
-                  : const Text('마지막 데이터'),
+                  ? const ReviewListItemSkeleton()
+                  : const SizedBox(
+                      height: 32,
+                    ),
             );
           }
 

@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/providers/review/review_detail_provider.dart';
-import 'package:sup/utils/app_utils.dart';
 
+import '../../../models/review/review.dart';
+import '../../../utils/app_utils.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/enums.dart';
 import '../review/review_list/review_list_top.dart';
 import '../review/review_list/review_text.dart';
-import 'package:sup/ui/review/review_list/review_tags.dart';
+import '../review/review_list/review_tags.dart';
 
 final tagOpenProvider = StateProvider<bool>((ref) => false);
 
-class PhotoReviewContentItem extends ConsumerWidget {
-  final ReviewMode mode;
+class ReviewDetailMultiplePhotoItem extends ConsumerWidget {
+  final ReviewDetailWithPhotos review;
 
-  const PhotoReviewContentItem({
+  const ReviewDetailMultiplePhotoItem({
     Key? key,
-    this.mode = ReviewMode.main,
+    required this.review,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final review = ref.watch(reviewDetailProvider);
     const tagColor = AppColors.grayTransparent30;
     const tagTextColor = AppColors.white;
 
@@ -43,7 +42,7 @@ class PhotoReviewContentItem extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ReviewListTop(
-            mode: mode,
+            mode: ReviewMode.detail,
             nickname: review.nickname,
           ),
           Row(
@@ -76,7 +75,7 @@ class PhotoReviewContentItem extends ConsumerWidget {
             tags: review.tags,
             tagColor: tagColor,
             tagTextColor: tagTextColor,
-            mode: mode,
+            mode: ReviewMode.detail,
           ),
           const SizedBox(
             height: 40,

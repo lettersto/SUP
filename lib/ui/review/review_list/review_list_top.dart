@@ -11,16 +11,15 @@ import '../../../utils/styles.dart';
 import '../../common/headline.dart';
 import '../filter_buttons/review_text_button.dart';
 
-class ReviewListTop extends ConsumerWidget {
+class ReviewListTop extends ConsumerStatefulWidget {
   final String nickname;
   final double? starAvg;
   final int? reviewCnt;
   final int? reviewNo;
   final ReviewMode mode;
   final bool? isLike;
-  final StateNotifierProvider<PaginationProvider, CursorPaginationBase>?
-      provider;
-  final int? reviewItemidx;
+  final int? star;
+  final int? reviewItemIdx;
 
   const ReviewListTop({
     Key? key,
@@ -30,44 +29,66 @@ class ReviewListTop extends ConsumerWidget {
     this.starAvg,
     this.reviewCnt,
     this.isLike,
-    this.provider,
-    this.reviewItemidx,
+    this.reviewItemIdx,
+    this.star,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final textColor =
-        mode == ReviewMode.detail ? AppColors.white : AppColors.black;
-    final paddingVertical = mode == ReviewMode.detail ? 8.0 : 16.0;
+  ConsumerState<ReviewListTop> createState() => _ReviewListTopState();
+}
+
+class _ReviewListTopState extends ConsumerState<ReviewListTop> {
+  late bool _isHelpful;
+
+  @override
+  void initState() {
+    super.initState();
+    _isHelpful = widget.isLike ?? false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final titleColor = (widget.mode == ReviewMode.detail ||
+            widget.mode == ReviewMode.photoOnly)
+        ? AppColors.white
+        : AppColors.black;
+    final subTitleColor = (widget.mode == ReviewMode.detail ||
+            widget.mode == ReviewMode.photoOnly)
+        ? AppColors.white
+        : AppColors.gray;
+    final paddingVertical = (widget.mode == ReviewMode.detail ||
+            widget.mode == ReviewMode.photoOnly)
+        ? 8.0
+        : 16.0;
 
     Future<void> markHelpful() async {
-      if (reviewNo == null) return;
+      if (widget.reviewNo == null) return;
       try {
         await ref.watch(reviewClientProvider).markLike(LikeParam(
-            userNo: SharedPreferenceUtil().userNo, reviewNo: reviewNo!));
-        ref
-            .read(provider!.notifier)
-            .changeIsLikeState(itemIdx: reviewItemidx!, valueToChange: true);
+            userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!));
+        setState(() {
+          _isHelpful = true;
+        });
       } catch (err) {
         print(err);
       }
     }
 
     Future<void> removeHelpful() async {
-      if (reviewNo == null) return;
+      if (widget.reviewNo == null) return;
       try {
         await ref.watch(reviewClientProvider).removeLike(
-            userNo: SharedPreferenceUtil().userNo, reviewNo: reviewNo!);
-        ref
-            .read(provider!.notifier)
-            .changeIsLikeState(itemIdx: reviewItemidx!, valueToChange: false);
+            userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!);
+        setState(() {
+          _isHelpful = false;
+        });
       } catch (err) {
         print(err);
       }
     }
 
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: paddingVertical),
+    return Container(
+      margin: EdgeInsets.only(top: paddingVertical),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -75,26 +96,52 @@ class ReviewListTop extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Headline(
-                title: nickname,
-                textColor: textColor,
+              Row(
+                children: [
+                  Headline(
+                    title: widget.nickname,
+                    textColor: titleColor,
+                  ),
+                  const SizedBox(
+                    width: 4,
+                  ),
+                  if (widget.mode == ReviewMode.main)
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.star_rounded,
+                          color: AppColors.pink40,
+                          size: 20,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          widget.star.toString(),
+                          style: TextStyles.medium14
+                              .merge(const TextStyle(color: AppColors.pink40)),
+                        )
+                      ],
+                    )
+                ],
               ),
-              if (reviewCnt != null && starAvg != null)
+              if (widget.reviewCnt != null && widget.starAvg != null)
                 Text(
-                  '리뷰 $reviewCnt / 평균 별점 $starAvg',
+                  '리뷰 ${widget.reviewCnt} / 평균 별점 ${widget.starAvg}',
                   style: TextStyles.medium12.merge(
                     TextStyle(
-                      color: textColor,
+                      color: subTitleColor,
                     ),
                   ),
                 )
             ],
           ),
-          if (mode == ReviewMode.main)
+          if (widget.mode == ReviewMode.main)
             ReviewTextButton(
               text: '도움 돼요!',
-              tapHandler: isLike! ? removeHelpful : markHelpful,
-              textColor: isLike! ? AppColors.pink60 : AppColors.gray,
+              tapHandler: _isHelpful ? removeHelpful : markHelpful,
+              textColor: _isHelpful ? AppColors.pink60 : AppColors.gray,
             ),
         ],
       ),

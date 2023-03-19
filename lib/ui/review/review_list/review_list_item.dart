@@ -19,15 +19,12 @@ class ReviewListItem extends ConsumerWidget {
   final ReviewDetailWithPhotos review;
   final ReviewMode mode;
   final int reviewItemIdx;
-  final StateNotifierProvider<PaginationProvider, CursorPaginationBase>?
-      provider;
 
   const ReviewListItem({
     Key? key,
     required this.review,
     this.mode = ReviewMode.main,
     this.reviewItemIdx = 0,
-    this.provider,
   }) : super(key: key);
 
   @override
@@ -55,14 +52,17 @@ class ReviewListItem extends ConsumerWidget {
             reviewCnt: review.reviewCnt,
             reviewNo: review.id,
             isLike: review.isLike,
-            provider: provider,
-            reviewItemidx: reviewItemIdx,
+            reviewItemIdx: reviewItemIdx,
+            star: review.star,
           ),
           if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
-            ImageSlider(
-              review: review,
-              images: review.imgs,
-              size: sliderSize,
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: ImageSlider(
+                review: review,
+                images: review.imgs,
+                size: sliderSize,
+              ),
             ),
           if (mode != ReviewMode.detail)
             ReviewText.forMain(review.content)

@@ -35,6 +35,9 @@ class _PhotoDetailSliderState extends State<PhotoDetailSlider> {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    final deviceHeight = MediaQuery.of(context).size.height;
+
     return PageView.builder(
       controller: _controller,
       itemCount: widget.imgUrls.length,
@@ -44,10 +47,9 @@ class _PhotoDetailSliderState extends State<PhotoDetailSlider> {
           fit: BoxFit.fitWidth,
           loadingBuilder: ((context, child, loadingProgress) {
             if (loadingProgress == null) return child;
-            // TODO implement loading later
             return Container(
-              width: double.infinity,
-              height: 400,
+              height: deviceHeight,
+              width: deviceWidth,
               color: AppColors.grayTransparent30,
             );
           }),

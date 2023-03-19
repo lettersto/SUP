@@ -140,7 +140,6 @@ class _ReviewPageState extends ConsumerState<ReviewPage> {
                   return ReviewListItem(
                     review: model,
                     reviewItemIdx: index,
-                    provider: paginatedReviewProvider(params),
                   );
                 },
               ),

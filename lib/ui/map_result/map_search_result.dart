@@ -150,9 +150,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                     return (_isLoading
                         ? Container()
                         : ResultBottomSheet(scrollController, resultVisibility,
-                            widget.categoryNo));
+                            widget.categoryNo, widget.keyword));
                   }),
-              MapBottomSheet(storeVisibility)
+              MapBottomSheet(storeVisibility),
             ]),
     );
   }

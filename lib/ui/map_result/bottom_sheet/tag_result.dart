@@ -9,9 +9,10 @@ import '../../../utils/styles.dart';
 import '../../common/tag_filter_item.dart';
 
 class TagResultList extends ConsumerStatefulWidget {
-  const TagResultList(this.cateNo, {super.key});
+  const TagResultList(this.cateNo, this.keyword, {super.key});
 
   final int cateNo;
+  final String keyword;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => TagResultListState();
@@ -40,9 +41,9 @@ class TagResultListState extends ConsumerState<TagResultList> {
                         ref.read(storeProvider.notifier).getStoreList(
                             userLocation.latitude,
                             userLocation.longitude,
-                            tag.code,
                             0,
-                            "",
+                            widget.cateNo,
+                            widget.keyword,
                             "STAR");
 
                         setState(() {
@@ -54,7 +55,7 @@ class TagResultListState extends ConsumerState<TagResultList> {
                             userLocation.longitude,
                             tag.code,
                             widget.cateNo,
-                            "",
+                            widget.keyword,
                             "STAR");
                         setState(() {
                           selectedIdx = position;

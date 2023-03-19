@@ -15,8 +15,10 @@ class ResultBottomSheet extends ConsumerStatefulWidget {
   final ScrollController sc;
   bool visibility;
   final int categoryNo;
+  final String keyword;
 
-  ResultBottomSheet(this.sc, this.visibility, this.categoryNo, {super.key});
+  ResultBottomSheet(this.sc, this.visibility, this.categoryNo, this.keyword,
+      {super.key});
 
   @override
   ConsumerState<ResultBottomSheet> createState() => _ResultBottomSheet();
@@ -94,7 +96,8 @@ class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
                             width: MediaQuery.of(context).size.width,
                             child: Column(
                               children: [
-                                TagResultList(widget.categoryNo),
+                                TagResultList(
+                                    widget.categoryNo, widget.keyword),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [

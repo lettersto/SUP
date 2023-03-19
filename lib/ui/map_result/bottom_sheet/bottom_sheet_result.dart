@@ -21,10 +21,10 @@ class ResultBottomSheet extends ConsumerStatefulWidget {
       {super.key});
 
   @override
-  ConsumerState<ResultBottomSheet> createState() => _ResultBottomSheet();
+  ConsumerState<ResultBottomSheet> createState() => ResultBottomSheetState();
 }
 
-class _ResultBottomSheet extends ConsumerState<ResultBottomSheet> {
+class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
 
   @override

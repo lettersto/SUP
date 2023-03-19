@@ -18,6 +18,8 @@ import '../../models/map/store.dart';
 import '../../models/wish/wish.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
 
+int selectedStoreNo = 0;
+
 class MapResultPage extends ConsumerStatefulWidget {
   const MapResultPage(this.keyword, this.categoryNo, {super.key});
 
@@ -40,7 +42,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   bool storeVisibility = false;
   String address = "";
   List<Store> stores = [];
-  int selectedStoreNo = 0;
 
   @override
   void initState() {
@@ -139,20 +140,29 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                   ),
                 ],
               ),
-              DraggableScrollableSheet(
-                  initialChildSize: 0.32,
-                  minChildSize: 0.18,
-                  snapSizes: const [0.3, 1],
-                  expand: false,
-                  snap: true,
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return (_isLoading
-                        ? Container()
-                        : ResultBottomSheet(scrollController, resultVisibility,
-                            widget.categoryNo, widget.keyword));
-                  }),
-              MapBottomSheet(storeVisibility),
+              Visibility(
+                visible: resultVisibility,
+                child: DraggableScrollableSheet(
+                    initialChildSize: 0.32,
+                    minChildSize: 0.18,
+                    snapSizes: const [0.3, 1],
+                    expand: false,
+                    snap: true,
+                    builder: (BuildContext context,
+                        ScrollController scrollController) {
+                      return (_isLoading
+                          ? Container()
+                          : ResultBottomSheet(
+                              scrollController,
+                              resultVisibility,
+                              widget.categoryNo,
+                              widget.keyword));
+                    }),
+              ),
+              Visibility(
+                visible: storeVisibility,
+                child: MapBottomSheet(storeVisibility),
+              ),
             ]),
     );
   }
@@ -188,13 +198,17 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   void showStoreDetailBottomSheet() {
-    storeVisibility = true;
-    resultVisibility = false;
+    setState(() {
+      storeVisibility = true;
+      resultVisibility = false;
+    });
   }
 
   void showResultBottomSheet() {
-    storeVisibility = false;
-    resultVisibility = true;
+    setState(() {
+      storeVisibility = false;
+      resultVisibility = true;
+    });
   }
 
   void addStoreMarker(List<Store> stores) {

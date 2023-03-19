@@ -58,7 +58,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                 },
                 child: AnimatedContainer(
                   constraints:
-                      const BoxConstraints(maxHeight: 800, minHeight: 200),
+                      const BoxConstraints(maxHeight: 800, minHeight: 240),
                   onEnd: () {
                     if (_bodyHeight >= 400) {
                       Navigator.push(
@@ -72,7 +72,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                       });
                     } else {
                       setState(() {
-                        _bodyHeight = 200;
+                        _bodyHeight = 240;
                       });
                     }
                   },

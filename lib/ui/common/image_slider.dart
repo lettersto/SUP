@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sup/models/review/review.dart';
 import '../../utils/enums.dart';
 import '../../utils/styles.dart';
-import '../photo_detail/photos_detail_page.dart';
+import '../photos_detail/review_detail_multiple_photo_page.dart';
 
 class ImageSlider extends StatelessWidget {
   final ReviewDetailWithPhotos review;
@@ -40,7 +40,7 @@ class ImageSlider extends StatelessWidget {
                     child: GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PhotosDetailPage(
+                            builder: (context) => ReviewDetailMultiplePhotoPage(
                                   images: images,
                                   review: review,
                                 )));

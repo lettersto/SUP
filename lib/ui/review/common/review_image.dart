@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sup/utils/enums.dart';
 
-import '../../photo_detail/photo_detail_page.dart';
-
 class ReviewImage extends StatelessWidget {
   final int loopIndex;
   final int loopLastIndex;

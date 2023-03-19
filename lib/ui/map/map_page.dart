@@ -20,6 +20,7 @@ import 'map_search_bar.dart';
 
 BitmapDescriptor? wishImg;
 BitmapDescriptor? starImg;
+BitmapDescriptor? selectedImg;
 
 class MapPage extends ConsumerStatefulWidget {
   const MapPage({super.key});
@@ -47,6 +48,9 @@ class MapPageState extends ConsumerState<MapPage> {
       BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(), "assets/icons/marker_ios.png")
           .then((value) => wishImg = value);
+      BitmapDescriptor.fromAssetImage(const ImageConfiguration(),
+              "assets/icons/marker_selected_ios.png")
+          .then((value) => selectedImg = value);
     } else {
       BitmapDescriptor.fromAssetImage(
               const ImageConfiguration(), "assets/icons/marker_store.png")

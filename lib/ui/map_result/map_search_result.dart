@@ -10,7 +10,6 @@ import 'package:sup/providers/wish/wish_provider.dart';
 import 'package:sup/ui/map/map_page.dart';
 import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
 import 'package:sup/ui/map_result/appbar_search_bar.dart';
-import 'package:sup/utils/app_utils.dart';
 import 'package:sup/utils/geo_network.dart';
 import 'package:sup/utils/sharedPreference_util.dart';
 import 'package:sup/utils/styles.dart';
@@ -18,6 +17,8 @@ import '../../models/map/map.dart';
 import '../../models/map/store.dart';
 import '../../models/wish/wish.dart';
 import '../map/bottom_sheet/bottom_sheet_store.dart';
+
+int selectedStoreNo = 0;
 
 class MapResultPage extends ConsumerStatefulWidget {
   const MapResultPage(this.keyword, this.categoryNo, {super.key});
@@ -37,7 +38,6 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   Set<Marker> storeMarkers = {};
   Set<Marker> wishMarkers = {};
 
-  int storeNo = 0;
   bool resultVisibility = true;
   bool storeVisibility = false;
   String address = "";
@@ -111,12 +111,13 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                     onMapCreated: (GoogleMapController controller) {
                       _controller = controller;
                     },
-                    myLocationEnabled: false,
+                    myLocationEnabled: true,
                     myLocationButtonEnabled: false,
                     zoomControlsEnabled: false,
                     mapToolbarEnabled: false,
                     markers: storeMarkers,
                     onTap: (LatLng) => setState(() {
+                      selectedStoreNo = 0;
                       storeVisibility = false;
                       resultVisibility = true;
                     }),
@@ -139,25 +140,34 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                   ),
                 ],
               ),
-              DraggableScrollableSheet(
-                  initialChildSize: 0.32,
-                  minChildSize: 0.18,
-                  snapSizes: const [0.3, 1],
-                  expand: false,
-                  snap: true,
-                  builder: (BuildContext context,
-                      ScrollController scrollController) {
-                    return (_isLoading
-                        ? Container()
-                        : ResultBottomSheet(scrollController, resultVisibility,
-                            widget.categoryNo));
-                  }),
-              MapBottomSheet(storeVisibility)
+              Visibility(
+                visible: resultVisibility,
+                child: DraggableScrollableSheet(
+                    initialChildSize: 0.32,
+                    minChildSize: 0.18,
+                    snapSizes: const [0.3, 1],
+                    expand: false,
+                    snap: true,
+                    builder: (BuildContext context,
+                        ScrollController scrollController) {
+                      return (_isLoading
+                          ? Container()
+                          : ResultBottomSheet(
+                              scrollController,
+                              resultVisibility,
+                              widget.categoryNo,
+                              widget.keyword));
+                    }),
+              ),
+              Visibility(
+                visible: storeVisibility,
+                child: MapBottomSheet(storeVisibility),
+              ),
             ]),
     );
   }
 
-  void addWishMarker(List<Wish> wishes) async {
+  void addWishMarker(List<Wish> wishes) {
     wishMarkers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
@@ -188,13 +198,17 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   void showStoreDetailBottomSheet() {
-    storeVisibility = true;
-    resultVisibility = false;
+    setState(() {
+      storeVisibility = true;
+      resultVisibility = false;
+    });
   }
 
   void showResultBottomSheet() {
-    storeVisibility = false;
-    resultVisibility = true;
+    setState(() {
+      storeVisibility = false;
+      resultVisibility = true;
+    });
   }
 
   void addStoreMarker(List<Store> stores) {
@@ -205,16 +219,41 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
       storeMarkers.add(Marker(
           markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
-          icon: starImg!,
+          icon: selectedStoreNo == s.storeNo ? selectedImg! : starImg!,
           onTap: () => setState(() {
+                selectedStoreNo = s.storeNo;
+
                 ref
                     .read(storeDetailProvider.notifier)
                     .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
+
                 resultVisibility = false;
                 storeVisibility = true;
               }),
           position: LatLng(s.lat, s.lng)));
     }
+  }
+
+  void addSingleWish(int storeNo, double lat, double lng) {
+    storeMarkers.add(Marker(
+        markerId: MarkerId(storeNo.toString()),
+        draggable: false,
+        icon: wishImg!,
+        onTap: () => setState(() {
+              ref
+                  .read(storeDetailProvider.notifier)
+                  .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
+            }),
+        position: LatLng(lat, lng)));
+
+    setState(() {});
+  }
+
+  void deleteWishMarker(int storeNo) {
+    Marker marker = storeMarkers
+        .firstWhere((marker) => marker.markerId.value == storeNo.toString());
+    storeMarkers.remove(marker);
+    setState(() {});
   }
 
   Future<Position> getCurrentLocation() async {

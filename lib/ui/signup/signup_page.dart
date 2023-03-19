@@ -24,10 +24,14 @@ class SignUpPage extends ConsumerWidget {
           padding: const EdgeInsets.all(16),
           child: TextField(
             decoration: InputDecoration(
-                border: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  borderSide: BorderSide(width: 3, color: AppColors.pinkAccent),
-                ),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide:
+                        const BorderSide(color: AppColors.pink40, width: 2.0)),
+                focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5.0),
+                    borderSide:
+                        const BorderSide(color: AppColors.pink40, width: 2.0)),
                 hintText: "닉네임을 입력하세요!",
                 hintStyle: TextStyles.regular16
                     .merge(const TextStyle(color: AppColors.blackTransparent))),

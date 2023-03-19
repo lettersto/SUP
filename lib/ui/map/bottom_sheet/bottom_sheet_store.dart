@@ -58,7 +58,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                 },
                 child: AnimatedContainer(
                   constraints:
-                      const BoxConstraints(maxHeight: 800, minHeight: 200),
+                      const BoxConstraints(maxHeight: 800, minHeight: 240),
                   onEnd: () {
                     if (_bodyHeight >= 400) {
                       Navigator.push(
@@ -72,7 +72,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                       });
                     } else {
                       setState(() {
-                        _bodyHeight = 200;
+                        _bodyHeight = 240;
                       });
                     }
                   },
@@ -161,6 +161,11 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                                       MapPageState>()
                                                   ?.deleteMarker(
                                                       storeDetail.storeNo);
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapResultPageState>()
+                                                  ?.deleteWishMarker(
+                                                      storeDetail.storeNo);
                                             } else {
                                               ref
                                                   .read(wishProvider.notifier)
@@ -172,6 +177,14 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                               context
                                                   .findRootAncestorStateOfType<
                                                       MapPageState>()
+                                                  ?.addSingleWish(
+                                                      storeDetail.storeNo,
+                                                      storeDetail.lat,
+                                                      storeDetail.lng);
+
+                                              context
+                                                  .findRootAncestorStateOfType<
+                                                      MapResultPageState>()
                                                   ?.addSingleWish(
                                                       storeDetail.storeNo,
                                                       storeDetail.lat,
@@ -205,11 +218,6 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                             });
                                           },
                                         ),
-                                        const Icon(
-                                          size: 24,
-                                          Icons.share,
-                                          color: Colors.black54,
-                                        )
                                       ],
                                     ),
                                   ],

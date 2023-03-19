@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:sup/models/common/pagination_params.dart';
 import 'package:sup/models/review/image_review.dart';
 import 'package:sup/models/review/tag_chart.dart';
+import 'package:sup/providers/review/review_filter_provider.dart';
 import 'package:sup/providers/store/store_detail_provider.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/review/review.dart';
 import '../../repositories/review/review_repository.dart';
+import '../../utils/sharedPreference_util.dart';
 import '../common/common_provider.dart';
 import '../common/pagination_provider.dart';
 
@@ -29,6 +31,39 @@ final paginatedReviewProvider = StateNotifierProvider.family<
       paginationQueryParams: params.paginationQueryParams);
 
   return notifier;
+});
+
+final paginatedReviewParamsProvider = AutoDisposeProvider<Params>((ref) {
+  final storeNo = ref.watch(storeDetailProvider).storeNo;
+  final isOnlyPhotosSelected = ref.watch(reviewFilterOnlyPhotoProvider);
+  int selectedTag = ref.watch(reviewTagFilterProvider).selected;
+  if (selectedTag == -1) {
+    selectedTag = 0;
+  } else {
+    selectedTag += 3;
+  }
+  final sort =
+      ref.watch(reviewFilterStarRegDtmProvider).toString().split('.').last;
+  final keyword = ref.watch(reviewSearchKeywordProvider);
+
+  return Params(
+      paginationPathParams: PaginationPathParams(
+          storeNo: storeNo, userNo: SharedPreferenceUtil().userNo),
+      paginationQueryParams: PaginationQueryParams(
+          size: 10,
+          tagNo: selectedTag,
+          keyword: keyword,
+          sort: sort,
+          imgOnly: isOnlyPhotosSelected));
+});
+
+final paginatedImageParamsProvider = AutoDisposeProvider<Params>((ref) {
+  final storeNo = ref.watch(storeDetailProvider).storeNo;
+
+  return Params(
+    paginationQueryParams: const PaginationQueryParams(size: 10),
+    paginationPathParams: PaginationPathParams(storeNo: storeNo),
+  );
 });
 
 class PaginatedImageReviewStateNotifier extends PaginationProvider<

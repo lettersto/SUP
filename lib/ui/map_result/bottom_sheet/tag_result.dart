@@ -4,7 +4,7 @@ import 'package:sup/ui/common/tag_filter_item_selected.dart';
 import 'package:sup/ui/map_result/bottom_sheet/bottom_sheet_result.dart';
 
 import '../../../models/map/map.dart';
-import '../../../models/tag_map.dart';
+import '../../../models/map/tag_map.dart';
 import '../../../providers/store/store_provider.dart';
 import '../../../utils/styles.dart';
 import '../../common/tag_filter_item.dart';

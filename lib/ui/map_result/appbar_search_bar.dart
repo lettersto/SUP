@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sup/utils/styles.dart';
+
+import '../../utils/styles.dart';
 
 class ResultSearchBar extends StatefulWidget {
   const ResultSearchBar(this.keyword, {super.key});

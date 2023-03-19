@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/wish/wish.dart';
+
+import '../../models/wish/wish.dart';
 import '../../repositories/wish/wish_repository.dart';
 
 final wishProvider = StateNotifierProvider<WishNotifier, WishResponse>((ref) {
@@ -27,7 +28,6 @@ class WishNotifier extends StateNotifier<WishResponse> {
     try {
       await repository.postWish(PostWishRequest(userNo, storeNo));
       state = await repository.getWishList(userNo);
-      print("${state.list.length} yyyyyyy");
     } catch (e) {
       print(e);
     }

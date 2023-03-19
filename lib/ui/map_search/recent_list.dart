@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/ui/map_search/recent_item_move.dart';
-import 'package:sup/ui/map_search/recent_item_close.dart';
+
 import '../map_result/map_search_result.dart';
+import 'recent_item_close.dart';
+import 'recent_item_move.dart';
 
 class Recents extends StatefulWidget {
   final String keyword;

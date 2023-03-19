@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
-import 'package:sup/models/signup/signup.dart';
-import 'package:sup/repositories/common/base_repository.dart';
 
+import '../../models/signup/signup.dart';
 import '../../providers/common/common_provider.dart';
+import '../common/base_repository.dart';
 
 part 'user_repository.g.dart';
 

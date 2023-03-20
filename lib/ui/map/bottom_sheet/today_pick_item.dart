@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../models/map/today_pick.dart';
+import '../../../providers/store/store_detail_provider.dart';
 import '../../../providers/wish/wish_provider.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/sharedPreference_util.dart';
@@ -25,6 +26,8 @@ class _TodayPickItem extends ConsumerState<TodayPickItem> {
 
     return GestureDetector(
       onTap: () {
+        ref.read(storeDetailProvider.notifier).getStoreDetail(
+            widget.store.storeNo, SharedPreferenceUtil().userNo);
         Navigator.push(
           context,
           MaterialPageRoute(

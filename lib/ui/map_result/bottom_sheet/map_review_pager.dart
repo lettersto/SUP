@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../utils/styles.dart';
 
-class ReviewPageView extends StatefulWidget {
+import '../../../utils/styles.dart';
+
+class MapReviewPager extends StatefulWidget {
   final List<String> reviews;
 
-  const ReviewPageView(this.reviews, {super.key});
+  const MapReviewPager(this.reviews, {super.key});
 
   @override
-  State<ReviewPageView> createState() => _ReviewPageView();
+  State<MapReviewPager> createState() => _MapReviewPager();
 }
 
-class _ReviewPageView extends State<ReviewPageView> {
+class _MapReviewPager extends State<MapReviewPager> {
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+        margin: const EdgeInsets.only(bottom: 8),
         height: 76,
         child: PageView.builder(
             padEnds: false,

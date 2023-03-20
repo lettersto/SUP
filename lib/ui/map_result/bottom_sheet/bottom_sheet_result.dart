@@ -70,7 +70,7 @@ class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
                                 ref.read(storeProvider.notifier).getStoreList(
                                     userLocation.latitude,
                                     userLocation.longitude,
-                                    0,
+                                    selectedTag,
                                     widget.categoryNo,
                                     "",
                                     "STAR");
@@ -95,7 +95,7 @@ class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
                                   ref.read(storeProvider.notifier).getStoreList(
                                       userLocation.latitude,
                                       userLocation.longitude,
-                                      0,
+                                      selectedTag,
                                       widget.categoryNo,
                                       "",
                                       "DIST");

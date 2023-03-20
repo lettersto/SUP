@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:sup/utils/app_utils.dart';
 
 import '../../models/map/map.dart';
 import '../../models/wish/wish.dart';
@@ -32,6 +33,7 @@ class MapPage extends ConsumerStatefulWidget {
 
 class MapPageState extends ConsumerState<MapPage> {
   GoogleMapController? _controller;
+  int selectedWishNo = 0;
 
   late LatLng _initPosition;
   bool _isLoading = true;
@@ -71,6 +73,8 @@ class MapPageState extends ConsumerState<MapPage> {
 
   @override
   Widget build(BuildContext context) {
+    addWishMarker(ref.watch(wishProvider).list);
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       body: Stack(fit: StackFit.expand, children: [
@@ -89,7 +93,6 @@ class MapPageState extends ConsumerState<MapPage> {
                         ),
                         onMapCreated: (GoogleMapController controller) {
                           _controller = controller;
-                          addWishMarker(ref.watch(wishProvider).list);
                         },
                         myLocationEnabled: true,
                         myLocationButtonEnabled: false,
@@ -97,6 +100,7 @@ class MapPageState extends ConsumerState<MapPage> {
                         mapToolbarEnabled: false,
                         markers: markers,
                         onTap: (LatLng) => setState(() {
+                          selectedWishNo = 0;
                           storeVisibility = false;
                           todayVisibility = true;
                         }),
@@ -137,7 +141,7 @@ class MapPageState extends ConsumerState<MapPage> {
     );
   }
 
-  Future<void> addWishMarker(List<Wish> wishes) async {
+  void addWishMarker(List<Wish> wishes) {
     markers.clear();
 
     for (int i = 0; i < wishes.length; i++) {
@@ -146,8 +150,10 @@ class MapPageState extends ConsumerState<MapPage> {
       markers.add(Marker(
           markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
-          icon: wishImg!,
+          icon: selectedWishNo == s.storeNo ? selectedImg! : wishImg!,
           onTap: () => setState(() {
+                selectedWishNo = s.storeNo;
+
                 ref
                     .read(storeDetailProvider.notifier)
                     .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
@@ -157,8 +163,6 @@ class MapPageState extends ConsumerState<MapPage> {
               }),
           position: LatLng(s.lat, s.lng)));
     }
-
-    setState(() {});
   }
 
   void addSingleWish(int storeNo, double lat, double lng) {

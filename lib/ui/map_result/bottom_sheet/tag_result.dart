@@ -9,6 +9,8 @@ import '../../common/tag_filter_item.dart';
 import '../../common/tag_filter_item_selected.dart';
 import 'bottom_sheet_result.dart';
 
+int selectedTag = 0;
+
 class TagResultList extends ConsumerStatefulWidget {
   const TagResultList(this.cateNo, this.keyword, {super.key});
 
@@ -21,6 +23,11 @@ class TagResultList extends ConsumerStatefulWidget {
 
 class TagResultListState extends ConsumerState<TagResultList> {
   int selectedIdx = -1;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +45,8 @@ class TagResultListState extends ConsumerState<TagResultList> {
                     : const EdgeInsets.only(top: 4, right: 6),
                 child: GestureDetector(
                     onTap: () async {
+                      selectedTag = tag.code;
+
                       context
                           .findAncestorStateOfType<ResultBottomSheetState>()
                           ?.scrollToTop();
@@ -52,6 +61,7 @@ class TagResultListState extends ConsumerState<TagResultList> {
                             "STAR");
 
                         setState(() {
+                          selectedTag = 0;
                           selectedIdx = -1;
                         });
                       } else {

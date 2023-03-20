@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -85,6 +87,16 @@ class _StoreItem extends ConsumerState<StoreItem> {
                             "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
                             style: const TextStyle(color: Colors.black54)
                                 .merge(TextStyles.regular14),
+                          ),
+                          const Icon(
+                            Icons.circle,
+                            size: 4,
+                            color: AppColors.whiteGrey,
+                          ),
+                          Text(
+                            "  ${sqrt(widget.store.distance).round()}m ",
+                            style: const TextStyle(color: Colors.pinkAccent)
+                                .merge(TextStyles.medium14),
                           ),
                         ],
                       ),

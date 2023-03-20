@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sup/models/review/review.dart';
+
+import '../../models/review/review.dart';
 import '../../utils/enums.dart';
 import '../../utils/styles.dart';
 import '../photos_detail/review_detail_multiple_photo_page.dart';

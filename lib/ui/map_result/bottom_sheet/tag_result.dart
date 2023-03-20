@@ -54,9 +54,9 @@ class TagResultListState extends ConsumerState<TagResultList> {
                       if (selectedIdx == position) {
                         ref.read(storeProvider.notifier).getStoreList(
                             userLocation.latitude,
-                            userLocation.longitude,
-                            0,
+                            git userLocation.longitude,
                             widget.cateNo,
+                            0,
                             widget.keyword,
                             "STAR");
 

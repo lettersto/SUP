@@ -8,7 +8,7 @@ import '../../../providers/store/store_detail_provider.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
-import '../../review/review_page_view.dart';
+import 'map_review_pager.dart';
 import '../map_search_result.dart';
 
 class StoreItem extends ConsumerStatefulWidget {
@@ -42,7 +42,7 @@ class _StoreItem extends ConsumerState<StoreItem> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 8, bottom: 16),
+              margin: const EdgeInsets.only(bottom: 16),
               height: 1,
               color: AppColors.grayTransparent2,
             ),
@@ -84,9 +84,14 @@ class _StoreItem extends ConsumerState<StoreItem> {
                             color: AppColors.whiteGrey,
                           ),
                           Text(
-                            "  방문자리뷰 ${Format.currency.format(widget.store.reviewCnt)} ",
-                            style: const TextStyle(color: Colors.black54)
+                            "  방문자리뷰 ",
+                            style: const TextStyle(color: Colors.black)
                                 .merge(TextStyles.regular14),
+                          ),
+                          Text(
+                            "${Format.currency.format(widget.store.reviewCnt)} ",
+                            style: const TextStyle(color: Colors.black)
+                                .merge(TextStyles.semiBold14),
                           ),
                           const Icon(
                             Icons.circle,
@@ -94,7 +99,7 @@ class _StoreItem extends ConsumerState<StoreItem> {
                             color: AppColors.whiteGrey,
                           ),
                           Text(
-                            "  ${sqrt(widget.store.distance).round()}m ",
+                            "  ${sqrt(widget.store.distance).round()}m",
                             style: const TextStyle(color: Colors.pinkAccent)
                                 .merge(TextStyles.medium14),
                           ),
@@ -126,7 +131,7 @@ class _StoreItem extends ConsumerState<StoreItem> {
                 ],
               ),
             ),
-            ReviewPageView(widget.store.reviews)
+            MapReviewPager(widget.store.reviews)
           ],
         ),
       ),

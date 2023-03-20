@@ -25,11 +25,6 @@ class TagResultListState extends ConsumerState<TagResultList> {
   int selectedIdx = -1;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
         margin: const EdgeInsets.only(bottom: 16),

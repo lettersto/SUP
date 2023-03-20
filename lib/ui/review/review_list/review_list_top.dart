@@ -20,6 +20,7 @@ class ReviewListTop extends ConsumerStatefulWidget {
   final bool? isLike;
   final int? star;
   final int? reviewItemIdx;
+  final int? likeCnt;
 
   const ReviewListTop({
     Key? key,
@@ -31,6 +32,7 @@ class ReviewListTop extends ConsumerStatefulWidget {
     this.isLike,
     this.reviewItemIdx,
     this.star,
+    this.likeCnt,
   }) : super(key: key);
 
   @override
@@ -39,11 +41,13 @@ class ReviewListTop extends ConsumerStatefulWidget {
 
 class _ReviewListTopState extends ConsumerState<ReviewListTop> {
   late bool _isHelpful;
+  late int _likeCnt;
 
   @override
   void initState() {
     super.initState();
     _isHelpful = widget.isLike ?? false;
+    _likeCnt = widget.likeCnt ?? 0;
   }
 
   @override
@@ -68,6 +72,7 @@ class _ReviewListTopState extends ConsumerState<ReviewListTop> {
             userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!));
         setState(() {
           _isHelpful = true;
+          _likeCnt += 1;
         });
       } catch (err) {
         print(err);
@@ -81,6 +86,7 @@ class _ReviewListTopState extends ConsumerState<ReviewListTop> {
             userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!);
         setState(() {
           _isHelpful = false;
+          _likeCnt -= 1;
         });
       } catch (err) {
         print(err);
@@ -138,10 +144,19 @@ class _ReviewListTopState extends ConsumerState<ReviewListTop> {
             ],
           ),
           if (widget.mode == ReviewMode.main)
-            ReviewTextButton(
-              text: '도움 돼요!',
-              tapHandler: _isHelpful ? removeHelpful : markHelpful,
-              textColor: _isHelpful ? AppColors.pink60 : AppColors.gray,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ReviewTextButton(
+                  text: '도움 돼요!',
+                  tapHandler: _isHelpful ? removeHelpful : markHelpful,
+                  textColor: _isHelpful ? AppColors.pink60 : AppColors.gray,
+                ),
+                Text(
+                  _likeCnt.toString(),
+                  style: const TextStyle(color: AppColors.pink60),
+                ),
+              ],
             ),
         ],
       ),

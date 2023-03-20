@@ -44,6 +44,14 @@ dev_dependencies:
   json_serializable: ^6.6.1
   retrofit_generator: '>=5.0.0 <6.0.0'
   build_runner: ^2.3.3
+  flutter_launcher_icons: ^0.12.0
+
+flutter_icons:
+  ios: true
+  android: true
+  image_path: "assets/images/app_icon.png"
+  remove_alpha_ios: true
+
 
 flutter:
   uses-material-design: true

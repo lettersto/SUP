@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:sup/models/review/review.dart';
-import 'package:sup/providers/review/review_provider.dart';
-import 'package:sup/repositories/review/review_repository.dart';
+import '../../models/review/review.dart';
+import '../../repositories/review/review_repository.dart';
+import 'review_provider.dart';
 
 final reviewDetailProvider =
     StateNotifierProvider<ReviewDetailNotifier, ReviewDetail>((ref) {

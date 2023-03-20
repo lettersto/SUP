@@ -50,7 +50,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   void initState() {
     selectedStoreNo = 0;
     super.initState();
-    getCurrentLocation();
+    fetchStoreResult();
   }
 
   @override
@@ -268,7 +268,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     });
   }
 
-  Future<Position> getCurrentLocation() async {
+  Future<Position> fetchStoreResult() async {
     await ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
         userLocation.longitude, 0, widget.categoryNo, "", "STAR");
 
@@ -292,7 +292,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   Future<void> _goToCurrentPos() async {
-    var gps = await getCurrentLocation();
+    var gps = await fetchStoreResult();
 
     _controller?.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));

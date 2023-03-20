@@ -55,6 +55,7 @@ ReviewDetailWithPhotos _$ReviewDetailWithPhotosFromJson(
       nickname: json['nickname'] as String,
       regDtm: json['regDtm'] as String,
       imgs: (json['imgs'] as List<dynamic>).map((e) => e as String).toList(),
+      likeCnt: json['likeCnt'] as int,
       content: json['content'] as String,
       star: json['star'] as int,
       tags: (json['tags'] as List<dynamic>).map((e) => e as String).toList(),
@@ -73,4 +74,5 @@ Map<String, dynamic> _$ReviewDetailWithPhotosToJson(
       'regDtm': instance.regDtm,
       'imgs': instance.imgs,
       'isLike': instance.isLike,
+      'likeCnt': instance.likeCnt,
     };

@@ -54,6 +54,7 @@ class ReviewListItem extends ConsumerWidget {
             isLike: review.isLike,
             reviewItemIdx: reviewItemIdx,
             star: review.star,
+            likeCnt: review.likeCnt,
           ),
           if (mode != ReviewMode.detail && review.imgs.isNotEmpty)
             Padding(

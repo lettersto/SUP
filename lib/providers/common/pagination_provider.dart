@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/review/review.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
 import '../../models/common/model_with_id.dart';

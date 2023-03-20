@@ -1,18 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/common/pagination_params.dart';
-import 'package:sup/models/review/image_review.dart';
-import 'package:sup/models/review/tag_chart.dart';
-import 'package:sup/providers/review/review_filter_provider.dart';
-import 'package:sup/providers/store/store_detail_provider.dart';
 
 import '../../models/common/cursor_pagination_model.dart';
+import '../../models/common/pagination_params.dart';
+import '../../models/review/image_review.dart';
 import '../../models/review/review.dart';
+import '../../models/review/tag_chart.dart';
 import '../../repositories/review/review_repository.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../common/common_provider.dart';
 import '../common/pagination_provider.dart';
+import '../store/store_detail_provider.dart';
+import 'review_filter_provider.dart';
 
 class PaginatedReviewStateNotifier extends PaginationProvider<
     ReviewDetailWithPhotos, PaginatedReviewRepository> {

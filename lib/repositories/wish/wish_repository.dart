@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/http.dart';
-import 'package:sup/models/wish/wish.dart';
-import 'package:sup/providers/common/common_provider.dart';
+
+import '../../models/wish/wish.dart';
+import '../../providers/common/common_provider.dart';
 import '../common/base_repository.dart';
 
 part 'wish_repository.g.dart';

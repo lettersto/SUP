@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/main.dart';
-import 'package:sup/models/signup/signup.dart';
-import 'package:sup/repositories/user/user_repository.dart';
-import 'package:sup/utils/app_utils.dart';
-import 'package:sup/utils/sharedPreference_util.dart';
+
+import '../../main.dart';
+import '../../models/signup/signup.dart';
+import '../../repositories/user/user_repository.dart';
+import '../../utils/app_utils.dart';
+import '../../utils/sharedPreference_util.dart';
 
 final userProvider = StateNotifierProvider<UserNotifier, User>((ref) {
   final repository = ref.watch(

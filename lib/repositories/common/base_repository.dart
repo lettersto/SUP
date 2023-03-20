@@ -1,4 +1,4 @@
-import 'package:sup/models/map/store.dart';
+import '../../models/map/store.dart';
 import '../../models/map/today_pick.dart';
 import '../../models/signup/signup.dart';
 import '../../models/wish/wish.dart';

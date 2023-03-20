@@ -56,6 +56,8 @@ class TextStyles {
       fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w500);
   static const bold18 = TextStyle(
       fontFamily: "NotoSans", fontSize: 18, fontWeight: FontWeight.w900);
+  static const semiBold17 = TextStyle(
+      fontFamily: "NotoSans", fontSize: 17, fontWeight: FontWeight.w700);
   static const regular16 = TextStyle(
       fontFamily: "NotoSans", fontSize: 16, fontWeight: FontWeight.w400);
   static const medium16 = TextStyle(

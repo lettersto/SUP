@@ -1,14 +1,16 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/models/map/map.dart';
-import 'package:sup/providers/store/store_provider.dart';
-import 'package:sup/ui/map_result/map_search_result.dart';
-import 'package:sup/ui/map_search/recent_list.dart';
+
+import '../../models/map/map.dart';
+import '../../providers/store/store_provider.dart';
 import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
+import '../map_result/map_search_result.dart';
+import 'recent_list.dart';
 
 class MapSearchPage extends ConsumerStatefulWidget {
   const MapSearchPage({Key? key}) : super(key: key);

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:sup/ui/map_search/map_search_page.dart';
-import 'package:sup/ui/photos_detail/review_detail_multiple_photo_page.dart';
-import 'package:sup/ui/review_form/review_form_page.dart';
-import 'package:sup/ui/photo_detail/photo_detail_page.dart';
-import 'package:sup/ui/map/map_page.dart';
-import 'package:sup/ui/review/review_page.dart';
-import 'package:sup/ui/signup/signup_page.dart';
-import 'package:sup/utils/app_utils.dart';
-import 'package:sup/utils/sharedPreference_util.dart';
-import 'package:sup/utils/styles.dart';
+
+import 'ui/map/map_page.dart';
+import 'ui/map_search/map_search_page.dart';
+import 'ui/photo_detail/photo_detail_page.dart';
+import 'ui/photos_detail/review_detail_multiple_photo_page.dart';
+import 'ui/review/review_page.dart';
+import 'ui/review_form/review_form_page.dart';
+import 'ui/signup/signup_page.dart';
+import 'utils/app_utils.dart';
+import 'utils/sharedPreference_util.dart';
+import 'utils/styles.dart';
 
 const routeSignup = '/';
 const routeMap = '/map';

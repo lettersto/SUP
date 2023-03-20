@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sup/main.dart';
-import 'package:sup/utils/styles.dart';
+
+import '../../main.dart';
+import '../../utils/styles.dart';
 
 class MapSearchBar extends StatelessWidget {
   const MapSearchBar({super.key});

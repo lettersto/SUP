@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sup/models/map/map.dart';
-import 'package:sup/providers/store/store_provider.dart';
-import 'package:sup/utils/sharedPreference_util.dart';
+
+import '../../models/map/map.dart';
+import '../../providers/store/store_provider.dart';
+import '../../utils/sharedPreference_util.dart';
 import '../../utils/styles.dart';
 import '../common/line_divider.dart';
 import '../map_result/map_search_result.dart';

@@ -66,6 +66,7 @@ class ReviewDetailWithPhotos extends ReviewBase implements IModelWithId {
   final String regDtm;
   final List<String> imgs;
   final bool isLike;
+  final int likeCnt;
 
   ReviewDetailWithPhotos({
     required this.id,
@@ -75,6 +76,7 @@ class ReviewDetailWithPhotos extends ReviewBase implements IModelWithId {
     required this.nickname,
     required this.regDtm,
     required this.imgs,
+    required this.likeCnt,
     required String content,
     required int star,
     required List<String> tags,

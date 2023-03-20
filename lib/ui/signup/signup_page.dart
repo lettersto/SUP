@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sup/models/signup/signup.dart';
-import 'package:sup/providers/user/user_provider.dart';
-import 'package:sup/utils/styles.dart';
+
+import '../../models/signup/signup.dart';
+import '../../providers/user/user_provider.dart';
+import '../../utils/styles.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({super.key});

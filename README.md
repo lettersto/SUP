@@ -30,7 +30,7 @@
 
 - 1km 내 별점 높은 순으로 5개 추천
 
-  <img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-32-36.gif" alt="KakaoTalk_Photo_2023-03-21-13-32-36" style="zoom:30%;" />
+<img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-32-36.gif" alt="KakaoTalk_Photo_2023-03-21-13-32-36" style="zoom:30%;" width="200" />
 
 <br>
 
@@ -38,7 +38,7 @@
 
 - 즐겨찾기 아이콘을 터치하면 지도에 즐겨찾기 핀 추가/제거
 
-<img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-08-08.gif" alt="KakaoTalk_Photo_2023-03-21-13-08-08" style="zoom:30%;" />
+<img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-08-08.gif" alt="KakaoTalk_Photo_2023-03-21-13-08-08" style="zoom:30%;" width="200"  />
 
 <br>
 
@@ -46,11 +46,11 @@
 
 - 키워드 검색 - 최근 검색어 중복 없이 최신 순 정렬, 삭제 가능
 
-  <img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-57-13.gif" alt="KakaoTalk_Photo_2023-03-21-13-57-13" style="zoom:30%;" />
+<img src="./README.assets/KakaoTalk_Photo_2023-03-21-13-57-13.gif" alt="KakaoTalk_Photo_2023-03-21-13-57-13" style="zoom:30%;" width="200" />
 
 - 태그 검색
 
-  <img src="./README.assets/category_search.gif" alt="category_search" style="zoom:30%;" />
+<img src="./README.assets/category_search.gif" alt="category_search" style="zoom:30%;" width="200" />
 
 Bottom Sheet - 검색 결과
 
@@ -65,7 +65,7 @@ Bottom Sheet - 검색 결과
 - 도움 돼요! 버튼
 - 리뷰마다 이미지 슬라이드
 
-<img src="./README.assets/review_main.gif" alt="review_main" style="zoom:30%;" />
+<img src="./README.assets/review_main.gif" alt="review_main" style="zoom:30%;" width="200" />
 
 <br>
 
@@ -73,7 +73,7 @@ Bottom Sheet - 검색 결과
 
 - 이미지 페이지 슬라이드로 이미지를 넘겨 보는 기능
 
-<img src="./README.assets/photo_detail.gif" alt="photo_detail" style="zoom:30%;" />
+<img src="./README.assets/photo_detail.gif" alt="photo_detail" style="zoom:30%;" width="200" />
 
 <br>
 
@@ -81,7 +81,7 @@ Bottom Sheet - 검색 결과
 
 - 별점, 태그 선택, 사진 추가가 있는 리뷰 작성 기능
 
-<img src="./README.assets/review_form.gif" alt="review_form" style="zoom:30%;" />
+<img src="./README.assets/review_form.gif" alt="review_form" style="zoom:30%;" width="200" />
 
 <br>
 

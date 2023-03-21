@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/common/cursor_pagination_model.dart';
 import '../../../models/review/like_param.dart';
-import '../../../providers/common/pagination_provider.dart';
 import '../../../providers/review/review_provider.dart';
 import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/enums.dart';
@@ -42,6 +40,7 @@ class ReviewListTop extends ConsumerStatefulWidget {
 class _ReviewListTopState extends ConsumerState<ReviewListTop> {
   late bool _isHelpful;
   late int _likeCnt;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -66,30 +65,46 @@ class _ReviewListTopState extends ConsumerState<ReviewListTop> {
         : 16.0;
 
     Future<void> markHelpful() async {
-      if (widget.reviewNo == null) return;
+      if (widget.reviewNo == null || _isLoading) return;
+
+      setState(() {
+        _isHelpful = true;
+        _likeCnt += 1;
+        _isLoading = true;
+      });
+
       try {
         await ref.watch(reviewClientProvider).markLike(LikeParam(
             userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!));
-        setState(() {
-          _isHelpful = true;
-          _likeCnt += 1;
-        });
       } catch (err) {
-        print(err);
-      }
-    }
-
-    Future<void> removeHelpful() async {
-      if (widget.reviewNo == null) return;
-      try {
-        await ref.watch(reviewClientProvider).removeLike(
-            userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!);
         setState(() {
           _isHelpful = false;
           _likeCnt -= 1;
         });
+      } finally {
+        _isLoading = false;
+      }
+    }
+
+    Future<void> removeHelpful() async {
+      if (widget.reviewNo == null || _isLoading) return;
+
+      setState(() {
+        _isHelpful = false;
+        _likeCnt -= 1;
+        _isLoading = true;
+      });
+
+      try {
+        await ref.watch(reviewClientProvider).removeLike(
+            userNo: SharedPreferenceUtil().userNo, reviewNo: widget.reviewNo!);
       } catch (err) {
-        print(err);
+        setState(() {
+          _isHelpful = false;
+          _likeCnt -= 1;
+        });
+      } finally {
+        _isLoading = false;
       }
     }
 

@@ -46,6 +46,9 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   String address = "";
   List<Store> stores = [];
 
+  var headerHeight = 1.0;
+  var itemHeight = 1.0;
+
   @override
   void initState() {
     selectedStoreNo = 0;
@@ -61,6 +64,20 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     addStoreMarker(stores);
     addWishMarker(wishes);
     storeMarkers.addAll(wishMarkers);
+
+    // The line below is used to get status bar height. Might not be required if you are not using the SafeArea
+    final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    final windowHeight =
+        MediaQuery.of(context).size.height - 60 - statusBarHeight;
+    final headerHeight = 100 / windowHeight;
+    // This below is a callback function that will be passed to the child Widget of the DraggableScrollableSheet ->
+
+    itemHeightSetter(_itemHeight) {
+      // setState rebuilds the UI with the new `bsRatio` value
+      setState(() {
+        itemHeight = _itemHeight / windowHeight;
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -173,9 +190,10 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
               Visibility(
                 visible: resultVisibility,
                 child: DraggableScrollableSheet(
-                    initialChildSize: stores.isEmpty ? 0 : 0.32,
-                    minChildSize: stores.isEmpty ? 0 : 0.25,
-                    maxChildSize: min(1, stores.length * 0.25 + 0.3),
+                    initialChildSize: stores.isEmpty ? 0 : 0.35,
+                    minChildSize: stores.isEmpty ? 0 : 0.35,
+                    maxChildSize:
+                        min(itemHeight * stores.length + headerHeight, 1),
                     expand: false,
                     builder: (BuildContext context,
                         ScrollController scrollController) {
@@ -185,7 +203,8 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                               scrollController,
                               resultVisibility,
                               widget.categoryNo,
-                              widget.keyword));
+                              widget.keyword,
+                              itemHeightSetter));
                     }),
               ),
               Visibility(

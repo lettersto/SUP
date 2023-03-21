@@ -8,22 +8,49 @@ import '../../../providers/store/store_detail_provider.dart';
 import '../../../utils/app_utils.dart';
 import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
-import 'map_review_pager.dart';
 import '../map_search_result.dart';
+import 'map_review_pager.dart';
 
 class StoreItem extends ConsumerStatefulWidget {
   final Store store;
+  final ValueSetter<double>? childHeightSetter;
 
-  const StoreItem(this.store, {super.key});
+  const StoreItem(this.store, this.childHeightSetter, {super.key});
 
   @override
   ConsumerState<StoreItem> createState() => _StoreItem();
 }
 
 class _StoreItem extends ConsumerState<StoreItem> {
+  final GlobalKey _containerKey = GlobalKey();
+  late double windowHeight;
+
+  _getItemSize() {
+    if (_containerKey.currentContext != null) {
+      final RenderBox renderBox =
+          _containerKey.currentContext!.findRenderObject() as RenderBox;
+      Size size = renderBox.size;
+      widget.childHeightSetter?.call(size.height);
+    }
+  }
+
+  _afterLayout(_) {
+    _getItemSize();
+  }
+
+  Size? size;
+  Offset? offset;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+  }
+
   @override
   Widget build(BuildContext context) {
     double imageWidth = (MediaQuery.of(context).size.width - 36) / 3;
+    windowHeight = MediaQuery.of(context).size.height - 60;
 
     return GestureDetector(
       onTap: () {
@@ -37,6 +64,7 @@ class _StoreItem extends ConsumerState<StoreItem> {
             widget.store.storeNo, SharedPreferenceUtil().userNo);
       },
       child: Container(
+        key: _containerKey,
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

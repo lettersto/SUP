@@ -65,15 +65,12 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     addWishMarker(wishes);
     storeMarkers.addAll(wishMarkers);
 
-    // The line below is used to get status bar height. Might not be required if you are not using the SafeArea
     final statusBarHeight = MediaQuery.of(context).viewPadding.top;
     final windowHeight =
         MediaQuery.of(context).size.height - 60 - statusBarHeight;
     final headerHeight = 100 / windowHeight;
-    // This below is a callback function that will be passed to the child Widget of the DraggableScrollableSheet ->
 
     itemHeightSetter(_itemHeight) {
-      // setState rebuilds the UI with the new `bsRatio` value
       setState(() {
         itemHeight = _itemHeight / windowHeight;
       });

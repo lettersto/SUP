@@ -5,7 +5,7 @@
 ## 🥨 프로젝트 목차
 
 - [팀원 소개](https://github.com/svc-proto-dev-internship/UPLUS_SUP/blob/dev/README.md#-%ED%8C%80%EC%9B%90-%EC%86%8C%EA%B0%9C)
-- [주요 기능](https://github.com/svc-proto-dev-internship/UPLUS_SUP/blob/dev/README.md#-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)
+- [주요 기능](https://github.com/svc-proto-dev-internship/UPLUS_SUP/blob/dev/README.md#%EF%B8%8F-%EC%A3%BC%EC%9A%94-%EA%B8%B0%EB%8A%A5)
 - [개발 환경](https://github.com/svc-proto-dev-internship/UPLUS_SUP/blob/dev/README.md#-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)
 - [프로젝트 산출물](https://github.com/svc-proto-dev-internship/UPLUS_SUP/blob/dev/README.md#-%EA%B0%9C%EB%B0%9C-%ED%99%98%EA%B2%BD)
 

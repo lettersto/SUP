@@ -189,7 +189,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                 child: DraggableScrollableSheet(
                     initialChildSize: stores.isEmpty ? 0 : 0.35,
                     minChildSize: stores.isEmpty ? 0 : 0.35,
-                    maxChildSize:
+                    ㅎmaxChildSize:
                         min(itemHeight * stores.length + headerHeight, 1),
                     expand: false,
                     builder: (BuildContext context,

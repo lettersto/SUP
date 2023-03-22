@@ -151,16 +151,17 @@ class MapPageState extends ConsumerState<MapPage> {
           markerId: MarkerId(s.storeNo.toString()),
           draggable: false,
           icon: selectedWishNo == s.storeNo ? selectedImg! : wishImg!,
-          onTap: () => setState(() {
-                selectedWishNo = s.storeNo;
+          onTap: () async {
+            await ref
+                .read(storeDetailProvider.notifier)
+                .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
+            setState(() {
+              selectedWishNo = s.storeNo;
 
-                ref
-                    .read(storeDetailProvider.notifier)
-                    .getStoreDetail(s.storeNo, SharedPreferenceUtil().userNo);
-
-                todayVisibility = false;
-                storeVisibility = true;
-              }),
+              todayVisibility = false;
+              storeVisibility = true;
+            });
+          },
           position: LatLng(s.lat, s.lng)));
     }
   }
@@ -172,6 +173,8 @@ class MapPageState extends ConsumerState<MapPage> {
           draggable: false,
           icon: wishImg!,
           onTap: () => setState(() {
+                selectedWishNo = storeNo;
+
                 ref
                     .read(storeDetailProvider.notifier)
                     .getStoreDetail(storeNo, SharedPreferenceUtil().userNo);
@@ -206,6 +209,8 @@ class MapPageState extends ConsumerState<MapPage> {
         SharedPreferenceUtil().userNo,
         userLocation.latitude,
         userLocation.longitude);
+
+    addWishMarker(ref.watch(wishProvider).list);
 
     setState(() {
       getAddressByGeo(_initPosition.latitude.toString(),

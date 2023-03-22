@@ -46,11 +46,14 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   String address = "";
   List<Store> stores = [];
 
+  var headerHeight = 1.0;
+  var itemHeight = 1.0;
+
   @override
   void initState() {
     selectedStoreNo = 0;
     super.initState();
-    getCurrentLocation();
+    fetchStoreResult();
   }
 
   @override
@@ -61,6 +64,17 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     addStoreMarker(stores);
     addWishMarker(wishes);
     storeMarkers.addAll(wishMarkers);
+
+    final statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    final windowHeight =
+        MediaQuery.of(context).size.height - 60 - statusBarHeight;
+    final headerHeight = 100 / windowHeight;
+
+    itemHeightSetter(_itemHeight) {
+      setState(() {
+        itemHeight = _itemHeight / windowHeight;
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -173,9 +187,10 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
               Visibility(
                 visible: resultVisibility,
                 child: DraggableScrollableSheet(
-                    initialChildSize: stores.isEmpty ? 0 : 0.32,
-                    minChildSize: stores.isEmpty ? 0 : 0.25,
-                    maxChildSize: min(1, stores.length * 0.25 + 0.3),
+                    initialChildSize: stores.isEmpty ? 0 : 0.35,
+                    minChildSize: stores.isEmpty ? 0 : 0.35,
+                    maxChildSize:
+                        min(itemHeight * stores.length + headerHeight, 1),
                     expand: false,
                     builder: (BuildContext context,
                         ScrollController scrollController) {
@@ -185,7 +200,8 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
                               scrollController,
                               resultVisibility,
                               widget.categoryNo,
-                              widget.keyword));
+                              widget.keyword,
+                              itemHeightSetter));
                     }),
               ),
               Visibility(
@@ -268,7 +284,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
     });
   }
 
-  Future<Position> getCurrentLocation() async {
+  Future<Position> fetchStoreResult() async {
     await ref.read(storeProvider.notifier).getStoreList(userLocation.latitude,
         userLocation.longitude, 0, widget.categoryNo, "", "STAR");
 
@@ -292,7 +308,7 @@ class MapResultPageState extends ConsumerState<MapResultPage> {
   }
 
   Future<void> _goToCurrentPos() async {
-    var gps = await getCurrentLocation();
+    var gps = await fetchStoreResult();
 
     _controller?.animateCamera(
         CameraUpdate.newLatLng(LatLng(gps.latitude, gps.longitude)));

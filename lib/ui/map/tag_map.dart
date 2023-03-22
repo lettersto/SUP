@@ -23,14 +23,14 @@ class TagMapListState extends ConsumerState<TagMapList> {
         scrollDirection: Axis.horizontal,
         itemCount: cates.length,
         itemBuilder: (BuildContext context, int position) {
-          MapTag tag = cates[position];
+          MapTag cate = cates[position];
           return Container(
             margin: position == 0
                 ? const EdgeInsets.only(top: 4, left: 9)
                 : const EdgeInsets.only(top: 4),
             child: GestureDetector(
                 onTap: () {
-                  updateRecents(tag.tagName);
+                  updateRecents(cate.tagName);
 
                   Navigator.push(
                     context,
@@ -42,17 +42,16 @@ class TagMapListState extends ConsumerState<TagMapList> {
                     context,
                     PageRouteBuilder(
                       pageBuilder: (context, a1, a2) =>
-                          MapResultPage(tag.tagName, tag.code),
+                          MapResultPage(cate.tagName, cate.code),
                       transitionDuration: Duration.zero,
                       reverseTransitionDuration: Duration.zero,
                     ),
                   );
                 },
                 child: TagFilterItem(
-                  tag: tag.getEmojiTagName(),
-                  shadow: true,
-                  background: Colors.white,
-                )),
+                    tag: cate.getEmojiTagName(),
+                    shadow: true,
+                    background: Colors.white)),
           );
         },
       ),

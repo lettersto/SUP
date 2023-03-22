@@ -7,12 +7,11 @@ class TagFilterItem extends StatelessWidget {
   final bool shadow;
   final Color background;
 
-  const TagFilterItem({
-    super.key,
-    required this.tag,
-    required this.shadow,
-    required this.background
-  });
+  const TagFilterItem(
+      {super.key,
+      required this.tag,
+      required this.shadow,
+      required this.background});
 
   @override
   Widget build(BuildContext context) {

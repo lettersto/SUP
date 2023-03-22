@@ -14,8 +14,10 @@ class ResultBottomSheet extends ConsumerStatefulWidget {
   bool visibility;
   final int categoryNo;
   final String keyword;
+  final ValueSetter<double>? itemHeightSetter;
 
   ResultBottomSheet(this.sc, this.visibility, this.categoryNo, this.keyword,
+      this.itemHeightSetter,
       {Key? key})
       : super(key: key);
 
@@ -25,6 +27,9 @@ class ResultBottomSheet extends ConsumerStatefulWidget {
 
 class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
   String order = "별점순";
+
+  Size? header;
+  Offset? offset;
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +126,8 @@ class ResultBottomSheetState extends ConsumerState<ResultBottomSheet> {
                       controller: widget.sc,
                       itemCount: stores.length,
                       itemBuilder: (BuildContext context, int position) {
-                        return StoreItem(stores[position]);
+                        return StoreItem(
+                            stores[position], widget.itemHeightSetter);
                       }),
                 ),
               ),

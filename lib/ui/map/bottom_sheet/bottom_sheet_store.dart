@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../../models/map/map.dart';
 import '../../../models/map/store.dart';
 import '../../../providers/store/store_detail_provider.dart';
-import '../../../providers/store/today_provider.dart';
-import '../../../providers/wish/wish_provider.dart';
 import '../../../utils/app_utils.dart';
-import '../../../utils/sharedPreference_util.dart';
 import '../../../utils/styles.dart';
-import '../../map_result/map_search_result.dart';
 import '../../review/review_page.dart';
-import '../map_page.dart';
+import 'star_icon.dart';
 
 class MapBottomSheet extends ConsumerStatefulWidget {
   bool visibility;
@@ -134,78 +129,7 @@ class _MapBottomSheet extends ConsumerState<MapBottomSheet> {
                                     Row(
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        IconButton(
-                                          iconSize: 24,
-                                          padding: const EdgeInsets.fromLTRB(
-                                              4, 0, 4, 0),
-                                          icon: Container(
-                                            child: storeDetail.isWish == true
-                                                ? const Icon(
-                                                    Icons.star_rounded,
-                                                    color: AppColors.pink60,
-                                                  )
-                                                : const Icon(
-                                                    Icons.star_border_rounded,
-                                                    color: AppColors.pink60,
-                                                  ),
-                                          ),
-                                          onPressed: () {
-                                            if (storeDetail.isWish) {
-                                              ref
-                                                  .read(wishProvider.notifier)
-                                                  .deleteWish(
-                                                      SharedPreferenceUtil()
-                                                          .userNo,
-                                                      storeDetail.storeNo);
-                                              context
-                                                  .findRootAncestorStateOfType<
-                                                      MapPageState>()
-                                                  ?.deleteMarker(
-                                                      storeDetail.storeNo);
-                                              context
-                                                  .findRootAncestorStateOfType<
-                                                      MapResultPageState>()
-                                                  ?.deleteWishMarker(
-                                                      storeDetail.storeNo);
-                                            } else {
-                                              ref
-                                                  .read(wishProvider.notifier)
-                                                  .postWish(
-                                                      SharedPreferenceUtil()
-                                                          .userNo,
-                                                      storeDetail.storeNo);
-
-                                              context
-                                                  .findRootAncestorStateOfType<
-                                                      MapPageState>()
-                                                  ?.addSingleWish(
-                                                      storeDetail.storeNo,
-                                                      storeDetail.lat,
-                                                      storeDetail.lng);
-                                            }
-
-                                            ref
-                                                .read(todayProvider.notifier)
-                                                .getTodayList(
-                                                    SharedPreferenceUtil()
-                                                        .userNo,
-                                                    userLocation.latitude,
-                                                    userLocation.longitude);
-
-                                            ref
-                                                .read(storeDetailProvider
-                                                    .notifier)
-                                                .getStoreDetail(
-                                                    storeDetail.storeNo,
-                                                    SharedPreferenceUtil()
-                                                        .userNo);
-
-                                            setState(() {
-                                              storeDetail.isWish =
-                                                  !storeDetail.isWish;
-                                            });
-                                          },
-                                        ),
+                                        StarIcon(storeDetail),
                                       ],
                                     ),
                                   ],
